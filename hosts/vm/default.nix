@@ -26,6 +26,8 @@
   # Remove this on real hardware.
   security.sudo.wheelNeedsPassword = false;
 
+  services.getty.autologinUser = "xitonight";
+
   environment.systemPackages = with pkgs; [
     vim
     git
