@@ -19,7 +19,7 @@
       "wheel"
       "networkmanager"
     ];
-    initialPassword = "changeme";
+    initialPassword = "2110";
   };
 
   # Passwordless sudo on the wheel group — convenient for remote rebuilds on a throwaway VM.
@@ -36,5 +36,5 @@
 
   # TODO: verify with `nixos-version` on the VM — must match the version you
   # installed, and must never change afterwards.
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }
