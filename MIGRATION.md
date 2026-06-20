@@ -15,7 +15,7 @@ inventory below (derived from the live `~/.xidots` tree).
 | Phase | Scope | Status |
 |-------|-------|--------|
 | 0 | Flake skeleton, VM host boots, nix daemon + gc + registry pin | **DONE** (deployed) |
-| 1 | Shell + terminal + editor core | TODO |
+| 1 | Shell + terminal + editor core | **DONE** (deployed to VM) |
 | 2 | Theming + fonts + GUI apps | TODO |
 | 3 | Hyprland + Wayland stack | TODO |
 | 4 | System services (kanata, pipewire, bluetooth, tailscale, docker) | TODO |
@@ -54,7 +54,8 @@ inventory below (derived from the live `~/.xidots` tree).
 - **[D5] Neovim:** ship the NvChad config dir verbatim to `~/.config/nvim`; let
   lazy.nvim + mason.nvim bootstrap at first launch. A Rust toolchain is added for
   the `blink.cmp` build step. (Help available on request if first-run issues.)
-- **[D6] Git:** configure via HM `programs.git` + delta. **Name/email still needed from you.**
+- **[D6] Git:** configure via HM `programs.git` + delta. Identity: name `Xitonight`,
+  email `xitonight@gmail.com` (GitHub: `Xitonight`).
 - **[D7] GTK theme:** skip `AxMat` entirely (slated for deletion); use `adw-gtk3-dark`.
 - **[D8] zoxide:** keep replacing `cd` (`--cmd cd`).
 - **[D9] pay-respects:** keep installed with AI suggestions **disabled**.
@@ -62,7 +63,7 @@ inventory below (derived from the live `~/.xidots` tree).
   mini pc (maybe) = **`mactomini`**. `vm` stays as the throwaway test host. Phases
   1-2 target `vm` (headless/TUI) since it has no GUI.
 
-**Still needed before Phase 1 starts: git name/email (D6).**
+**Phase 1 is unblocked — all decisions resolved (git: Xitonight <xitonight@gmail.com>).**
 
 ---
 
