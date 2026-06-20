@@ -3,6 +3,7 @@
 {
   programs.hyprland = {
     enable = true;
+    withUWSM = true; # wrap Hyprland in a proper systemd graphical session
     # Use the upstream flake's Hyprland build, keeping the portal package in
     # sync with it (see https://wiki.hypr.land/Nix/Hyprland-on-NixOS/).
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;

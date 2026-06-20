@@ -1,8 +1,6 @@
 hl.on("hyprland.start", function()
 	hl.exec_cmd("hyprpolkitagent")
 	hl.exec_cmd('udiskie --event-hook="stow --target=$HOME/Mounts/ --dir=/run/media/ --restow $USER"')
-	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP QT_QPA_PLATFORMTHEME")
 
 	-- awww-daemon (wallpaper daemon) — Phase 2
 	-- hl.exec_cmd("awww-daemon")

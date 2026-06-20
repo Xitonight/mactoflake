@@ -18,7 +18,14 @@
       share = true;
       append = true;
     };
-
-    initContent = builtins.readFile ./zshrc.zsh;
+    
+    profileExtra = "
+if uwsm check may-start; then
+  exec uwsm start hyprland-uwsm.desktop
+fi
+    ";
   };
+
+  # Auto-launch the UWSM-managed Hyprland session on tty1 login.
+  home.file.".zprofile".source = ./zprofile;
 }
