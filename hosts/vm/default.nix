@@ -34,7 +34,5 @@
   # Lets QEMU do clean shutdown / guest commands.
   services.qemuGuest.enable = true;
 
-  # TODO: verify with `nixos-version` on the VM — must match the version you
-  # installed, and must never change afterwards.
   system.stateVersion = "26.05";
 }

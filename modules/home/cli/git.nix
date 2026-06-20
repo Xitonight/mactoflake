@@ -3,20 +3,24 @@
 {
   programs.git = {
     enable = true;
-    userName = "Xitonight";
-    userEmail = "xitonight@gmail.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Xitonight";
+        email = "xitonight@gmail.com";
+      };
       init.defaultBranch = "main";
       core.editor = "nvim";
       pull.rebase = true;
     };
-    delta = {
-      enable = true;
-      options = {
-        syntax-theme = "base16";
-        line-numbers = true;
-        navigate = true;
-      };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      syntax-theme = "base16";
+      line-numbers = true;
+      navigate = true;
     };
   };
 }
