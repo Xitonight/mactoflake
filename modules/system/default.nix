@@ -4,5 +4,6 @@
     ./locale.nix
     ./network.nix
     ./nix.nix
+    ./shell.nix
   ];
 }
