@@ -25,7 +25,4 @@ if uwsm check may-start; then
 fi
     ";
   };
-
-  # Auto-launch the UWSM-managed Hyprland session on tty1 login.
-  home.file.".zprofile".source = ./zprofile;
 }
