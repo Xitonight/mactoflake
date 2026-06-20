@@ -62,6 +62,10 @@ inventory below (derived from the live `~/.xidots` tree).
 - **[D10] Hostnames:** laptop = **`mactopad`** (was `archpad`), desktop = **`macto`**,
   mini pc (maybe) = **`mactomini`**. `vm` stays as the throwaway test host. Phases
   1-2 target `vm` (headless/TUI) since it has no GUI.
+- **[D11] fish shell (open):** add fish as an alternative shell alongside zsh (see
+  §1.6). Default stays zsh unless you say otherwise; needs a fresh parallel fish
+  config (none in `~/.xidots`). Still to decide: flip the default to fish, and how
+  much of the zsh config to mirror.
 
 **Phase 1 is unblocked — all decisions resolved (git: Xitonight <xitonight@gmail.com>).**
 
@@ -85,7 +89,7 @@ modules/home/
     neovim.nix
   cli/
     git.nix              # fresh git config
-    tools.nix            # bat, eza, fzf, zoxide, fd, ripgrep, gh, lazygit, mise, btop, fastfetch
+    tools.nix            # bat, eza, fzf, zoxide, fd, ripgrep, gh, lazygit, btop, fastfetch
   fonts.nix              # fontconfig (headless-safe)
 ```
 
@@ -142,12 +146,25 @@ Source: entire `dots/.config/nvim/` (NvChad v2.5 + lazy.nvim).
 | fd, ripgrep | packages |
 | gh | `programs.gh.enable` |
 | lazygit | `programs.lazygit.enable` + ship `lazygit/config.yml` |
-| mise | `programs.mise.enable` + ship `mise/config.toml` (`node = "lts"`) |
 | btop | `programs.btop.enable` + ship `btop/btop.conf` |
 | fastfetch | package + config dir (none in source) |
 | git/delta | `programs.git` fresh (name/email D6) + `programs.git.delta.enable` |
 | sesh | package + ship `sesh/sesh.toml` |
 | tmuxinator | package (+ drop hardcoded `.tmuxinator.yml` project root) |
+
+### 1.6 Alternative shell -- fish (`shell/fish.nix`)  [D11, exploratory]
+
+Try fish alongside zsh (both stay installed; zsh remains the default for now).
+
+- **System:** `programs.fish.enable = true` in `modules/system/shell.nix` (next to the existing `programs.zsh.enable`). The active login shell is still `users.defaultUserShell = pkgs.zsh`; switch to fish by changing that one line to `pkgs.fish`.
+- **Home:** new `modules/home/shell/fish.nix` with `programs.fish.enable = true`, imported from `modules/home/default.nix` (zsh.nix stays untouched).
+- **Fish is non-POSIX** -> the zshrc body cannot be shared. A parallel config is written fresh (nothing for fish exists in `~/.xidots`). Port the *behavior*, not the syntax:
+  - Prompt: `oh-my-posh init fish --config ~/.config/oh-my-posh/config.toml | source` (same theme file).
+  - vi-mode: fish's built-in `fish_vi_key_bindings` (or a plugin); mode cursors + the `^p/^n/^r/^s` binds.
+  - Integrations: `fzf --fish`, `zoxide init fish --cmd cd`, `mise activate fish`, `pay-respects fish` (AI disabled).
+  - Aliases -> `fish.shellAbbrs` / functions: the eza `ls/l/la/ll/...`, `-h/--help`->bat, `v/vim`->nvim, `j`->just, `open`, `cppath`, `p()`, `y()`.
+  - MANPAGER/BAT_THEME come for free from `home.sessionVariables` (already set).
+- **Decision [D11]:** keep zsh as default (fish just available to try), or flip the default to fish now? How much of the zsh config to mirror in fish (full parity vs. a minimal try-it-out setup)?
 
 ### Phase 1 exit criteria
 
@@ -255,13 +272,17 @@ service (cleaner) or HM `systemd.user.services.kanata` with store paths.
 
 | Tool | Approach |
 |------|----------|
-| mise | `programs.mise` (Phase 1) for node + project-level langs |
 | clang | `pkgs.clang` (+ `clangd` for nvim) |
 | texlive | `pkgs.texlive.combined.scheme-full` -> **drop the `/usr/local/texlive/2025` PATH hack** |
 | pnpm | package + `PNPM_HOME` session var (no `/home/...` hardcode -> `$HOME`) |
-| Go/Rust/etc | via mise or direct pkgs; `rustc`/`cargo` for blink build |
+| Go/Rust/Node/etc | via **nix shells** per-project (mise dropped); `rustc`/`cargo` kept in nvim `extraPackages` for the `blink.cmp` build step |
 | ESP-IDF | **manual** (`~/.esp`, `espidf` alias sources export.sh) |
 | Android SDK | **manual** (`ANDROID_HOME`, android-studio, scrcpy) |
+
+> **Note (mise dropped):** language runtimes now come from nix shells, not mise.
+> Caveat: mason.nvim installs some LSPs via npm — node must be available in the
+> environment nvim is launched from (e.g. enter a nix shell with node first, or
+> add node to a per-project `shell.nix`). The editor itself is unaffected.
 
 ---
 

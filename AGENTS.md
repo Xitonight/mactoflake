@@ -53,11 +53,11 @@ This is a NixOS flake configuration, being ported from the Arch Linux dotfiles r
 The source of truth for what needs porting is `~/.xidots` (Arch + stow). Porting is phased:
 
 - **Phase 0 (DONE):** Flake skeleton, VM host boots from the flake, Nix daemon + gc + registry pin.
-- **Phase 1 (NEXT):** Shell + terminal + editor core — zsh (zinit, oh-my-posh, vi-mode), kitty, tmux (+TPM plugins via `pkgs.tmuxPlugins`), neovim (ship config dir, let lazy.nvim bootstrap), bat, eza, fzf, zoxide, git+delta, gh, lazygit, mise, btop.
+- **Phase 1 (NEXT):** Shell + terminal + editor core — zsh (zinit, oh-my-posh, vi-mode), kitty, tmux (+TPM plugins via `pkgs.tmuxPlugins`), neovim (ship config dir, let lazy.nvim bootstrap), bat, eza, fzf, zoxide, git+delta, gh, lazygit, btop.
 - **Phase 2:** Theming + fonts + GUI apps — GTK theme `AxMat`, qt5ct/qt6ct, Bibata cursors, nerd fonts, rofi, swaync, yazi, zathura, mpv, fastfetch, bitwarden, obsidian, telegram-desktop.
 - **Phase 3:** Hyprland + Wayland stack — `programs.hyprland.enable`, awww (custom derivation), portals, polkit, udiskie, cliphist. **Note:** the source hyprland config is lua-based (`hl.*` API) — either keep the wrapper as a package or port to native hyprlang/`wayland.windowManager.hyprland`.
 - **Phase 4:** System services — kanata (home-row mods, needs `uinput`/`input` groups), pipewire, bluetooth, tailscale, docker, networking.
-- **Phase 5:** Dev toolchains — mise for language versions, clang via nixpkgs, `texlive.combined.scheme-full`, pnpm. Keep ESP-IDF + Android SDK as manual installs.
+- **Phase 5:** Dev toolchains — language runtimes via nix shells (mise dropped), clang via nixpkgs, `texlive.combined.scheme-full`, pnpm. Keep ESP-IDF + Android SDK as manual installs.
 - **Phase 6:** Real hosts (`archpad`, desktop) + sops-nix for secrets.
 
 ### Known porting gotchas (from the source config)
