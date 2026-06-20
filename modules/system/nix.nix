@@ -7,6 +7,10 @@
       "flakes"
     ];
     auto-optimise-store = true;
+    trusted-users = [
+      "root"
+      "xitonight"
+    ];
   };
 
   # Pin `nixpkgs` used by ad-hoc `nix run nixpkgs#...` / `nix shell nixpkgs#...`
