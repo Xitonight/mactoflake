@@ -16,5 +16,6 @@
     ./editor/neovim.nix
     ./cli/git.nix
     ./cli/packages.nix
+    ./desktop/hyprland.nix
   ];
 }

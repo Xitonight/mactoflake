@@ -1,0 +1,27 @@
+local hostname_file = io.open("/proc/sys/kernel/hostname")
+local hostname = hostname_file and hostname_file:read("*a"):gsub("%s+", "") or ""
+if hostname_file then
+	hostname_file:close()
+end
+
+-- NixOS: "vm" (QEMU) has no nvidia GPU; only real nvidia hosts load this.
+if hostname ~= "archpad" and hostname ~= "vm" then
+	require("source/nvidia")
+end
+
+require("source/env")
+require("source/autostart")
+require("source/misc")
+require("source/submaps")
+require("source/appearence")
+require("source/animations")
+require("source/input")
+require("source/windowrules")
+require("source/keybinds")
+
+hl.monitor({
+	output = hostname == "archpad" and "eDP-1" or "HDMI-A-1",
+	mode = hostname == "archpad" and "1920x1080@60" or "1920x1080@75",
+	position = "auto",
+	scale = hostname == "archpad" and 1.33 or 1,
+})
