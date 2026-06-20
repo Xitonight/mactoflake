@@ -21,12 +21,14 @@
   # Hyprland binary cache — avoids compiling Hyprland from source.
   nix.settings = {
     substituters = [
-      "https://cache.nixos.org/"
       "https://hyprland.cachix.org"
     ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "hyprland.cachix.org-1:7a5bdxH7ZqYCkf2sZQCinzM6vZ+yw5YkgZQyFtPpf5M="
+    trusted-substituters = [
+      "https://hyprland.cachix.org"
+    ];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    trusted-users = [
+      "root" "@wheel"
     ];
   };
 }
