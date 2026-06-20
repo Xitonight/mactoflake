@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  networking.networkManager.enable = true;
+  networking.networkmanager.enable = true;
 
   services.openssh.enable = true;
 }
