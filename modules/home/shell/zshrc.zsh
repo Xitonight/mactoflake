@@ -33,8 +33,6 @@ zinit light jeffreytse/zsh-vi-mode
 zinit snippet OMZP::sudo
 zinit cdreplay -q
 
-eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/config.toml")"
-
 # Completion tweaks
 setopt globdots
 setopt extendedglob

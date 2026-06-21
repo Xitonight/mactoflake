@@ -115,9 +115,6 @@
       # Free up ctrl-s / ctrl-q (disable XON/XOFF flow control).
       stty -ixon
 
-      # Prompt -- same oh-my-posh theme as zsh.
-      oh-my-posh init fish --config "$HOME/.config/oh-my-posh/config.toml" | source
-
       # vi mode + cursors (mirrors zsh-vi-mode: normal=underline, insert=beam,
       # visual=block, all blinking).
       set -g fish_cursor_default     underscore blink
