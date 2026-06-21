@@ -20,6 +20,11 @@
     ./desktop/hyprland.nix
     ./desktop/gtk.nix
     ./desktop/matugen.nix
+    ./desktop/rofi.nix
+    ./desktop/swaync.nix
     ./desktop/packages.nix
+    ./media/yazi.nix
+    ./media/zathura.nix
+    ./media/mpv.nix
   ];
 }
