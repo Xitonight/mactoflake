@@ -1,0 +1,189 @@
+@import "shared/colors.rasi"
+
+configuration {
+  font: "sans 14";
+  icon-theme: "Papirus";
+
+  show-icons: true;
+
+  disable-history: false;
+  sidebar-mode: false;
+
+  scroll-method: 1;
+
+  matching: "fuzzy";
+  sorting-method: "fzf";
+
+  kb-row-up: "Up";
+  kb-row-down: "Down";
+
+  kb-entry-history-up: "Control+n";
+  kb-entry-history-down: "Control+p";
+
+  kb-accept-entry: "Return,KP_Enter";
+}
+
+* {
+  background: transparent;
+  text-color: @on-background;
+  border-color: @primary;
+  border-radius: 8px;
+}
+
+window {
+  transparency: "real";
+  background-color: @background-transparent-50;
+  width: 40%;
+  padding: 0;
+  border: 0px;
+  border-radius: 16px;
+}
+
+mainbox {
+  enabled: true;
+  spacing: 8px;
+  margin: 0px;
+  padding: 16px;
+  border: 0px solid;
+  border-radius: 0px;
+  background-color: transparent;
+
+  children: [inputbar, listview];
+}
+
+inputbar {
+  spacing: 8px;
+  padding: 8px;
+  margin: 0px;
+
+  border: 1px solid;
+
+  background-color: transparent;
+
+  children: [prompt, entry];
+}
+
+prompt {
+  margin: 0px;
+
+  text-color: @primary;
+
+  background-color: transparent;
+}
+
+entry {
+  placeholder: "Search...";
+
+  background-color: transparent;
+}
+
+num-filtered-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+textbox-num-sep {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "/";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+num-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+case-indicator {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+
+listview {
+  enabled: true;
+
+  lines: 5;
+  columns: 1;
+
+  cycle: true;
+  dynamic: true;
+  scrollbar: true;
+
+  layout: vertical;
+  reverse: false;
+
+  fixed-height: true;
+  fixed-columns: true;
+
+  spacing: 4px;
+
+  border: 0;
+  border-radius: 0px;
+
+  background-color: transparent;
+}
+
+scrollbar {
+    handle-width:                8px;
+    handle-color:                @primary-transparent-50;
+    handle-rounded-corners:      true;
+
+    margin: 0px 0px 0px 4px;
+    border-radius:               16px;
+
+    background-color:            transparent;
+}
+
+element {
+  padding: 8px 12px;
+  spacing: 8px;
+
+  border-radius: 8px;
+
+  background-color: transparent;
+}
+
+element normal.normal {
+  background-color: transparent;
+}
+
+element normal.active {
+  background-color: @surface-transparent-50;
+  border-color: @primary-transparent-50;
+  text-color: @tertiary;
+}
+
+element selected.normal {
+  background-color: @surface-transparent-50;
+  // border: 0px 0px 0px 2px;
+  border-color: @primary;
+  text-color: @primary;
+}
+
+element selected.active {
+  background-color: @surface-transparent-50;
+  border: 0px 0px 0px 2px;
+  border-color: @tertiary;
+  text-color: @tertiary;
+}
+
+element alternate.normal {
+  background-color: transparent;
+}
+
+element-icon {
+  size: 1.2em;
+  vertical-align: 0.5;
+}
+
+element-text {
+  vertical-align: 0.5;
+  text-color: inherit;
+}
