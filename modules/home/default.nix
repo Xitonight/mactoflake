@@ -19,5 +19,6 @@
     ./cli/packages.nix
     ./desktop/hyprland.nix
     ./desktop/gtk.nix
+    ./desktop/matugen.nix
   ];
 }
