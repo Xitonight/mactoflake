@@ -11,6 +11,7 @@
   imports = [
     ./env.nix
     ./shell/zsh.nix
+    ./shell/fish.nix
     ./terminal/kitty.nix
     ./terminal/tmux.nix
     ./editor/neovim.nix
