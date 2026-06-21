@@ -16,7 +16,7 @@ inventory below (derived from the live `~/.xidots` tree).
 |-------|-------|--------|
 | 0 | Flake skeleton, VM host boots, nix daemon + gc + registry pin | **DONE** (deployed) |
 | 1 | Shell + terminal + editor core | **DONE** (deployed to VM) |
-| 2 | Theming + fonts + GUI apps | TODO |
+| 2 | Theming + fonts + GUI apps | **DONE** (eval clean; deferred: walogram derivation, pywalfox) |
 | 3 | Hyprland + Wayland stack | TODO |
 | 4 | System services (kanata, pipewire, bluetooth, tailscale, docker) | TODO |
 | 5 | Dev toolchains (mise, clang, texlive, pnpm) | TODO |
