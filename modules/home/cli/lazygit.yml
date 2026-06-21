@@ -1,9 +1,0 @@
-# $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
-
-quitOnTopLevelReturn: true
-
-gui:
-  theme:
-    selectedLineBgColor:
-      - bold
-      - underline

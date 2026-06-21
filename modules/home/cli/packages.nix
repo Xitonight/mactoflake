@@ -10,7 +10,6 @@
     ripgrep
     delta
     gh
-    lazygit
     btop
     fastfetch
     sesh
@@ -23,8 +22,15 @@
     unzip
   ];
 
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      quitOnTopLevelReturn = true;
+      gui.theme.selectedLineBgColor = [ "bold" "underline" ];
+    };
+  };
+
   # Verbatim config files (no Home Manager module, or config is hand-written).
-  xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
   xdg.configFile."btop/btop.conf".source = ./btop.conf;
   xdg.configFile."sesh/sesh.toml".source = ./sesh.toml;
   xdg.configFile."oh-my-posh/config.toml".source = ./oh-my-posh.toml;
