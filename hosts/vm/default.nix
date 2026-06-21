@@ -12,6 +12,14 @@
 
   networking.hostName = "vm";
 
+  # QEMU auto-detects its monitor. Real hosts set them explicitly, e.g.:
+  #   flakey.hyprland.monitors = [
+  #     { output = "HDMI-A-1"; mode = "1920x1080@75"; }
+  #   ];
+  flakey.hyprland.monitors = [
+    { output = "Virtual-1"; mode = "1920x1080"; }
+  ];
+
   users.users.xitonight = {
     isNormalUser = true;
     description = "Xitonight";
@@ -22,8 +30,6 @@
     initialPassword = "2110";
   };
 
-  # Passwordless sudo on the wheel group — convenient for remote rebuilds on a throwaway VM.
-  # Remove this on real hardware.
   security.sudo.wheelNeedsPassword = false;
 
   services.getty.autologinUser = "xitonight";
