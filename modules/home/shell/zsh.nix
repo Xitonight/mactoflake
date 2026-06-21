@@ -19,7 +19,13 @@
       append = true;
     };
 
-    profileExtra =
-      "\nif uwsm check may-start; then\n  exec uwsm start hyprland-uwsm.desktop\nfi\n";
+    initExtra = builtins.readFile ./zshrc.zsh;
+
+    profileExtra = ''
+
+      if uwsm check may-start; then
+        exec uwsm start hyprland-uwsm.desktop
+      fi
+    '';
   };
 }
