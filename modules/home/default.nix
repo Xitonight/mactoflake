@@ -20,5 +20,6 @@
     ./desktop/hyprland.nix
     ./desktop/gtk.nix
     ./desktop/matugen.nix
+    ./desktop/packages.nix
   ];
 }
