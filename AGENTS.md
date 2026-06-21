@@ -11,7 +11,7 @@ This is a NixOS flake configuration, being ported from the Arch Linux dotfiles r
 - **Deploy to the VM (builds on Arch, pushes closure, activates on VM):**
   ```bash
   nix run nixpkgs#nixos-rebuild -- switch \
-    --flake .#vm --target-host xitonight@192.168.122.136 --use-remote-sudo
+    --flake .#vm --target-host xitonight@192.168.122.136 --elevate=sudo
   ```
   First build downloads the entire NixOS system closure (slow); subsequent builds are incremental. The VM user `xitonight` has passwordless sudo via `security.sudo.wheelNeedsPassword = false` (VM-only convenience).
 - **Update an input** (do one at a time, never bulk):
