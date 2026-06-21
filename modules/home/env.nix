@@ -14,9 +14,6 @@
     PNPM_HOME = "$HOME/.local/share/pnpm";
   };
 
-  home.sessionPath = [
-    "$HOME/.local/share/pnpm"
-    "$HOME/.go/bin"
-    "$HOME/.local/bin"
-  ];
+  home.sessionPath =
+    [ "$HOME/.local/share/pnpm" "$HOME/.go/bin" "$HOME/.local/bin" ];
 }

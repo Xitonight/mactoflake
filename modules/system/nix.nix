@@ -2,15 +2,9 @@
 
 {
   nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
-    trusted-users = [
-      "root"
-      "xitonight"
-    ];
+    trusted-users = [ "root" "xitonight" ];
   };
 
   # Pin `nixpkgs` used by ad-hoc `nix run nixpkgs#...` / `nix shell nixpkgs#...`
@@ -23,5 +17,9 @@
     options = "--delete-older-than 14d";
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    # obsidian bundles an EOL Electron runtime flagged insecure by nixpkgs.
+    permittedInsecurePackages = [ "electron-39.8.10" ];
+  };
 }

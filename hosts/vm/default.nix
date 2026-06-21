@@ -1,14 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "vm";
 
@@ -16,17 +9,15 @@
   #   flakey.hyprland.monitors = [
   #     { output = "HDMI-A-1"; mode = "1920x1080@75"; }
   #   ];
-  flakey.hyprland.monitors = [
-    { output = "Virtual-1"; mode = "1920x1080"; }
-  ];
+  flakey.hyprland.monitors = [{
+    output = "Virtual-1";
+    mode = "1920x1080";
+  }];
 
   users.users.xitonight = {
     isNormalUser = true;
     description = "Xitonight";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
+    extraGroups = [ "wheel" "networkmanager" ];
     initialPassword = "2110";
   };
 
@@ -34,10 +25,7 @@
 
   services.getty.autologinUser = "xitonight";
 
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
+  environment.systemPackages = with pkgs; [ vim git ];
 
   # Lets QEMU do clean shutdown / guest commands.
   services.qemuGuest.enable = true;
