@@ -1,18 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "vm";
-
-  # QEMU auto-detects its monitor. Real hosts set them explicitly, e.g.:
-  #   flakey.hyprland.monitors = [
-  #     { output = "HDMI-A-1"; mode = "1920x1080@75"; }
-  #   ];
-  flakey.hyprland.monitors = [{
-    output = "Virtual-1";
-    mode = "1920x1080";
-  }];
 
   users.users.xitonight = {
     isNormalUser = true;
