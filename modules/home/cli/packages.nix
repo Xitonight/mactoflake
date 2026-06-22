@@ -10,7 +10,6 @@
     gh
     btop
     fastfetch
-    sesh
     tmuxinator
     rsync
     just
@@ -123,7 +122,40 @@
     };
   };
 
+  programs.sesh = {
+    enable = true;
+    enableAlias = false;
+    enableTmuxIntegration = false;
+    settings = {
+      blacklist = [ "scratch" ];
+      dir_length = 2;
+      default_session = {
+        startup_command = "tmuxinator start --append && exit || clear";
+        preview_command = "eza --all -1 --git --icons --color=always {}";
+      };
+      session = [
+        {
+          name = "papers";
+          path = "~/Pictures/Wallpapers";
+          preview_command =
+            "eza -1 --icons --color=always ~/Pictures/Wallpapers";
+        }
+        {
+          name = "tmux conf";
+          path = "~/.config/tmux";
+          startup_command = "nvim tmux.conf";
+          preview_command = "bat --color=always ~/.config/tmux/tmux.conf";
+        }
+        {
+          name = "nvim conf";
+          path = "~/.config/nvim";
+          startup_command = "nvim";
+          preview_command = "bat --color=always ~/.config/nvim/init.lua";
+        }
+      ];
+    };
+  };
+
   # Verbatim config files (no Home Manager module, or config is hand-written).
   xdg.configFile."btop/btop.conf".source = ./btop.conf;
-  xdg.configFile."sesh/sesh.toml".source = ./sesh.toml;
 }
