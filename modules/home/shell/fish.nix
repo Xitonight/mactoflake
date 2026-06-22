@@ -123,10 +123,7 @@
       set -g fish_cursor_visual      block blink
       fish_vi_key_bindings
 
-      # Tool integrations.
-      fzf --fish | source
-      zoxide init fish --cmd cd | source
-      pay-respects fish | source
+      # Misc
       set -gx _PR_AI_DISABLE 1
 
       # vi-mode key binds (match zsh: ^p/^n history search, ^r fzf history,

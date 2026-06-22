@@ -4,8 +4,6 @@
   home.packages = with pkgs; [
     bat
     eza
-    fzf
-    zoxide
     fd
     ripgrep
     delta
@@ -14,12 +12,30 @@
     fastfetch
     sesh
     tmuxinator
-    pay-respects
     rsync
     just
     wl-clipboard
     unzip
   ];
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
+    options = [ "--cmd" "cd" ];
+  };
+
+  programs.pay-respects = {
+    enable = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
+  };
 
   programs.lazygit = {
     enable = true;
