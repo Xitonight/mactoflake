@@ -22,6 +22,37 @@ inventory below (derived from the live `~/.xidots` tree).
 | 5 | Dev toolchains (mise, clang, texlive, pnpm) | TODO |
 | 6 | Real hosts (`mactopad`, `macto`, `mactomini`) + sops-nix | TODO |
 
+### Remaining raw config to port to Nix module options
+
+The following still use `extraConfig`, `xdg.configFile`, or bare `home.packages`
+instead of structured HM/NixOS module options. High-value targets are listed
+first; low-value items are intentionally kept raw (no module equivalent or
+architectural choice).
+
+| Priority | File | Currently | Replaceable by | Raw lines |
+|----------|------|-----------|----------------|-----------|
+| **HIGH** | `terminal/tmux.nix` | 91-line `extraConfig` from `tmux.conf` | `programs.tmux.{prefix,mouse,baseIndex,viMode,renumberWindows,statusPosition,statusJustify,terminal,keyBindings,plugins}` — ~40% of the file has module equivalents | 91 |
+| **HIGH** | `cli/packages.nix` (bat, eza, gh) | bare `home.packages` entries | `programs.bat.enable`, `programs.eza.enable` (+ `enableAliases`), `programs.gh.enable` — enables shell integrations and config management | N/A |
+| **MEDIUM** | `cli/packages.nix` (btop) | `xdg.configFile."btop/btop.conf"` | `programs.btop.settings` — 286-line config fully expressible as Nix attrset | 286 |
+| **MEDIUM** | `desktop/rofi.nix` | `xdg.configFile` for 7 `.rasi` files | `programs.rofi.config` + `theme` for basic options; complex matugen-imported themes stay raw | ~280 |
+| **MEDIUM** | `shell/fish.nix` | `interactiveShellInit` (45 lines) | `programs.fish.shellAbbrs` (partial), some `bind` statements have no module equivalent | 45 |
+| **LOW** | `desktop/hyprland.nix` | `xdg.configFile` for Lua config tree | N/A — Hyprland's native API is Lua (v0.55+), no HM module for Lua configs | Intentionally raw |
+| **LOW** | `editor/neovim.nix` | `xdg.configFile"nvim"` for NvChad tree | N/A — lazy.nvim + mason manage 40+ plugins; Nix-managed neovim plugins would be a massive rewrite with no benefit | Intentionally raw |
+| **LOW** | `desktop/matugen.nix` | `xdg.configFile` for matugen/ | N/A — no HM module exists | Intentionally raw |
+| **LOW** | `desktop/gtk.nix` | `xdg.configFile` for qt5ct/qt6ct.conf | N/A — no qt5ct/qt6ct HM module exists | Intentionally raw |
+| **LOW** | `desktop/swaync.nix` | `xdg.configFile` for CSS files | N/A — CSS has no structured equivalent; `services.swaync` is already used for JSON settings | Intentionally raw |
+| **LOW** | `cli/packages.nix` (sesh) | `xdg.configFile."sesh/sesh.toml"` | N/A — no sesh HM module | Intentionally raw |
+| **LOW** | `media/zathura.nix` | `home.packages` only | `programs.zathura` exists but writes a read-only store path; kept raw so matugen can own the config file | Intentionally raw |
+
+After the three quick wins (kitty, lazygit, oh-my-posh → Nix options) and the zsh
+rewrite (zinit → `programs.zsh.plugins` from nixpkgs, aliases → `shellAliases`,
+global aliases → `shellGlobalAliases`, `setOptions`, `autosuggestion`,
+`syntaxHighlighting`, fzf/zoxide/pay-respects → HM modules), the **highest
+remaining value** is tmux (port ~40% of `extraConfig` to `programs.tmux.*`
+options) and enabling `programs.{bat,eza,gh}` for their shell integrations.
+
+---
+
 ### What exists in the flake today (Phase 0)
 
 - `flake.nix` — one host `vm`; HM as a NixOS module; `specialArgs` passes `inputs`.
