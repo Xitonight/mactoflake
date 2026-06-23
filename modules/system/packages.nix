@@ -68,6 +68,7 @@
     obsidian
     telegram-desktop
     cava
+    kitty
 
     # --- Media ---
     yazi
