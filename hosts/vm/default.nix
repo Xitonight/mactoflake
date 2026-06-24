@@ -5,6 +5,11 @@
 
   networking.hostName = "vm";
 
+  flakey.hyprland.monitors = [{
+    output = "Virtual-1";
+    mode = "1920x1080";
+  }];
+
   users.users.xitonight = {
     isNormalUser = true;
     description = "Xitonight";
