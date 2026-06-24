@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    minegrub-theme.url = "github:Lxtharia/minegrub-theme";
     hyprland.url = "github:hyprwm/Hyprland";
 
     hjem = {
@@ -20,6 +20,7 @@
         inputs.hjem.nixosModules.default
         ./hosts/vm
         ./modules/system
+        inputs.minegrub-theme.nixosModules.default
       ];
     };
   };

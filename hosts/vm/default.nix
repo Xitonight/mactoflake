@@ -5,6 +5,8 @@
 
   networking.hostName = "vm";
 
+  flakey.boot.loader = "systemd-boot";
+
   flakey.hyprland.monitors = [{
     output = "Virtual-1";
     mode = "1920x1080";
