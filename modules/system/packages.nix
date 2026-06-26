@@ -23,6 +23,7 @@
     lazygit
     oh-my-posh
     sesh
+    tmux
 
     # --- Editor ---
     neovim
