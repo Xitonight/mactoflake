@@ -24,6 +24,7 @@
     oh-my-posh
     sesh
     xdg-user-dirs
+    zip
 
     # --- Editor ---
     neovim
