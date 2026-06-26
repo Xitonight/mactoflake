@@ -7,6 +7,8 @@
 
   flakey.boot.loader = "grub";
 
+  flakey.input.kanata.enable = true;
+
   flakey.hyprland.monitors = [{
     output = "eDP-1";
     mode = "1920x1080@60";

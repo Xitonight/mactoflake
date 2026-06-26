@@ -6,6 +6,7 @@
     ./cachix.nix
     ./fonts.nix
     ./hyprland.nix
+    ./kanata.nix
     ./locale.nix
     ./network.nix
     ./nix.nix
