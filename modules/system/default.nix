@@ -1,6 +1,9 @@
 {
   imports = [
+    ./audio.nix
+    ./bluetooth.nix
     ./boot.nix
+    ./cachix.nix
     ./fonts.nix
     ./hyprland.nix
     ./locale.nix
