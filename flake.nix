@@ -11,6 +11,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +35,26 @@
       modules = [
         inputs.hjem.nixosModules.default
         ./hosts/vm
+        ./modules/system
+        inputs.minegrub-theme.nixosModules.default
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = { inherit inputs; };
+            users.xitonight = import ./modules/home;
+          };
+        }
+      ];
+    };
+    nixosConfigurations.mactopad = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        inputs.hjem.nixosModules.default
+        ./hosts/mactopad
         ./modules/system
         inputs.minegrub-theme.nixosModules.default
 

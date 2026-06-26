@@ -1,5 +1,7 @@
 { pkgs, inputs, ... }:
-
+let
+  firefox-addons = inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+in 
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
 
@@ -78,15 +80,25 @@
 
       spacesForce = true;
       spaces = {
-        "General" = {
+        "Uni" = {
           id = "c6de089c-410d-4206-961d-ab11f988d40a";
           position = 1000;
-          icon = "🏠";
+          icon = "🎓";
         };
-        "Work" = {
+        "Dots" = {
           id = "cdd10fab-4fc5-494b-9041-325e5759195b";
           position = 2000;
-          icon = "💼";
+          icon = "💠";
+        };
+        "Default" = {
+          id = "5005cee1-9f50-4dc1-8ecf-baa25f8c8fd0";
+          position = 3000;
+          icon = "🩷";
+        };
+        "Projects" = {
+          id = "feb078ca-fcde-42ba-9d54-04a84568e2c4";
+          position = 4000;
+          icon = "🌙";
         };
       };
 
@@ -112,6 +124,11 @@
           isEssential = true;
         };
       };
+
+      extensions.packages = with firefox-addons; [
+        ublock-origin
+        vimium
+      ];
 
       keyboardShortcutsVersion = 19;
       keyboardShortcuts = [
