@@ -23,7 +23,7 @@
     lazygit
     oh-my-posh
     sesh
-    tmux
+    xdg-user-dirs
 
     # --- Editor ---
     neovim
