@@ -5,7 +5,7 @@
 
   networking.hostName = "vm";
 
-  flakey.boot.loader = "systemd-boot";
+  flakey.boot.loader = "grub";
 
   flakey.hyprland.monitors = [{
     output = "Virtual-1";

@@ -13,11 +13,11 @@ in {
       boot.loader.grub = {
         enable = true;
         efiSupport = true;
-        efiInstallAsRemovable = true;
+        devices = [ "nodev" ];
         minegrub-theme = {
           enable = true;
           splash = "100% Flakes!";
-          background = "background_options/1.8  - [Classic Minecraft].png";
+          background = "background_options/1.20 - [Trails & Tales].png";
           boot-options-count = 4;
         };
       };
@@ -28,7 +28,13 @@ in {
     })
 
     {
-      boot.loader.efi.canTouchEfiVariables = true;
+      boot = {
+        loader.efi.canTouchEfiVariables = true;
+        # consoleLogLevel = 0;
+        # kernelParams = ["quiet" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3"];
+        # initrd.verbose = false;
+        # initrd.systemd.enable = true;
+      };
     }
   ];
 }
