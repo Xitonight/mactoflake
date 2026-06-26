@@ -65,7 +65,6 @@
     swaynotificationcenter
 
     # --- Desktop apps ---
-    bitwarden-desktop
     obsidian
     telegram-desktop
     cava
