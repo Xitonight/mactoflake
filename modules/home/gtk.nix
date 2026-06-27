@@ -35,10 +35,10 @@
       };
 
       bookmarks = [
-        "file:///home/xitonight/Downloads Downloads"
-        "file:///home/xitonight/Projects/ Projects"
-        "file:///home/xitonight/Pictures/Wallpapers/ Wallpapers"
-        "file:///home/xitonight/.xidots/ dots"
+        "file:///home/xitonight/dl/ Downloads"
+        "file:///home/xitonight/projects/ Projects"
+        "file:///home/xitonight/pictures/papers/ Wallpapers"
+        "file:///home/xitonight/.xidots/ Dotfiles"
       ];
     };
 
