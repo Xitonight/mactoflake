@@ -34,11 +34,6 @@ in
         "zen.view.compact.toolbar-flash-popup" = true;
       };
 
-      mods = [
-        "e122b5d9-d385-4bf8-9971-e137809097d0" # No Top Sites
-        "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
-      ];
-
       search = {
         force = true;
         default = "unduck";
