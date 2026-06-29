@@ -7,5 +7,5 @@
 
   programs.home-manager.enable = true;
 
-  imports = [ ./git.nix ./gtk.nix ./xdg.nix ./zen.nix ];
+  imports = [ ./git.nix ./gtk.nix ./rbw.nix ./xdg.nix ./zen.nix ];
 }
