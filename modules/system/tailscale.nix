@@ -20,7 +20,5 @@ in {
       enable = true;
       openFirewall = true;
     };
-
-    networking.ipForward = lib.mkIf cfg.isExitNode true;
   };
 }
