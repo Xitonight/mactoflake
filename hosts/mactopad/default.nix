@@ -9,6 +9,11 @@
 
   flakey.input.kanata.enable = true;
 
+  flakey.network.tailscale = {
+    enable = true;
+    isExitNode = false;
+  };
+
   flakey.hyprland.monitors = [{
     output = "eDP-1";
     mode = "1920x1080@60";
