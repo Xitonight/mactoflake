@@ -8,6 +8,7 @@
       download = "dl";
       pictures = "pics";
       documents = "docs";
+      projects = "projects";
     };
   };
 }
