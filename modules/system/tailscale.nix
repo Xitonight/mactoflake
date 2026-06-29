@@ -5,12 +5,12 @@ in {
   options.flakey.network.tailscale = {
     enable = lib.mkEnableOption "Tailscale mesh VPN";
 
-    isExitNode = lib.mkOption {
+    enableSSH = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = ''
-        Allow this host to act as a Tailscale exit node / subnet router.
-        Enables IP forwarding on the host.
+        Enable Tailscale SSH (sets --ssh flag on tailscale up).
+        Allows Tailscale nodes to SSH into this host using Tailscale auth.
       '';
     };
   };
@@ -19,6 +19,7 @@ in {
     services.tailscale = {
       enable = true;
       openFirewall = true;
+      extraUpFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
     };
   };
 }

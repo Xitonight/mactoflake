@@ -11,7 +11,7 @@
 
   flakey.network.tailscale = {
     enable = true;
-    isExitNode = false;
+    enableSSH = true;
   };
 
   flakey.hyprland.monitors = [{
