@@ -25,6 +25,8 @@
     sesh
     xdg-user-dirs
     zip
+    opencode
+    wtype
 
     # --- Editor ---
     neovim
@@ -75,5 +77,9 @@
     yazi
     zathura
     mpv
+
+    cmake
+    gnumake
   ];
+
 }
