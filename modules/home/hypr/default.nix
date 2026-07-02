@@ -28,7 +28,7 @@ let
         '') monitorsConfig
       );
 
-  sourceFiles = builtins.readDir ./hypr/source;
+  sourceFiles = builtins.readDir ./source/source;
   nonMonitorFiles = lib.filterAttrs (name: type: name != "monitors.lua") sourceFiles;
 
   makeEntry = name: {
