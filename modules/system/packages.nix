@@ -6,6 +6,7 @@
     bat
     eza
     fd
+    file
     ripgrep
     killall
     delta
