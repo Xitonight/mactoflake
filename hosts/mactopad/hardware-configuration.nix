@@ -16,7 +16,6 @@
 
   hardware.amdgpu.initrd.enable = lib.mkDefault true;
   services.xserver.videoDrivers = lib.mkDefault [ "modesetting" ];
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/79db2615-33a8-40c6-9308-4576510a14c2";
