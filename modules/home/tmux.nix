@@ -2,12 +2,35 @@
 
 {
   programs = {
+    fzf = {
+      tmux.enableShellIntegration = true;
+    };
     sesh = {
       enable = true;
       icons = true;
       enableAlias = true;
       enableTmuxIntegration = true;
       tmuxKey = "M-s";
+      settings = ''
+        blacklist = ["scratch"]
+        dir_length = 2
+
+        [default_session]
+        startup_command = "tmuxinator start --append && exit || clear"
+        preview_command = "eza --all -1 --git --icons --color=always {}"
+
+        [[session]]
+        name = "tmux conf"
+        path = "~/.config/tmux"
+        startup_command = "nvim tmux.conf"
+        preview_command = "bat --color=always ~/.config/tmux/tmux.conf"
+
+        [[session]]
+        name = "nvim conf"
+        path = "~/.config/nvim"
+        startup_command = "nvim"
+        preview_command = "bat --color=always ~/.config/nvim/init.lua"
+      '';
     };
     tmux = {
       enable = true;
