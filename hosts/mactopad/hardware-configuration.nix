@@ -11,7 +11,12 @@
   boot.initrd.availableKernelModules = [ "nvme" "ehci_pci" "xhci_pci" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelParams = [ "iommu=soft" ];
   boot.extraModulePackages = [ ];
+
+  hardware.amdgpu.initrd.enable = lib.mkDefault true;
+  services.xserver.videoDrivers = lib.mkDefault [ "modesetting" ];
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/79db2615-33a8-40c6-9308-4576510a14c2";
