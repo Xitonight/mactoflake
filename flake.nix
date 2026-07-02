@@ -21,53 +21,67 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-
-    hjem = {
-      url = "github:feel-co/hjem";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        inputs.hjem.nixosModules.default
-        ./hosts/vm
-        ./modules/system
-        inputs.minegrub-theme.nixosModules.default
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
+    {
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
+          flakeDir = "/home/xitonight/.mactoflake";
+        };
+        modules = [
+          ./hosts/vm
+          ./modules/system
+          inputs.minegrub-theme.nixosModules.default
 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit inputs; };
-            users.xitonight = import ./modules/home;
-          };
-        }
-      ];
-    };
-    nixosConfigurations.mactopad = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        inputs.hjem.nixosModules.default
-        ./hosts/mactopad
-        ./modules/system
-        inputs.minegrub-theme.nixosModules.default
+          home-manager.nixosModules.home-manager
+          ({ config, ... }: {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                flakeDir = "/home/xitonight/.mactoflake";
+                monitorsConfig = config.flakey.hyprland.monitors;
+              };
+              users.xitonight = import ./modules/home;
+            };
+          })
+        ];
+      };
+      nixosConfigurations.mactopad = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs;
+          flakeDir = "/home/xitonight/.mactoflake";
+        };
+        modules = [
+          ./hosts/mactopad
+          ./modules/system
+          inputs.minegrub-theme.nixosModules.default
 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = { inherit inputs; };
-            users.xitonight = import ./modules/home;
-          };
-        }
-      ];
+          home-manager.nixosModules.home-manager
+          ({ config, ... }: {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+                flakeDir = "/home/xitonight/.mactoflake";
+                monitorsConfig = config.flakey.hyprland.monitors;
+              };
+              users.xitonight = import ./modules/home;
+            };
+          })
+        ];
+      };
     };
-  };
 }

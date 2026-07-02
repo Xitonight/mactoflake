@@ -14,16 +14,21 @@
     enableSSH = true;
   };
 
-  flakey.hyprland.monitors = [{
-    output = "eDP-1";
-    mode = "1920x1080@60";
-    scale = 1;
-  }];
+  flakey.hyprland.monitors = [
+    {
+      output = "eDP-1";
+      mode = "1920x1080@60";
+      scale = 1;
+    }
+  ];
 
   users.users.xitonight = {
     isNormalUser = true;
     description = "Xitonight";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
     initialPassword = "1234";
   };
 
@@ -31,7 +36,10 @@
 
   services.getty.autologinUser = "xitonight";
 
-  environment.systemPackages = with pkgs; [ vim git ];
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+  ];
 
   system.stateVersion = "26.05";
 }
