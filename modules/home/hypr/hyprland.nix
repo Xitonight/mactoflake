@@ -8,7 +8,7 @@
 }:
 
 let
-  hyprDir = "${flakeDir}/modules/home/hypr";
+  hyprDir = "${flakeDir}/modules/home/hypr/source";
   sourceDir = "${hyprDir}/source";
 
   inherit (config.lib.file) mkOutOfStoreSymlink;

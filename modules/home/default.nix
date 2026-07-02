@@ -10,7 +10,7 @@
   imports = [
     ./git.nix
     ./gtk.nix
-    ./hyprland.nix
+    ./hypr
     ./nvim.nix
     ./rbw.nix
     ./tmux.nix
