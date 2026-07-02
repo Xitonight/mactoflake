@@ -10,7 +10,7 @@
       icons = true;
       enableAlias = true;
       enableTmuxIntegration = true;
-      tmuxKey = "-n M-s";
+      tmuxKey = "\"-n \"M-s";
       settings = {
         blacklist = [ "scratch" ];
         dir_length = 2;
