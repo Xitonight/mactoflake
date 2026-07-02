@@ -10,27 +10,30 @@
       icons = true;
       enableAlias = true;
       enableTmuxIntegration = true;
-      tmuxKey = "M-s";
-      settings = ''
-        blacklist = ["scratch"]
-        dir_length = 2
-
-        [default_session]
-        startup_command = "tmuxinator start --append && exit || clear"
-        preview_command = "eza --all -1 --git --icons --color=always {}"
-
-        [[session]]
-        name = "tmux conf"
-        path = "~/.config/tmux"
-        startup_command = "nvim tmux.conf"
-        preview_command = "bat --color=always ~/.config/tmux/tmux.conf"
-
-        [[session]]
-        name = "nvim conf"
-        path = "~/.config/nvim"
-        startup_command = "nvim"
-        preview_command = "bat --color=always ~/.config/nvim/init.lua"
-      '';
+      tmuxKey = "-n M-s";
+      settings = {
+        blacklist = [ "scratch" ];
+        dir_length = 2;
+        default_session = {
+          startup_command = "tmuxinator start --append && exit || clear";
+          preview_command = "eza --all -1 --git --icons --color=always {}";
+        };
+        session = [ {
+          name = "papers";
+          path = "~/Pictures/Wallpapers";
+          preview_command = "eza -1 --icons --color=always ~/Pictures/Wallpapers";
+        } {
+          name = "tmux conf";
+          path = "~/.config/tmux";
+          startup_command = "nvim tmux.conf";
+          preview_command = "bat --color=always ~/.config/tmux/tmux.conf";
+        } {
+          name = "nvim conf";
+          path = "~/.config/nvim";
+          startup_command = "nvim";
+          preview_command = "bat --color=always ~/.config/nvim/init.lua";
+        } ];
+      };
     };
     tmux = {
       enable = true;
@@ -86,7 +89,7 @@
         set -g @round-separator-style fg=colour16,bg=colour19
         set -g @left-text-style-prefix fg=colour8,bg=colour1
         set -g @left-text-style fg=colour8,bg=colour16
-        set -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󰣇 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=colour19]  "
+        set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󰣇 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=colour19]  "
         set -g status-left-length 50
         set -g status-right "#[fg=colour18]%H:%M  "
         set -g window-status-format "#{window_name}"
