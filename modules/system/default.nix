@@ -13,6 +13,5 @@
     ./packages.nix
     ./shell.nix
     ./tailscale.nix
-    ./tmux.nix
   ];
 }
