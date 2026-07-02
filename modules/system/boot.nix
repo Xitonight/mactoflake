@@ -16,9 +16,9 @@ in {
         devices = [ "nodev" ];
         minegrub-theme = {
           enable = true;
-          splash = "100% Flakes!";
+          splash = "Flakes go brrr";
           background = "background_options/1.20 - [Trails & Tales].png";
-          boot-options-count = 4;
+          boot-options-count = 3;
         };
       };
     })
