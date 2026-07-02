@@ -1,3 +1,5 @@
 result
 result-*
 .direnv
+
+modules/home/hypr/source/colors.lua
