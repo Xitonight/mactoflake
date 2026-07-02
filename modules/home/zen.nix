@@ -76,22 +76,22 @@ in
       spacesForce = true;
       spaces = {
         "Uni" = {
-          id = "c6de089c-410d-4206-961d-ab11f988d40a";
+          id = "a6de089b-408d-4206-961d-ab11f989d41b";
           position = 1000;
           icon = "🎓";
         };
         "Dots" = {
-          id = "cdd10fab-4fc5-494b-9041-325e5759195b";
+          id = "edd11fae-4fc5-494b-9041-325e5759198c";
           position = 2000;
           icon = "💠";
         };
         "Default" = {
-          id = "5005cee1-9f50-4dc1-8ecf-baa25f8c8fd0";
+          id = "8015cee3-9f50-4dc1-8ecf-baa25f8c8fd7";
           position = 3000;
           icon = "🩷";
         };
         "Projects" = {
-          id = "feb078ca-fcde-42ba-9d54-04a84568e2c4";
+          id = "beb980ca-fcde-42ba-9d54-04a84569e2c3";
           position = 4000;
           icon = "🌙";
         };
@@ -100,15 +100,15 @@ in
       pinsForce = true;
       pinsForceAction = "remove";
       pins = {
-        "GitHub" = {
-          id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
-          url = "https://github.com";
-          position = 101;
-          isEssential = true;
-        };
         "Whatsapp Web" = {
           id = "ce24e4c0-d85b-416f-947c-abf47a2c76b9";
           url = "https://web.whatsapp.com";
+          position = 101;
+          isEssential = true;
+        };
+        "GitHub" = {
+          id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
+          url = "https://github.com";
           position = 102;
           isEssential = true;
         };
