@@ -19,7 +19,9 @@ in {
     services.tailscale = {
       enable = true;
       openFirewall = true;
-      extraUpFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
+      # Only works when using auth keys (yet to be setup)
+      # extraUpFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
+      extraSetFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
     };
   };
 }
