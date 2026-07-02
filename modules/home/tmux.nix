@@ -3,6 +3,8 @@
 {
   programs = {
     sesh = {
+      enable = true;
+      icons = true;
       enableAlias = true;
       enableTmuxIntegration = true;
       tmuxKey = "M-s";
@@ -17,6 +19,7 @@
       prefix = "C-Space";
       plugins = with pkgs.tmuxPlugins; [
         sensible
+        vim-tmux-navigator
         {
           plugin = tmux-floax;
           extraConfig = ''
@@ -25,11 +28,20 @@
             set -g @floax-bind '-n M-f'
           '';
         }
-        vim-tmux-navigator
-        yank
+        {
+          plugin = yank;
+          extraConfig = ''
+            bind -n C-y copy-mode
+            bind -T copy-mode-vi v send-keys -X begin-selection
+            bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
+            bind -T copy-mode-vi Escape send-keys -X cancel
+          '';
+        }
       ];
 
       extraConfig = ''
+        # EXTRA SETTINGS
+
         # Extended keys for kitty
         set -s extended-keys on
         set -as terminal-features 'xterm-kitty:extkeys'
@@ -52,7 +64,7 @@
         set -g @left-text-style-prefix fg=colour8,bg=colour1
         set -g @left-text-style fg=colour8,bg=colour16
         set -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󰣇 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=colour19]  "
-        set -g status-left-length 30
+        set -g status-left-length 50
         set -g status-right "#[fg=colour18]%H:%M  "
         set -g window-status-format "#{window_name}"
         set -g window-status-current-format "#[fg=colour16]#{?window_zoomed_flag,*}#{window_name}"
@@ -65,25 +77,19 @@
         set -g pane-border-style fg=colour8
         set -g pane-active-border-style fg=colour16
 
+        # BINDINGS
+
         bind r source-file ~/.config/tmux/tmux.conf \; display "Config reloaded!"
 
         # Window navigation (Alt+H/L)
         bind -n M-H previous-window
         bind -n M-L next-window
 
-
-
         # Direct resize (no prefix)
         bind -n C-H resize-pane -L 5
         bind -n C-J resize-pane -D 2
         bind -n C-K resize-pane -U 2
         bind -n C-L resize-pane -R 5
-
-        # Copy mode (vi keys)
-        bind -n C-y copy-mode
-        bind -T copy-mode-vi v send-keys -X begin-selection
-        bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
-        bind -T copy-mode-vi Escape send-keys -X cancel
 
         # Split windows in current directory
         bind '"' split-window -v -c "#{pane_current_path}"
