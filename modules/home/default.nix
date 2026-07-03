@@ -9,6 +9,7 @@
 
   imports = [
     ./btop.nix
+    ./fsh
     ./git.nix
     ./gtk.nix
     ./hypr
