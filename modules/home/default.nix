@@ -17,6 +17,7 @@
     ./lazygit.nix
     ./matugen
     ./nvim
+    ./oh-my-posh.nix
     ./qt.nix
     ./rbw.nix
     ./rofi

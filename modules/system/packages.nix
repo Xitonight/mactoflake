@@ -21,7 +21,6 @@
     zoxide
     pay-respects
     lazygit
-    oh-my-posh
     sesh
     xdg-user-dirs
     zip
