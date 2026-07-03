@@ -1,9 +1,14 @@
 { lib, config, ... }:
 
-let cfg = config.flakey.boot;
-in {
+let
+  cfg = config.flakey.boot;
+in
+{
   options.flakey.boot.loader = lib.mkOption {
-    type = lib.types.enum [ "grub" "systemd-boot" ];
+    type = lib.types.enum [
+      "grub"
+      "systemd-boot"
+    ];
     default = "systemd-boot";
     description = "Which bootloader to use. Set per-host in hosts/<name>/default.nix.";
   };
@@ -31,7 +36,13 @@ in {
       boot = {
         loader.efi.canTouchEfiVariables = true;
         consoleLogLevel = 0;
-        kernelParams = ["quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3"];
+        kernelParams = [
+          "quiet"
+          "splash"
+          "rd.systemd.show_status=false"
+          "rd.udev.log_level=3"
+          "udev.log_priority=3"
+        ];
         initrd.verbose = false;
         initrd.systemd.enable = true;
       };

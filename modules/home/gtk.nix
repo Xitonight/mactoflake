@@ -42,6 +42,8 @@
       ];
     };
 
-    gtk4 = { theme = lib.mkForce null; };
+    gtk4 = {
+      theme = lib.mkForce null;
+    };
   };
 }

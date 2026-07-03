@@ -1,7 +1,9 @@
 { lib, config, ... }:
 
-let cfg = config.flakey.network.tailscale;
-in {
+let
+  cfg = config.flakey.network.tailscale;
+in
+{
   options.flakey.network.tailscale = {
     enable = lib.mkEnableOption "Tailscale mesh VPN";
 

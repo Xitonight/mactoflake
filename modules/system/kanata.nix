@@ -1,7 +1,14 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.flakey.input.kanata;
-in {
+let
+  cfg = config.flakey.input.kanata;
+in
+{
   options.flakey.input.kanata = {
     enable = lib.mkEnableOption "kanata keyboard remapper with home-row mods";
   };

@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 let
   firefox-addons = inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
-in 
+in
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
 
@@ -52,7 +52,7 @@ in
               }
             ];
             icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = ["@ud"];
+            definedAliases = [ "@ud" ];
           };
         };
       };

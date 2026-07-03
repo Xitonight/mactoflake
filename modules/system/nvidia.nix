@@ -1,6 +1,11 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-let 
+let
   package = config.boot.kernelPackages.nvidiaPackages.latest;
 in
 {
@@ -11,16 +16,16 @@ in
       "nvidia_modeset.disable_vrr_memclk_switch=1"
       "nvidia.NVreg_TemporaryFilePath=/var/tmp"
     ];
-    blacklistedKernelModules = ["nouveau"];
+    blacklistedKernelModules = [ "nouveau" ];
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
-  
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware = {
     nvidia = {
       modesetting.enable = true;
       open = true;
-      gsp.enable = config.hardware.nvidia.open; 
+      gsp.enable = config.hardware.nvidia.open;
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       nvidiaSettings = false;
@@ -28,11 +33,10 @@ in
     };
   };
 
-    environment = {
-      sessionVariables = {
-        "__GLX_VENDOR_LIBRARY_NAME" = "nvidia";
-        "GBM_BACKEND" = "nvidia-drm"
+  environment = {
+    sessionVariables = {
+      "__GLX_VENDOR_LIBRARY_NAME" = "nvidia";
+      "GBM_BACKEND" = "nvidia-drm";
     };
+  };
 }
-
-
