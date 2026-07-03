@@ -24,7 +24,6 @@
     sesh
     xdg-user-dirs
     zip
-    opencode
     wtype
 
     # --- Editor ---

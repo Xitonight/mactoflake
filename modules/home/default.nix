@@ -18,6 +18,7 @@
     ./matugen
     ./nvim
     ./oh-my-posh.nix
+    ./opencode
     ./qt.nix
     ./rbw.nix
     ./rofi
