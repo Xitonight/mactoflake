@@ -1,0 +1,50 @@
+{ ... }:
+
+{
+  services.swaync = {
+    enable = true;
+    settings = {
+      "$schema" = "/etc/xdg/swaync/configSchema.json";
+      cssPriority = "user";
+      positionX = "right";
+      positionY = "top";
+      "fit-to-screen" = true;
+      "control-center-width" = 520;
+      "control-center-margin-top" = 0;
+      "control-center-margin-bottom" = 0;
+      "control-center-margin-right" = 0;
+      "control-center-margin-left" = 0;
+      "notification-window-width" = 520;
+      "notification-body-image-height" = 160;
+      "notification-body-image-width" = 520;
+      timeout = 6;
+      "timeout-low" = 3;
+      "timeout-critical" = 0;
+      "transition-time" = 150;
+      "hide-on-clear" = true;
+      "hide-on-action" = true;
+      "image-visibility" = "when-available";
+      "keyboard-shortcuts" = true;
+      "script-fail-notify" = true;
+      widgets = [
+        "title"
+        "dnd"
+        "notifications"
+      ];
+      "widget-config" = {
+        title = {
+          text = "Notifications";
+          "clear-all-button" = true;
+          "button-text" = " 󰎟 ";
+        };
+        dnd = {
+          text = "Do Not Disturb";
+        };
+      };
+    };
+    style = builtins.readFile ./style.css;
+  };
+
+  xdg.configFile."swaync/styles/control-center.css".source = ./styles/control-center.css;
+  xdg.configFile."swaync/styles/notification.css".source = ./styles/notification.css;
+}
