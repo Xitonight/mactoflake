@@ -18,7 +18,5 @@
         messages_half_page_down = "ctrl+d";
       };
     };
-
-    agents = ./source/agent;
   };
 }
