@@ -5,16 +5,16 @@
 
   networking.hostName = "mactopad";
 
-  flakey.boot.loader = "grub";
+  mactoflake.boot.loader = "grub";
 
-  flakey.input.kanata.enable = true;
+  mactoflake.input.kanata.enable = true;
 
-  flakey.network.tailscale = {
+  mactoflake.network.tailscale = {
     enable = true;
     enableSSH = true;
   };
 
-  flakey.hyprland.monitors = [
+  mactoflake.hyprland.monitors = [
     {
       output = "eDP-1";
       mode = "1920x1080@60";

@@ -1,10 +1,10 @@
 { lib, config, ... }:
 
 let
-  cfg = config.flakey.network.tailscale;
+  cfg = config.mactoflake.network.tailscale;
 in
 {
-  options.flakey.network.tailscale = {
+  options.mactoflake.network.tailscale = {
     enable = lib.mkEnableOption "Tailscale mesh VPN";
 
     enableSSH = lib.mkOption {

@@ -5,9 +5,9 @@
 
   networking.hostName = "vm";
 
-  flakey.boot.loader = "grub";
+  mactoflake.boot.loader = "grub";
 
-  flakey.hyprland.monitors = [
+  mactoflake.hyprland.monitors = [
     {
       output = "Virtual-1";
       mode = "1920x1080";

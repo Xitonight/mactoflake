@@ -50,7 +50,7 @@
               extraSpecialArgs = {
                 inherit inputs;
                 flakeDir = "/home/xitonight/.mactoflake";
-                monitorsConfig = config.flakey.hyprland.monitors;
+                monitorsConfig = config.mactoflake.hyprland.monitors;
               };
               users.xitonight = import ./modules/home;
             };
@@ -76,7 +76,7 @@
               extraSpecialArgs = {
                 inherit inputs;
                 flakeDir = "/home/xitonight/.mactoflake";
-                monitorsConfig = config.flakey.hyprland.monitors;
+                monitorsConfig = config.mactoflake.hyprland.monitors;
               };
               users.xitonight = import ./modules/home;
             };

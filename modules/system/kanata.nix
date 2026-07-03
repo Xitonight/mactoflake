@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.flakey.input.kanata;
+  cfg = config.mactoflake.input.kanata;
 in
 {
-  options.flakey.input.kanata = {
+  options.mactoflake.input.kanata = {
     enable = lib.mkEnableOption "kanata keyboard remapper with home-row mods";
   };
 

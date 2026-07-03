@@ -6,7 +6,7 @@
 }:
 
 {
-  options.flakey.hyprland.monitors = lib.mkOption {
+  options.mactoflake.hyprland.monitors = lib.mkOption {
     type = lib.types.listOf (
       lib.types.submodule {
         options = {

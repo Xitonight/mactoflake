@@ -44,18 +44,18 @@ Applied as a shared base to every host via `./modules/system/default.nix`. Each 
 
 | File | Purpose |
 |------|---------|
-| `boot.nix` | `flakey.boot.loader` option (`grub` \| `systemd-boot`); minegrub theme |
+| `boot.nix` | `mactoflake.boot.loader` option (`grub` \| `systemd-boot`); minegrub theme |
 | `locale.nix` | TZ `Europe/Rome`, `en_US.UTF-8` + `it_IT.UTF-8` |
 | `network.nix` | NetworkManager + OpenSSH |
 | `nix.nix` | Flakes, auto-optimise, registry pin, weekly gc, allowUnfree |
 | `shell.nix` | `programs.zsh.enable` + `programs.fish.enable`; default shell = zsh |
 | `packages.nix` | System-wide packages (CLI tools, desktop apps, theming — see MIGRATION.md for inventory) |
 | `fonts.nix` | CaskaydiaCove Nerd Font, Poppins, Noto Emoji, Font Awesome + fontconfig |
-| `hyprland.nix` | `flakey.hyprland.monitors` option; `programs.hyprland` (withUWSM, xwayland, upstream); xdg portal; polkit; gnome-keyring |
+| `hyprland.nix` | `mactoflake.hyprland.monitors` option; `programs.hyprland` (withUWSM, xwayland, upstream); xdg portal; polkit; gnome-keyring |
 | `audio.nix` | PipeWire full stack (alsa, pulse, jack, wireplumber) + rtkit |
 | `bluetooth.nix` | `hardware.bluetooth` (bluez, fast-connect) + `bluetui` |
-| `kanata.nix` | `flakey.input.kanata` option; uinput/input groups; ships `kanata.kbd` |
-| `tailscale.nix` | `flakey.network.tailscale` option + enableSSH |
+| `kanata.nix` | `mactoflake.input.kanata` option; uinput/input groups; ships `kanata.kbd` |
+| `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 
 `nvidia.nix` exists but is **not imported** — dead code pending wiring behind an option.
@@ -78,7 +78,7 @@ Applied as a shared base to every host via `./modules/system/default.nix`. Each 
 ### `specialArgs` / `extraSpecialArgs`
 
 - `specialArgs` passes `inputs` and `flakeDir = "/home/xitonight/.mactoflake"` to all system modules.
-- `extraSpecialArgs` adds `monitorsConfig = config.flakey.hyprland.monitors` for home modules.
+- `extraSpecialArgs` adds `monitorsConfig = config.mactoflake.hyprland.monitors` for home modules.
 - Any module can declare `{ inputs, flakeDir, monitorsConfig, ... }:` and access these.
 
 - **Host branching** is done with `lib.mkIf` against the hostname, not by guessing at runtime.

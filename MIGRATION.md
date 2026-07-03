@@ -35,17 +35,17 @@ for the rationale.
 
 | Module | Contents |
 |--------|----------|
-| `boot.nix` | `flakey.boot.loader` option (grub \| systemd-boot); minegrub theme |
+| `boot.nix` | `mactoflake.boot.loader` option (grub \| systemd-boot); minegrub theme |
 | `locale.nix` | TZ `Europe/Rome`, `en_US.UTF-8` + `it_IT.UTF-8` |
 | `network.nix` | NetworkManager + OpenSSH |
 | `nix.nix` | Flakes, auto-optimise, registry pin, weekly gc, allowUnfree |
 | `shell.nix` | `programs.zsh.enable` + `programs.fish.enable`; default shell = zsh |
 | `fonts.nix` | CaskaydiaCove Nerd Font, Poppins, Noto Emoji, Font Awesome + fontconfig |
-| `hyprland.nix` | `flakey.hyprland.monitors` option; `programs.hyprland` (withUWSM, xwayland, upstream); xdg portal; polkit; gnome-keyring |
+| `hyprland.nix` | `mactoflake.hyprland.monitors` option; `programs.hyprland` (withUWSM, xwayland, upstream); xdg portal; polkit; gnome-keyring |
 | `audio.nix` | PipeWire full stack (alsa, pulse, jack, wireplumber) + rtkit |
 | `bluetooth.nix` | `hardware.bluetooth` (bluez, fast-connect) + `bluetui` |
-| `kanata.nix` | `flakey.input.kanata` option; uinput/input groups; ships `kanata.kbd` |
-| `tailscale.nix` | `flakey.network.tailscale` option + enableSSH |
+| `kanata.nix` | `mactoflake.input.kanata` option; uinput/input groups; ships `kanata.kbd` |
+| `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 
 ### Installed as bare system packages (no HM module yet)
@@ -124,7 +124,7 @@ other tools on wallpaper change. Ship via `xdg.configFile`.
 ### nvidia.nix (MEDIUM)
 
 `modules/system/nvidia.nix` exists with modesetting/open/gsp config and
-kernelParams but is **not imported**. Needs wiring behind a `flakey.gpu.nvidia`
+kernelParams but is **not imported**. Needs wiring behind a `mactoflake.gpu.nvidia`
 option and enabling in `hosts/mactopad/default.nix`.
 
 ### sops-nix (LOW)

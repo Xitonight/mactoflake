@@ -1,10 +1,10 @@
 { lib, config, ... }:
 
 let
-  cfg = config.flakey.boot;
+  cfg = config.mactoflake.boot;
 in
 {
-  options.flakey.boot.loader = lib.mkOption {
+  options.mactoflake.boot.loader = lib.mkOption {
     type = lib.types.enum [
       "grub"
       "systemd-boot"
