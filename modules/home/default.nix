@@ -14,6 +14,7 @@
     ./hypr
     ./kitty.nix
     ./lazygit.nix
+    ./matugen
     ./nvim
     ./rbw.nix
     ./tmux.nix

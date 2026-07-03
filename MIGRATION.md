@@ -31,6 +31,7 @@ for the rationale.
 |--------|-----------|----------------|-----|
 | Neovim | `modules/home/nvim/source/` | `~/.config/nvim` | NvChad + lazy.nvim manages 40+ plugins; Nix-managed plugins would be a massive rewrite with no benefit |
 | Hyprland | `modules/home/hypr/source/` | `~/.config/hypr/` (per-file) | Lua API (`hl.*`) is Hyprland's native config language; no benefit to porting to Nix |
+| matugen | `modules/home/matugen/source/` | `~/.config/matugen` | `config.toml` + 19 color templates for kitty, hyprland, gtk, rofi, swaync, cava, zathura, etc.; template-heavy, maintained natively in TOML |
 
 ### Ported as system-level NixOS modules
 
@@ -79,7 +80,6 @@ config; others have no module equivalent.
 | **obsidian** | No HM module | Bare package |
 | **telegram-desktop** | No HM module | Bare package |
 | **cava** | No HM module | Bare package; config is matugen-generated |
-| **matugen** | No HM module | Installed; templates not yet shipped |
 | **awww** | No HM module | Installed; wallpaper manager |
 | **pywal** | No HM module | Installed |
 | **hyprpolkitagent, cliphist, udiskie, hyprshot, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
@@ -114,12 +114,6 @@ modules available. Porting them enables shell integrations and structured config
 `rofi` (`.rasi` files), `swaync` (JSON + CSS), `yazi`, `zathura`, `mpv` — all
 installed as packages but have no config shipped. Each has an HM module (except
 swaync which uses `services.swaync`).
-
-### matugen templates (MEDIUM)
-
-matugen is installed but its `config.toml` and `templates/` directory are not
-shipped. These generate color files for kitty (`colors.conf`), rofi, cava, and
-other tools on wallpaper change. Ship via `xdg.configFile`.
 
 ### nvidia.nix (MEDIUM)
 
