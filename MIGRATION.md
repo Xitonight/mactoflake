@@ -1,72 +1,142 @@
-# Migration Plan: Xidots -> Flakey
+# Migration: Xidots -> Mactoflake
 
-Porting `~/.xidots` (Arch + stow) into this NixOS flake. Source of truth = the
-inventory below (derived from the live `~/.xidots` tree).
-
-> Note: the initial inventory got several facts wrong. Corrections are folded in
-> below — Hyprland uses **Lua as its native config language** since v0.55
-> (hyprlang is the deprecated one); `awww` is a **wallpaper manager** (renamed
-> `swww`), not a bar; and most AUR packages are already on nixpkgs.
+Porting `~/.xidots` (Arch + stow) into this NixOS flake. Two hosts are live:
+`vm` (QEMU test VM) and `mactopad` (physical laptop with Hyprland desktop).
 
 ---
 
-## Status
+## Porting Status
 
-| Phase | Scope | Status |
-|-------|-------|--------|
-| 0 | Flake skeleton, VM host boots, nix daemon + gc + registry pin | **DONE** (deployed) |
-| 1 | Shell + terminal + editor core | **DONE** (deployed to VM) |
-| 2 | Theming + fonts + GUI apps | **DONE** (eval clean; deferred: walogram derivation, pywalfox) |
-| 3 | Hyprland + Wayland stack | TODO |
-| 4 | System services (kanata, pipewire, bluetooth, tailscale, docker) | TODO |
-| 5 | Dev toolchains (mise, clang, texlive, pnpm) | TODO |
-| 6 | Real hosts (`mactopad`, `macto`, `mactomini`) + sops-nix | TODO |
+### Ported to Home Manager modules (structured Nix config)
 
-### Remaining raw config to port to Nix module options
+| Tool | Module | Approach |
+|------|--------|----------|
+| btop | `modules/home/btop.nix` | `programs.btop.settings` — full 80+ setting attrset |
+| git | `modules/home/git.nix` | `programs.git` — name + email |
+| gtk | `modules/home/gtk.nix` | `gtk` HM module — adw-gtk3-dark, Papirus-Dark, Bibata cursor |
+| kitty | `modules/home/kitty.nix` | `programs.kitty` — settings, keybindings, extraConfig (`include colors.conf` for matugen) |
+| rbw | `modules/home/rbw.nix` | `programs.rbw` — Bitwarden CLI |
+| tmux | `modules/home/tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` — plugins via `pkgs.tmuxPlugins` |
+| xdg dirs | `modules/home/xdg.nix` | `xdg.userDirs` — custom dirs |
+| zen-browser | `modules/home/zen.nix` | `programs.zen-browser` (flake input) — full profile, addons, bookmarks, workspaces |
 
-The following still use `extraConfig`, `xdg.configFile`, or bare `home.packages`
-instead of structured HM/NixOS module options. High-value targets are listed
-first; low-value items are intentionally kept raw (no module equivalent or
-architectural choice).
+### Ported via out-of-store symlinks (`mkOutOfStoreSymlink`)
 
-| Priority | File | Currently | Replaceable by | Raw lines |
-|----------|------|-----------|----------------|-----------|
-| **HIGH** | `terminal/tmux.nix` | 91-line `extraConfig` from `tmux.conf` | `programs.tmux.{prefix,mouse,baseIndex,viMode,renumberWindows,statusPosition,statusJustify,terminal,keyBindings,plugins}` — ~40% of the file has module equivalents | 91 |
-| **HIGH** | `cli/packages.nix` (bat, eza, gh) | bare `home.packages` entries | `programs.bat.enable`, `programs.eza.enable` (+ `enableAliases`), `programs.gh.enable` — enables shell integrations and config management | N/A |
-| **MEDIUM** | `cli/packages.nix` (btop) | `xdg.configFile."btop/btop.conf"` | `programs.btop.settings` — 286-line config fully expressible as Nix attrset | 286 |
-| **MEDIUM** | `desktop/rofi.nix` | `xdg.configFile` for 7 `.rasi` files | `programs.rofi.config` + `theme` for basic options; complex matugen-imported themes stay raw | ~280 |
-| **MEDIUM** | `shell/fish.nix` | `interactiveShellInit` (45 lines) | `programs.fish.shellAbbrs` (partial), some `bind` statements have no module equivalent | 45 |
-| **LOW** | `desktop/hyprland.nix` | `xdg.configFile` for Lua config tree | N/A — Hyprland's native API is Lua (v0.55+), no HM module for Lua configs | Intentionally raw |
-| **LOW** | `editor/neovim.nix` | `xdg.configFile"nvim"` for NvChad tree | N/A — lazy.nvim + mason manage 40+ plugins; Nix-managed neovim plugins would be a massive rewrite with no benefit | Intentionally raw |
-| **LOW** | `desktop/matugen.nix` | `xdg.configFile` for matugen/ | N/A — no HM module exists | Intentionally raw |
-| **LOW** | `desktop/gtk.nix` | `xdg.configFile` for qt5ct/qt6ct.conf | N/A — no qt5ct/qt6ct HM module exists | Intentionally raw |
-| **LOW** | `desktop/swaync.nix` | `xdg.configFile` for CSS files | N/A — CSS has no structured equivalent; `services.swaync` is already used for JSON settings | Intentionally raw |
-| **LOW** | `cli/packages.nix` (sesh) | `xdg.configFile."sesh/sesh.toml"` | N/A — no sesh HM module | Intentionally raw |
-| **LOW** | `media/zathura.nix` | `home.packages` only | `programs.zathura` exists but writes a read-only store path; kept raw so matugen can own the config file | Intentionally raw |
+These configs are kept as raw source files in the repo and symlinked into
+`~/.config/`. Edits take effect immediately without a rebuild. See AGENTS.md §3
+for the rationale.
 
-After the three quick wins (kitty, lazygit, oh-my-posh → Nix options) and the zsh
-rewrite (zinit → `programs.zsh.plugins` from nixpkgs, aliases → `shellAliases`,
-global aliases → `shellGlobalAliases`, `setOptions`, `autosuggestion`,
-`syntaxHighlighting`, fzf/zoxide/pay-respects → HM modules), the **highest
-remaining value** is tmux (port ~40% of `extraConfig` to `programs.tmux.*`
-options) and enabling `programs.{bat,eza,gh}` for their shell integrations.
+| Config | Source dir | Symlink target | Why |
+|--------|-----------|----------------|-----|
+| Neovim | `modules/home/nvim/source/` | `~/.config/nvim` | NvChad + lazy.nvim manages 40+ plugins; Nix-managed plugins would be a massive rewrite with no benefit |
+| Hyprland | `modules/home/hypr/source/` | `~/.config/hypr/` (per-file) | Lua API (`hl.*`) is Hyprland's native config language; no benefit to porting to Nix |
+
+### Ported as system-level NixOS modules
+
+| Module | Contents |
+|--------|----------|
+| `boot.nix` | `flakey.boot.loader` option (grub \| systemd-boot); minegrub theme |
+| `locale.nix` | TZ `Europe/Rome`, `en_US.UTF-8` + `it_IT.UTF-8` |
+| `network.nix` | NetworkManager + OpenSSH |
+| `nix.nix` | Flakes, auto-optimise, registry pin, weekly gc, allowUnfree |
+| `shell.nix` | `programs.zsh.enable` + `programs.fish.enable`; default shell = zsh |
+| `fonts.nix` | CaskaydiaCove Nerd Font, Poppins, Noto Emoji, Font Awesome + fontconfig |
+| `hyprland.nix` | `flakey.hyprland.monitors` option; `programs.hyprland` (withUWSM, xwayland, upstream); xdg portal; polkit; gnome-keyring |
+| `audio.nix` | PipeWire full stack (alsa, pulse, jack, wireplumber) + rtkit |
+| `bluetooth.nix` | `hardware.bluetooth` (bluez, fast-connect) + `bluetui` |
+| `kanata.nix` | `flakey.input.kanata` option; uinput/input groups; ships `kanata.kbd` |
+| `tailscale.nix` | `flakey.network.tailscale` option + enableSSH |
+| `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
+
+### Installed as bare system packages (no HM module yet)
+
+These are in `modules/system/packages.nix` via `environment.systemPackages`.
+Some have HM modules available and could be ported for shell integrations /
+config; others have no module equivalent.
+
+| Tool | HM module available? | Notes |
+|------|---------------------|-------|
+| **bat** | `programs.bat` | Could set theme, enable shell integrations |
+| **eza** | `programs.eza` | Could enable aliases |
+| **fzf** | `programs.fzf` | Could enable shell integrations, keybindings |
+| **zoxide** | `programs.zoxide` | Could enable shell integrations (`--cmd cd`) |
+| **gh** | `programs.gh` | Could configure settings |
+| **lazygit** | `programs.lazygit` | Could ship config |
+| **delta** | via `programs.git.delta` | Already installed; wire into git module |
+| **oh-my-posh** | `programs.oh-my-posh` | Could enable + ship config |
+| **pay-respects** | No HM module | Bare package only |
+| **sesh** | `programs.sesh` (already used in tmux.nix) | Also installed as system pkg |
+| **fastfetch** | No HM module | Bare package; config not yet shipped |
+| **opencode** | No HM module | Bare package |
+| **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype** | No HM module | Pure CLI utilities; no config needed |
+| **neovim** | — | Package installed system-wide; config symlinked (see above) |
+| **gcc, rustc, cargo, cmake, gnumake** | — | Build toolchains; needed by nvim (blink.cmp) |
+| **rofi** | `programs.rofi` | Installed with rofi-emoji plugin; no config shipped yet |
+| **swaynotificationcenter** | `services.swaync` | Installed; no config shipped yet |
+| **yazi** | `programs.yazi` | Installed; no config shipped yet |
+| **zathura** | `programs.zathura` | Installed; no config shipped yet |
+| **mpv** | `programs.mpv` | Installed; no config shipped yet |
+| **obsidian** | No HM module | Bare package |
+| **telegram-desktop** | No HM module | Bare package |
+| **cava** | No HM module | Bare package; config is matugen-generated |
+| **matugen** | No HM module | Installed; templates not yet shipped |
+| **awww** | No HM module | Installed; wallpaper manager |
+| **pywal** | No HM module | Installed |
+| **hyprpolkitagent, cliphist, udiskie, hyprshot, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
+| **papirus-icon-theme, qt5ct, qt6ct, qt5/qt6 wayland, nwg-look** | No HM module | Theming; qt5ct/qt6ct config not shipped |
+| **stow** | — | Legacy from Arch migration; can be removed |
 
 ---
 
-### What exists in the flake today (Phase 0)
+## Remaining Work
 
-- `flake.nix` — one host `vm`; HM as a NixOS module; `specialArgs` passes `inputs`.
-- `hosts/vm/` — hostname, user `xitonight`, passwordless sudo (VM-only), qemu-guest, `stateVersion = "26.05"`.
-- `modules/system/` — `boot`, `locale`, `network` (networkmanager + openssh), `nix` (registry pin, weekly gc, `trusted-users = [ root xitonight ]`, experimental-features, allowUnfree).
-- `modules/home/default.nix` — **empty shell** (username, homeDirectory, stateVersion, `home-manager.enable`). Nothing ported yet.
+### zsh Home Manager module (HIGH)
 
-### Conventions to follow (from AGENTS.md)
+Currently only `programs.zsh.enable` at the system level. The user runs the raw
+`.zshrc` from xidots. To port:
 
-- 2-space indent, `nixfmt-classic`. One concern per file.
-- Prefer `programs.<x>.enable` / `services.<x>.enable` modules; only drop to `xdg.configFile` / `home.file` when no module exists.
-- No hardcoded `/usr/...` paths (NixOS has no FHS). Use `pkgs.<name>`.
-- `git add` new files before building, or the flake won't see them.
-- `home-manager` runs as a NixOS module (`useGlobalPkgs = true`).
+- **zinit** plugin manager: `zsh-completions`, `fzf-tab`, `zsh-autosuggestions`,
+  `fast-syntax-highlighting`, `zsh-vi-mode`, OMZ `sudo` snippet (Esc-Esc for sudo).
+- **oh-my-posh** prompt via `programs.oh-my-posh.enable` + config.
+- **Aliases:** eza `ls/l/la/ll/ld/lt*`, `-h/--help` -> bat, `v/vim` -> nvim,
+  `j` -> just, `open` -> xdg-open, `C` -> wl-copy, `p()` fzf-jump, `y()` yazi wrapper.
+- **Env vars:** `BAT_THEME`, `MANPAGER`, `EDITOR/VISUAL=nvim`, `PNPM_HOME`, `GOPATH`.
+- **Drop Arch-only aliases:** `yay`/pacman, `upmirrors` (reflector),
+  `slowwifi`/`resetwifi` (tc netem).
+
+### CLI tools to HM modules (MEDIUM)
+
+`bat`, `eza`, `fzf`, `zoxide`, `gh`, `lazygit`, `oh-my-posh` — all have HM
+modules available. Porting them enables shell integrations and structured config.
+
+### GUI app configs (MEDIUM)
+
+`rofi` (`.rasi` files), `swaync` (JSON + CSS), `yazi`, `zathura`, `mpv` — all
+installed as packages but have no config shipped. Each has an HM module (except
+swaync which uses `services.swaync`).
+
+### matugen templates (MEDIUM)
+
+matugen is installed but its `config.toml` and `templates/` directory are not
+shipped. These generate color files for kitty (`colors.conf`), rofi, cava, and
+other tools on wallpaper change. Ship via `xdg.configFile`.
+
+### nvidia.nix (MEDIUM)
+
+`modules/system/nvidia.nix` exists with modesetting/open/gsp config and
+kernelParams but is **not imported**. Needs wiring behind a `flakey.gpu.nvidia`
+option and enabling in `hosts/mactopad/default.nix`.
+
+### sops-nix (LOW)
+
+Secrets management not yet added. Add `sops-nix` as a flake input for API keys
+and other secrets.
+
+### Fish HM module (LOW)
+
+`programs.fish.enable` is set system-wide but there's no HM config. If keeping
+fish as an alternative shell, a parallel config would need to be written fresh
+(no fish config exists in xidots).
 
 ---
 
@@ -74,297 +144,31 @@ options) and enabling `programs.{bat,eza,gh}` for their shell integrations.
 
 - **[D1/D2] Hyprland:** Lua is the native config language (since v0.55). The `hl.*`
   calls are Hyprland's official Lua API — **no wrapper to package**. Ship the Lua
-  config as-is.
+  config as-is via `mkOutOfStoreSymlink`.
 - **[D3] `awww`:** wallpaper manager (renamed from `swww`), upstream
-  https://codeberg.org/LGFae/awww, **on nixpkgs**. `ambxst` is deprecated ->
-  **skip entirely** (to be removed from the Arch dots too).
+  https://codeberg.org/LGFae/awww, **on nixpkgs**.
 - **[D4] Local derivations:** nearly everything is on nixpkgs — `awww`, `matugen`,
-  `bibata` cursors, `pay-respects`, `sesh`, `kanata`, `impala`, `tmux-floax`.
-  Only **`walogram`** needs a local derivation. **`zen-browser`** comes from a
-  flake input: https://github.com/0xc000022070/zen-browser-flake.
-- **[D5] Neovim:** ship the NvChad config dir verbatim to `~/.config/nvim`; let
-  lazy.nvim + mason.nvim bootstrap at first launch. A Rust toolchain is added for
-  the `blink.cmp` build step. (Help available on request if first-run issues.)
-- **[D6] Git:** configure via HM `programs.git` + delta. Identity: name `Xitonight`,
-  email `xitonight@gmail.com` (GitHub: `Xitonight`).
-- **[D7] GTK theme:** skip `AxMat` entirely (slated for deletion); use `adw-gtk3-dark`.
+  `bibata` cursors, `pay-respects`, `sesh`, `kanata`, `tmux-floax`.
+  **`zen-browser`** comes from a flake input.
+  Only **`walogram`** would need a local derivation (not yet ported).
+- **[D5] Neovim:** ship the NvChad config dir via `mkOutOfStoreSymlink`; let
+  lazy.nvim + mason.nvim bootstrap at first launch.
+- **[D6] Git:** configure via HM `programs.git`. Identity: name `Xitonight`,
+  email `xitonight@gmail.com`.
+- **[D7] GTK theme:** use `adw-gtk3-dark` (skip `AxMat` — deprecated).
 - **[D8] zoxide:** keep replacing `cd` (`--cmd cd`).
 - **[D9] pay-respects:** keep installed with AI suggestions **disabled**.
-- **[D10] Hostnames:** laptop = **`mactopad`** (was `archpad`), desktop = **`macto`**,
-  mini pc (maybe) = **`mactomini`**. `vm` stays as the throwaway test host. Phases
-  1-2 target `vm` (headless/TUI) since it has no GUI.
-- **[D11] fish shell (open):** add fish as an alternative shell alongside zsh (see
-  §1.6). Default stays zsh unless you say otherwise; needs a fresh parallel fish
-  config (none in `~/.xidots`). Still to decide: flip the default to fish, and how
-  much of the zsh config to mirror.
-
-**Phase 1 is unblocked — all decisions resolved (git: Xitonight <xitonight@gmail.com>).**
+- **[D10] Hostnames:** laptop = **`mactopad`**, desktop = **`macto`** (future),
+  mini pc = **`mactomini`** (future). `vm` stays as the throwaway test host.
+- **[D11] fish:** enabled alongside zsh; zsh remains the default login shell.
 
 ---
 
-## Phase 1 -- Shell + terminal + editor core
-
-Target host: `vm` (headless). Everything here is Home Manager config. No GUI.
-
-### Proposed `modules/home/` layout
-
-```
-modules/home/
-  default.nix            # imports all sub-modules
-  shell/
-    zsh.nix
-  terminal/
-    kitty.nix
-    tmux.nix
-  editor/
-    neovim.nix
-  cli/
-    git.nix              # fresh git config
-    tools.nix            # bat, eza, fzf, zoxide, fd, ripgrep, gh, lazygit, btop, fastfetch
-  fonts.nix              # fontconfig (headless-safe)
-```
-
-### 1.1 Shell -- zsh (`shell/zsh.nix`)
-
-Source: `dots/.zshrc`, `dots/.zsh/completions/_sesh`.
-
-- `programs.zsh.enable` + `enableVteIntegration`; ship `.zshrc` body as HM initExtra / module options where possible.
-- **zinit** plugin manager (bootstraps itself): plugins = `zsh-completions`, `fzf-tab`, `zsh-autosuggestions`, `fast-syntax-highlighting`, `zsh-vi-mode`, OMZ `sudo` snippet. *(zinit clones at runtime — default: keep zinit.)*
-- **oh-my-posh** prompt via `programs.oh-my-posh.enable` + `xdg.configFile` for `oh-my-posh/config.toml`.
-- **vi-mode** (`zsh-vi-mode`): system clipboard via `wl-copy`, mode cursors, history binds.
-- **Integrations:** fzf (`fzf --zsh`), zoxide (`--cmd cd`, kept), mise activate, pay-respects (AI disabled).
-- **History:** HISTSIZE 10000, `~/.zsh_history`, dedup/share.
-- **MANPAGER** = `bat -l man -p`, `BAT_THEME=base16`.
-- **Aliases/functions to port:** `p()` fzf-jump `~/Projects`, `cppath`, `y()` yazi wrapper, `sesh-sessions`, `mksesh`, eza `ls/l/la/ll/ld/lt*` aliases, `-h/--help`->bat, `v/vim`->nvim, `j`->just, `open`->xdg-open, `C`->wl-copy.
-- **Aliases to DROP (Arch-only):** `yay`/pacman aliases, `upmirrors` (reflector), `slowwifi`/`resetwifi` (tc netem on a specific iface).
-- **Env vars to set via `home.sessionVariables`:** XDG dirs, `BAT_THEME`, `MANPAGER`, `PNPM_HOME`, `GOPATH`, `ANDROID_HOME`, `EDITOR/VISUAL=nvim`. *(drop the TexLive/`/usr/local/...` PATH lines — handled by Phase 5)*
-- **Hardcoded paths to fix:** see table below.
-
-### 1.2 Terminal -- kitty (`terminal/kitty.nix`)
-
-Source: `dots/.config/kitty/kitty.conf`.
-
-- `programs.kitty.enable` + `settings` for font 17, padding 14, no bell, no decorations, cursor trail, remote-control (`listen_on unix:/tmp/kitty`).
-- Ctrl+Shift+HJKL raw-xterm keybinds (for nvim).
-- `colors.conf` is **matugen-generated** — don't ship it now (Phase 2). Ship a static fallback or omit until matugen runs.
-
-### 1.3 Terminal -- tmux (`terminal/tmux.nix`)
-
-Source: `dots/.config/tmux/tmux.conf`.
-
-- `programs.tmux.enable` + custom config: prefix `C-Space`, status on top (2 lines), vi mode, base-index 1, renumber.
-- Floax popup (`M-f`), sesh picker (`M-s`), sesh last (`M-l`), lazygit popup (`M-g`).
-- **Plugins via `pkgs.tmuxPlugins` (all on nixpkgs):** `sensible`, `vim-tmux-navigator`, `yank`, `floax`.
-
-### 1.4 Editor -- neovim (`editor/neovim.nix`)
-
-Source: entire `dots/.config/nvim/` (NvChad v2.5 + lazy.nvim).
-
-- `programs.neovim.enable` (+ `neovim` package); ship the **whole `nvim/` tree** via `xdg.configFile."nvim".source = ./nvim;` (copy the dir into the module).
-- Let `lazy.nvim` bootstrap plugins (network access at first launch) and `mason.nvim` manage the 18 LSPs + formatters/linters.
-- Provide runtime tools that mason expects to *not* manage: `git` (already present), `kitty` (for remote control), `tmux`, `zathura` (Phase 2), latex tools (Phase 5).
-- `rustc`/`cargo` for the `blink.cmp` build step.
-- `xdg.configFile` the `.stylua.toml` too.
-
-### 1.5 CLI tools (`cli/tools.nix`, `cli/git.nix`)
-
-| Tool | Approach |
-|------|----------|
-| bat | `programs.bat.enable` (+ theme via env, no config dir in source) |
-| eza | package + zsh aliases |
-| fzf | `programs.fzf.enable` (+ `fzf --zsh` integration) |
-| zoxide | `programs.zoxide.enable` (`--cmd cd`) |
-| fd, ripgrep | packages |
-| gh | `programs.gh.enable` |
-| lazygit | `programs.lazygit.enable` + ship `lazygit/config.yml` |
-| btop | `programs.btop.enable` + ship `btop/btop.conf` |
-| fastfetch | package + config dir (none in source) |
-| git/delta | `programs.git` fresh (name/email D6) + `programs.git.delta.enable` |
-| sesh | package + ship `sesh/sesh.toml` |
-| tmuxinator | package (+ drop hardcoded `.tmuxinator.yml` project root) |
-
-### 1.6 Alternative shell -- fish (`shell/fish.nix`)  [D11, exploratory]
-
-Try fish alongside zsh (both stay installed; zsh remains the default for now).
-
-- **System:** `programs.fish.enable = true` in `modules/system/shell.nix` (next to the existing `programs.zsh.enable`). The active login shell is still `users.defaultUserShell = pkgs.zsh`; switch to fish by changing that one line to `pkgs.fish`.
-- **Home:** new `modules/home/shell/fish.nix` with `programs.fish.enable = true`, imported from `modules/home/default.nix` (zsh.nix stays untouched).
-- **Fish is non-POSIX** -> the zshrc body cannot be shared. A parallel config is written fresh (nothing for fish exists in `~/.xidots`). Port the *behavior*, not the syntax:
-  - Prompt: `oh-my-posh init fish --config ~/.config/oh-my-posh/config.toml | source` (same theme file).
-  - vi-mode: fish's built-in `fish_vi_key_bindings` (or a plugin); mode cursors + the `^p/^n/^r/^s` binds.
-  - Integrations: `fzf --fish`, `zoxide init fish --cmd cd`, `mise activate fish`, `pay-respects fish` (AI disabled).
-  - Aliases -> `fish.shellAbbrs` / functions: the eza `ls/l/la/ll/...`, `-h/--help`->bat, `v/vim`->nvim, `j`->just, `open`, `cppath`, `p()`, `y()`.
-  - MANPAGER/BAT_THEME come for free from `home.sessionVariables` (already set).
-- **Decision [D11]:** keep zsh as default (fish just available to try), or flip the default to fish now? How much of the zsh config to mirror in fish (full parity vs. a minimal try-it-out setup)?
-
-### Phase 1 exit criteria
-
-VM rebuilds; `zsh` launches with prompt + plugins (after zinit bootstrap); `nvim`
-opens and bootstraps lazy/mason; tmux + kitty config present. Verify over SSH.
-
----
-
-## Phase 2 -- Theming + fonts + GUI apps
-
-Still HM-driven where possible. **matugen is the keystone** — it regenerates
-~15 color files on wallpaper change. Most color files are gitignored/generated,
-so nothing works until matugen runs.
-
-### 2.1 Fonts + fontconfig (`fonts.nix`)
-
-- `fonts.packages` (system): `CaskaydiaCove Nerd Font` (cascadia-code), `Poppins`,
-  `noto-fonts-emoji`, font-awesome, awesome-terminal-fonts, nerd-fonts-symbols.
-- `xdg.configFile."fontconfig/fonts.conf"`: monospace->CaskaydiaCove, serif/sans->Poppins.
-- **Missing from source pkg list: add `papirus-icon-theme`** (used in qt5ct/gtk/rofi).
-
-### 2.2 Theming engine -- matugen + awww
-
-- `matugen` and `awww` are both **on nixpkgs** (no local derivations).
-- Ship `matugen/config.toml` + `templates/` via `xdg.configFile`.
-- Rework template **output paths** that point at `/usr/share/walogram/...` and use
-  `sudo chown` (see hardcoded table) to nix-store-aware equivalents.
-
-### 2.3 GTK / Qt
-
-- `gtk` HM module: theme `adw-gtk3-dark` (packaged), iconTheme `Papirus-Dark`,
-  cursorTheme `Bibata-Modern-Classic` size 24, font `Sans 14`. (**`AxMat` skipped** — slated for deletion.)
-- qt5ct/qt6ct: ship configs via `xdg.configFile`; **fix hardcoded `color_scheme_path`** -> relative/store path. Add `qt5ct`/`qt6ct` + `qt5-wayland`/`qt6-wayland`.
-- Cursor: `bibata` cursors from nixpkgs.
-
-### 2.4 GUI apps
-
-| App | Approach |
-|-----|----------|
-| rofi | `programs.rofi.enable` + ship `rofi/*.rasi`; add `rofi-emoji`, `rofi-rbw` |
-| swaync | `services.swaync.enable` + ship `config.json`/`style.css` |
-| yazi | `programs.yazi.enable` (colors are matugen-generated) |
-| zathura | `programs.zathura.enable` + ship `zathurarc` (vimtex viewer) |
-| mpv | `programs.mpv.enable` + ship `mpv.conf` (`loop=inf`) |
-| fastfetch | (Phase 1 pkg) + config |
-| bitwarden | package + window rule (Phase 3) |
-| obsidian | package + nvim `obsidian.nvim` notes path |
-| telegram | package + walogram theme (matugen post_hook) |
-| zen-browser | flake input https://github.com/0xc000022070/zen-browser-flake; `.zen/` profile = pure state (exclude entirely) |
-| cava | matugen-generated config |
-
----
-
-## Phase 3 -- Hyprland + Wayland stack
-
-Hyprland uses **Lua as its native config language** (since v0.55; hyprlang is
-deprecated). The `hl.*` calls in the config are Hyprland's official Lua API, so
-the existing `hypr/` tree ships as-is — **no rewrite, no wrapper package.**
-
-### System modules (`modules/system/hyprland.nix`)
-
-- `programs.hyprland.enable`.
-- Portals: `xdg.portal` with `xdg-desktop-portal-hyprland` + `gtk`.
-- `security.polkit.enable` + polkit-gnome agent (fix `/usr/lib/polkit-gnome/...` -> `pkgs.polkit_gnome` store path).
-- `services.udiskie` (rework the `/run/media/` + stow hack).
-- `cliphist` + `wl-clipboard` (`wl-paste --watch cliphist store`).
-
-### Home config (HM)
-
-- Ship the whole Lua tree: `xdg.configFile."hypr".source = ./hypr;` (incl. `hyprland.lua` + `source/*.lua`).
-- `awww` (wallpaper manager, nixpkgs) as exec-once daemon; `awww img` sets wallpaper.
-- Drop the `ambxst` config entirely (deprecated).
-- Provide runtime binaries the config calls: kitty, btop, rofi, swaync-client,
-  playerctl, wpctl, hyprshot, cliphist, wl-paste, ddcutil, slurp, jq, etc.
-
-### Host branching
-
-`hyprland.lua` currently shells out to `hostname` to branch. On NixOS, branch via
-the hostname in the host module (`lib.mkIf (config.networking.hostName == "mactopad")`),
-per AGENTS.md — not runtime `hostname` calls. (`mactopad`: eDP-1, scale 1.33;
-`macto`: nvidia + HDMI-A-1 -> `nvidia.lua`.)
-
----
-
-## Phase 4 -- System services (system-level modules)
-
-New `modules/system/` files:
-
-| File | Contents |
-|------|----------|
-| `kanata.nix` | `services.kanata`; home-row mods from `kanata.kbd`; `users.groups.uinput`, add user to `input`+`uinput`, udev `99-input.rules` |
-| `audio.nix` | `services.pipewire` (alsa, pulse) + **wireplumber** (missing from source list) |
-| `bluetooth.nix` | `hardware.bluetooth` + `blueman` (missing from source list) |
-| `tailscale.nix` | `services.tailscale.enable` |
-| `docker.nix` | `virtualisation.docker` + buildx + compose |
-| `networking.nix` | (already partly in `network.nix`) iwd/resolved as needed |
-
-Kanata currently runs as a **user** systemd unit with hardcoded `/usr/bin/sh` +
-`/usr/local/bin:/usr/bin:/bin` PATH -> rework to a NixOS `services.kanata` system
-service (cleaner) or HM `systemd.user.services.kanata` with store paths.
-
----
-
-## Phase 5 -- Dev toolchains (HM + system)
-
-| Tool | Approach |
-|------|----------|
-| clang | `pkgs.clang` (+ `clangd` for nvim) |
-| texlive | `pkgs.texlive.combined.scheme-full` -> **drop the `/usr/local/texlive/2025` PATH hack** |
-| pnpm | package + `PNPM_HOME` session var (no `/home/...` hardcode -> `$HOME`) |
-| Go/Rust/Node/etc | via **nix shells** per-project (mise dropped); `rustc`/`cargo` kept in nvim `extraPackages` for the `blink.cmp` build step |
-| ESP-IDF | **manual** (`~/.esp`, `espidf` alias sources export.sh) |
-| Android SDK | **manual** (`ANDROID_HOME`, android-studio, scrcpy) |
-
-> **Note (mise dropped):** language runtimes now come from nix shells, not mise.
-> Caveat: mason.nvim installs some LSPs via npm — node must be available in the
-> environment nvim is launched from (e.g. enter a nix shell with node first, or
-> add node to a per-project `shell.nix`). The editor itself is unaffected.
-
----
-
-## Phase 6 -- Real hosts + secrets
-
-- `hosts/mactopad/` (laptop) + `hosts/macto/` (nvidia desktop) + `hosts/mactomini/` (mini pc, optional) + `hardware-configuration.nix` each.
-- `sops-nix` input for secrets (API keys, etc.).
-- Remove VM-only `security.sudo.wheelNeedsPassword = false` on real hardware.
-- Refactor host-specific bits out of shared `modules/` using `lib.mkIf` on hostname.
-
----
-
-## Hardcoded paths to fix (consolidated)
-
-| Source | Path | Fix |
-|--------|------|-----|
-| `.zshrc:1` | `/home/xitonight/.xidots` | drop (no xidots on NixOS) |
-| `.zshrc:96` | `/etc/pacman.d/mirrorlist` | drop (reflector alias) |
-| `.zshrc:252` | `/home/xitonight/.local/share/pnpm` | `PNPM_HOME` via `$HOME` |
-| `.zshrc:260` | `/usr/local/texlive/2025/bin/...` | Phase 5: `texlive.combined` |
-| `.zshrc:14` | `xitonight@mini` | tailscale host -> host-specific |
-| `hypr/env.lua:23` | `/usr/bin/qmake` | drop |
-| `hypr/autostart.lua:2` | `/usr/lib/polkit-gnome/...` | `pkgs.polkit_gnome` |
-| `hypr/autostart.lua:3` | `/run/media/` + stow | rework udiskie |
-| `hypr/colors.lua:2` | `/home/.../3-rain_world.png` | state -> keep out of flake |
-| `matugen/config.toml` | `/usr/share/walogram/...`, `sudo chown` | rework templates |
-| `qt5ct.conf:2`, `qt6ct.conf:2` | `/home/.../colors/matugen.conf` | store/relative path |
-| `kanata.service:6,9` | `/usr/local/bin:/usr/bin:/bin`, `/usr/bin/sh` | system service |
-| `tmux.conf:1` | `/usr/local/bin:/bin:/usr/bin` | drop (let NixOS set PATH) |
-| `.tmuxinator.yml` | `/home/xitonight/.xidots` | drop / make relative |
-
-No `/opt/` references anywhere.
-
----
-
-## Local-derivation candidates (`packages/`)
-
-- **`walogram`** — the only one needing a local derivation (Telegram theme via matugen).
-- **`zen-browser`** — not a derivation; add as a **flake input** (https://github.com/0xc000022070/zen-browser-flake).
-- Everything else (`awww`, `matugen`, `bibata`, `pay-respects`, `sesh`, `kanata`, `impala`, `tmux-floax`) is already on nixpkgs.
-- `ambxst` is dropped (deprecated).
-
----
-
-## Suggested execution order
-
-1. Phase 1 (headless TUI) -> build, deploy to VM, verify zsh/nvim/tmux/kitty.
-2. Phase 5 dev toolchains (needed for nvim: clangd, texlive, rust for blink).
-3. Phase 2 theming/GUI (matugen + awww from nixpkgs).
-4. Phase 3 Hyprland (Lua config ships as-is).
-5. Phase 4 system services.
-6. Phase 6 real hosts (`mactopad`, `macto`, `mactomini`) + sops.
-
-Each phase = one or more commits, one deploy, one verification pass.
+## Config strategy summary
+
+| Strategy | When to use | Examples |
+|----------|-------------|----------|
+| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, zen-browser |
+| **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript) | neovim, hyprland |
+| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, rofi, matugen, ... |
+| **Not in flake** (stateful runtime data) | Browser profiles, wallpapers, generated color files | `.zen/`, `colors.conf`, `~/.local/share` |
