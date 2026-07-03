@@ -18,6 +18,7 @@
     ./matugen
     ./nvim
     ./rbw.nix
+    ./rofi
     ./swaync
     ./tmux.nix
     ./xdg.nix

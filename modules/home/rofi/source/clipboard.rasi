@@ -1,0 +1,17 @@
+@import "shared/defaults.rasi"
+
+configuration {
+  modi: "dmenu";
+
+  show-icons: false;
+}
+
+entry {
+  placeholder: "Search clipboard...";
+}
+
+listview {
+  columns: 1;
+
+  scrollbar: false;
+}

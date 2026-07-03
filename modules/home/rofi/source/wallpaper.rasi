@@ -1,0 +1,44 @@
+@import "shared/defaults.rasi"
+
+window {
+  width: 55%;
+}
+
+configuration {
+  modi: "dmenu";
+
+  show-icons: true;
+}
+
+entry {
+  placeholder: "Search wallpapers...";
+}
+
+listview {
+  columns: 4;
+  lines: 1;
+
+  fixed-columns: true;
+  fixed-height: true;
+
+  scrollbar: true;
+
+  layout: vertical;
+  flow: horizontal;
+
+  spacing: 8px;
+}
+
+element-icon {
+  size: 10em;
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+}
+
+element {
+  orientation: vertical;
+
+  padding: 4px;
+
+  border-radius: 8px;
+}
