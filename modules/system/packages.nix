@@ -49,8 +49,6 @@
 
     # --- GTK / Qt ---
     papirus-icon-theme
-    libsForQt5.qt5ct
-    qt6Packages.qt6ct
     libsForQt5.qtwayland
     qt6.qtwayland
     nwg-look
