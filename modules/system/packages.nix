@@ -11,7 +11,6 @@
     killall
     delta
     gh
-    btop
     fastfetch
     tmuxinator
     rsync

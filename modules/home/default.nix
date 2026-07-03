@@ -8,6 +8,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ./btop.nix
     ./git.nix
     ./gtk.nix
     ./hypr
