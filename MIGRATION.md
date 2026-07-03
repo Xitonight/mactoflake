@@ -17,6 +17,7 @@ Porting `~/.xidots` (Arch + stow) into this NixOS flake. Two hosts are live:
 | kitty | `modules/home/kitty.nix` | `programs.kitty` — settings, keybindings, extraConfig (`include colors.conf` for matugen) |
 | lazygit | `modules/home/lazygit.nix` | `programs.lazygit.settings` — quitOnTopLevelReturn, theme |
 | rbw | `modules/home/rbw.nix` | `programs.rbw` — Bitwarden CLI |
+| swaync | `modules/home/swaync/` | `services.swaync.settings` (config.json) + `style` (CSS with `@import` for matugen colors) + component CSS via `xdg.configFile` |
 | tmux | `modules/home/tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` — plugins via `pkgs.tmuxPlugins` |
 | xdg dirs | `modules/home/xdg.nix` | `xdg.userDirs` — custom dirs |
 | zen-browser | `modules/home/zen.nix` | `programs.zen-browser` (flake input) — full profile, addons, bookmarks, workspaces |
@@ -32,6 +33,7 @@ for the rationale.
 | Neovim | `modules/home/nvim/source/` | `~/.config/nvim` | NvChad + lazy.nvim manages 40+ plugins; Nix-managed plugins would be a massive rewrite with no benefit |
 | Hyprland | `modules/home/hypr/source/` | `~/.config/hypr/` (per-file) | Lua API (`hl.*`) is Hyprland's native config language; no benefit to porting to Nix |
 | matugen | `modules/home/matugen/source/` | `~/.config/matugen` | `config.toml` + 19 color templates for kitty, hyprland, gtk, rofi, swaync, cava, zathura, etc.; template-heavy, maintained natively in TOML |
+| rofi | `modules/home/rofi/source/` | `~/.config/rofi` | 7 `.rasi` profiles + shared `defaults.rasi`; relies on `@import` of matugen-generated `colors.rasi` at runtime; no benefit to porting to Nix |
 
 ### Ported as system-level NixOS modules
 
@@ -72,8 +74,6 @@ config; others have no module equivalent.
 | **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype** | No HM module | Pure CLI utilities; no config needed |
 | **neovim** | — | Package installed system-wide; config symlinked (see above) |
 | **gcc, rustc, cargo, cmake, gnumake** | — | Build toolchains; needed by nvim (blink.cmp) |
-| **rofi** | `programs.rofi` | Installed with rofi-emoji plugin; no config shipped yet |
-| **swaynotificationcenter** | `services.swaync` | Installed; no config shipped yet |
 | **yazi** | `programs.yazi` | Installed; no config shipped yet |
 | **zathura** | `programs.zathura` | Installed; no config shipped yet |
 | **mpv** | `programs.mpv` | Installed; no config shipped yet |
@@ -111,9 +111,8 @@ modules available. Porting them enables shell integrations and structured config
 
 ### GUI app configs (MEDIUM)
 
-`rofi` (`.rasi` files), `swaync` (JSON + CSS), `yazi`, `zathura`, `mpv` — all
-installed as packages but have no config shipped. Each has an HM module (except
-swaync which uses `services.swaync`).
+`yazi`, `zathura`, `mpv` — all installed as packages but have no config shipped.
+Each has an HM module.
 
 ### nvidia.nix (MEDIUM)
 
@@ -162,7 +161,7 @@ fish as an alternative shell, a parallel config would need to be written fresh
 
 | Strategy | When to use | Examples |
 |----------|-------------|----------|
-| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, lazygit, zen-browser |
-| **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript, TOML) | neovim, hyprland, matugen |
-| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, rofi, ... |
+| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, lazygit, swaync, zen-browser |
+| **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript, TOML, Rasi) | neovim, hyprland, matugen, rofi, fsh |
+| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, ... |
 | **Not in flake** (stateful runtime data) | Browser profiles, wallpapers, generated color files | `.zen/`, `colors.conf`, `~/.local/share` |
