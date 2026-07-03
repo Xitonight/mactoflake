@@ -15,6 +15,7 @@ Porting `~/.xidots` (Arch + stow) into this NixOS flake. Two hosts are live:
 | git | `modules/home/git.nix` | `programs.git` — name + email |
 | gtk | `modules/home/gtk.nix` | `gtk` HM module — adw-gtk3-dark, Papirus-Dark, Bibata cursor |
 | kitty | `modules/home/kitty.nix` | `programs.kitty` — settings, keybindings, extraConfig (`include colors.conf` for matugen) |
+| lazygit | `modules/home/lazygit.nix` | `programs.lazygit.settings` — quitOnTopLevelReturn, theme |
 | rbw | `modules/home/rbw.nix` | `programs.rbw` — Bitwarden CLI |
 | tmux | `modules/home/tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` — plugins via `pkgs.tmuxPlugins` |
 | xdg dirs | `modules/home/xdg.nix` | `xdg.userDirs` — custom dirs |
@@ -61,7 +62,6 @@ config; others have no module equivalent.
 | **fzf** | `programs.fzf` | Could enable shell integrations, keybindings |
 | **zoxide** | `programs.zoxide` | Could enable shell integrations (`--cmd cd`) |
 | **gh** | `programs.gh` | Could configure settings |
-| **lazygit** | `programs.lazygit` | Could ship config |
 | **delta** | via `programs.git.delta` | Already installed; wire into git module |
 | **oh-my-posh** | `programs.oh-my-posh` | Could enable + ship config |
 | **pay-respects** | No HM module | Bare package only |
@@ -106,7 +106,7 @@ Currently only `programs.zsh.enable` at the system level. The user runs the raw
 
 ### CLI tools to HM modules (MEDIUM)
 
-`bat`, `eza`, `fzf`, `zoxide`, `gh`, `lazygit`, `oh-my-posh` — all have HM
+`bat`, `eza`, `fzf`, `zoxide`, `gh`, `oh-my-posh` — all have HM
 modules available. Porting them enables shell integrations and structured config.
 
 ### GUI app configs (MEDIUM)
@@ -168,7 +168,7 @@ fish as an alternative shell, a parallel config would need to be written fresh
 
 | Strategy | When to use | Examples |
 |----------|-------------|----------|
-| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, zen-browser |
-| **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript) | neovim, hyprland |
-| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, rofi, matugen, ... |
+| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, lazygit, zen-browser |
+| **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript, TOML) | neovim, hyprland, matugen |
+| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, rofi, ... |
 | **Not in flake** (stateful runtime data) | Browser profiles, wallpapers, generated color files | `.zen/`, `colors.conf`, `~/.local/share` |

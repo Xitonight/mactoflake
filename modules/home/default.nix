@@ -13,6 +13,7 @@
     ./gtk.nix
     ./hypr
     ./kitty.nix
+    ./lazygit.nix
     ./nvim
     ./rbw.nix
     ./tmux.nix
