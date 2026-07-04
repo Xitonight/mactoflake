@@ -106,8 +106,11 @@ Ported to `modules/home/zsh.nix`. Uses HM native plugin management:
 
 ### CLI tools to HM modules (MEDIUM)
 
-`bat`, `eza`, `fzf`, `zoxide`, `gh`, `oh-my-posh` — all have HM
-modules available. Porting them enables shell integrations and structured config.
+`fzf`, `zoxide`, `pay-respects`, `oh-my-posh` — **ported** to dedicated HM
+modules (`fzf.nix`, `zoxide.nix`, `pay-respects.nix`, `oh-my-posh.nix`) with
+shell integrations. Removed from system `packages.nix`.
+
+Still bare packages: `bat`, `eza`, `gh` — could gain HM modules for config.
 
 ### GUI app configs (MEDIUM)
 
