@@ -213,7 +213,6 @@
     sessionVariables = {
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";
       MANROFFOPT = "-c";
-      BAT_THEME = "base16";
       GOPATH = "${config.home.homeDirectory}/.go";
     };
 

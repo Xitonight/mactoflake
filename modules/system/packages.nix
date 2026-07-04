@@ -3,12 +3,10 @@
 {
   environment.systemPackages = with pkgs; [
     # --- CLI ---
-    bat
     fd
     file
     ripgrep
     killall
-    delta
     fastfetch
     tmuxinator
     rsync
@@ -63,9 +61,7 @@
     telegram-desktop
     cava
 
-    # --- Media ---
-    mpv
-
+    # --- Build ---
     cmake
     gnumake
   ];

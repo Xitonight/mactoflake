@@ -8,6 +8,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ./bat.nix
     ./btop.nix
     ./eza.nix
     ./fzf.nix
@@ -17,6 +18,7 @@
     ./hypr
     ./kitty.nix
     ./lazygit.nix
+    ./mpv.nix
     ./matugen
     ./nvim
     ./oh-my-posh.nix
