@@ -30,58 +30,40 @@
       home-manager,
       ...
     }@inputs:
+    let
+      flakeDir = "/etc/nixos";
+
+      mkHost = hostName: {
+        ${hostName} = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs flakeDir;
+          };
+          modules = [
+            ./hosts/${hostName}
+            ./modules/system
+            inputs.minegrub-theme.nixosModules.default
+
+            home-manager.nixosModules.home-manager
+            (
+              { config, ... }:
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  extraSpecialArgs = {
+                    inherit inputs flakeDir;
+                    monitorsConfig = config.mactoflake.hyprland.monitors;
+                  };
+                  users.xitonight = import ./modules/home;
+                };
+              }
+            )
+          ];
+        };
+      };
+    in
     {
-      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-          flakeDir = "/home/xitonight/.mactoflake";
-        };
-        modules = [
-          ./hosts/vm
-          ./modules/system
-          inputs.minegrub-theme.nixosModules.default
-
-          home-manager.nixosModules.home-manager
-          ({ config, ... }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs;
-                flakeDir = "/home/xitonight/.mactoflake";
-                monitorsConfig = config.mactoflake.hyprland.monitors;
-              };
-              users.xitonight = import ./modules/home;
-            };
-          })
-        ];
-      };
-      nixosConfigurations.mactopad = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-          flakeDir = "/home/xitonight/.mactoflake";
-        };
-        modules = [
-          ./hosts/mactopad
-          ./modules/system
-          inputs.minegrub-theme.nixosModules.default
-
-          home-manager.nixosModules.home-manager
-          ({ config, ... }: {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs;
-                flakeDir = "/home/xitonight/.mactoflake";
-                monitorsConfig = config.mactoflake.hyprland.monitors;
-              };
-              users.xitonight = import ./modules/home;
-            };
-          })
-        ];
-      };
+      nixosConfigurations = (mkHost "vm") // (mkHost "mactopad");
     };
 }
