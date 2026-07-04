@@ -12,15 +12,22 @@ Porting `~/.xidots` (Arch + stow) into this NixOS flake. Two hosts are live:
 | Tool | Module | Approach |
 |------|--------|----------|
 | btop | `modules/home/btop.nix` | `programs.btop.settings` — full 80+ setting attrset |
+| fzf | `modules/home/fzf.nix` | `programs.fzf` — zsh + tmux shell integration |
 | git | `modules/home/git.nix` | `programs.git` — name + email |
 | gtk | `modules/home/gtk.nix` | `gtk` HM module — adw-gtk3-dark, Papirus-Dark, Bibata cursor |
 | kitty | `modules/home/kitty.nix` | `programs.kitty` — settings, keybindings, extraConfig (`include colors.conf` for matugen) |
 | lazygit | `modules/home/lazygit.nix` | `programs.lazygit.settings` — quitOnTopLevelReturn, theme |
+| oh-my-posh | `modules/home/oh-my-posh.nix` | `programs.oh-my-posh` — async prompt, git segment, transient prompt, execution time |
+| opencode | `modules/home/opencode/` | `programs.opencode` — model, plugin, keybinds |
+| pay-respects | `modules/home/pay-respects.nix` | `programs.pay-respects` — zsh integration, AI suggestions disabled |
+| qt | `modules/home/qt.nix` | `qt` HM module — qt5ct/qt6ct with matugen color scheme, Papirus-Dark icons |
 | rbw | `modules/home/rbw.nix` | `programs.rbw` — Bitwarden CLI |
 | swaync | `modules/home/swaync/` | `services.swaync.settings` (config.json) + `style` (CSS with `@import` for matugen colors) + component CSS via `xdg.configFile` |
 | tmux | `modules/home/tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` — plugins via `pkgs.tmuxPlugins` |
 | xdg dirs | `modules/home/xdg.nix` | `xdg.userDirs` — custom dirs |
 | zen-browser | `modules/home/zen.nix` | `programs.zen-browser` (flake input) — full profile, addons, bookmarks, workspaces |
+| zoxide | `modules/home/zoxide.nix` | `programs.zoxide` — `--cmd cd`, zsh integration |
+| zsh | `modules/home/zsh.nix` | `programs.zsh` — plugins (fzf-tab, zsh-vi-mode, fast-syntax-highlighting), autosuggestions, vi mode, aliases, functions, OMZ sudo widget, sesh/fzf integration, auto-attach tmux |
 
 ### Ported via out-of-store symlinks (`mkOutOfStoreSymlink`)
 
@@ -34,6 +41,7 @@ for the rationale.
 | Hyprland | `modules/home/hypr/source/` | `~/.config/hypr/` (per-file) | Lua API (`hl.*`) is Hyprland's native config language; no benefit to porting to Nix |
 | matugen | `modules/home/matugen/source/` | `~/.config/matugen` | `config.toml` + 19 color templates for kitty, hyprland, gtk, rofi, swaync, cava, zathura, etc.; template-heavy, maintained natively in TOML |
 | rofi | `modules/home/rofi/source/` | `~/.config/rofi` | 7 `.rasi` profiles + shared `defaults.rasi`; relies on `@import` of matugen-generated `colors.rasi` at runtime; no benefit to porting to Nix |
+| fsh | `modules/home/fsh/source/` | `~/.config/fsh` | fast-syntax-highlighting theme (`base16.ini`); runtime theme for zsh's fsh plugin |
 
 ### Ported as system-level NixOS modules
 
@@ -55,23 +63,19 @@ for the rationale.
 ### Installed as bare system packages (no HM module yet)
 
 These are in `modules/system/packages.nix` via `environment.systemPackages`.
-Some have HM modules available and could be ported for shell integrations /
-config; others have no module equivalent.
+Some have HM modules available and could be ported for config; others have no
+module equivalent.
 
 | Tool | HM module available? | Notes |
 |------|---------------------|-------|
 | **bat** | `programs.bat` | Could set theme, enable shell integrations |
-| **eza** | `programs.eza` | Could enable aliases |
-| **fzf** | `programs.fzf` | Could enable shell integrations, keybindings |
-| **zoxide** | `programs.zoxide` | Could enable shell integrations (`--cmd cd`) |
+| **eza** | `programs.eza` | Could enable aliases (currently set inline in `zsh.nix`) |
 | **gh** | `programs.gh` | Could configure settings |
 | **delta** | via `programs.git.delta` | Already installed; wire into git module |
-| **oh-my-posh** | `programs.oh-my-posh` | Could enable + ship config |
-| **pay-respects** | No HM module | Bare package only |
 | **sesh** | `programs.sesh` (already used in tmux.nix) | Also installed as system pkg |
 | **fastfetch** | No HM module | Bare package; config not yet shipped |
-| **opencode** | No HM module | Bare package |
-| **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype** | No HM module | Pure CLI utilities; no config needed |
+| **tmuxinator** | No HM module | Bare package |
+| **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype, xdg-user-dirs** | No HM module | Pure CLI utilities; no config needed |
 | **neovim** | — | Package installed system-wide; config symlinked (see above) |
 | **gcc, rustc, cargo, cmake, gnumake** | — | Build toolchains; needed by nvim (blink.cmp) |
 | **yazi** | `programs.yazi` | Installed; no config shipped yet |
@@ -82,35 +86,22 @@ config; others have no module equivalent.
 | **cava** | No HM module | Bare package; config is matugen-generated |
 | **awww** | No HM module | Installed; wallpaper manager |
 | **pywal** | No HM module | Installed |
+| **rofi (rofi-emoji, rofi-rbw), swaynotificationcenter** | No HM module | Desktop apps; config symlinked (rofi) or via HM module (swaync); system pkg provides the binary |
 | **hyprpolkitagent, cliphist, udiskie, hyprshot, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
-| **papirus-icon-theme, qt5ct, qt6ct, qt5/qt6 wayland, nwg-look** | No HM module | Theming; qt5ct/qt6ct config not shipped |
+| **papirus-icon-theme, qt5/qt6 wayland, nwg-look** | No HM module | Theming; qt config handled via `qt.nix` HM module |
 | **stow** | — | Legacy from Arch migration; can be removed |
 
 ---
 
 ## Remaining Work
 
-### zsh Home Manager module — DONE
+### CLI tools to HM modules (LOW)
 
-Ported to `modules/home/zsh.nix`. Uses HM native plugin management:
-- **Plugins:** `fzf-tab` (fetchFromGitHub), `zsh-vi-mode` (nixpkgs) via
-  `programs.zsh.plugins`; `fast-syntax-highlighting` via
-  `programs.zsh.fastSyntaxHighlighting`; autosuggestions via
-  `programs.zsh.autosuggestion`; completions via `pkgs.zsh-completions`.
-- **OMZ sudo snippet** reimplemented inline as a ZLE widget.
-- **oh-my-posh** already handled by `modules/home/oh-my-posh.nix`.
-- **Aliases, functions, history, zstyle, shell integrations** all in HM module.
-- **Dropped:** zinit (replaced by HM), Arch-only aliases (yay/pacman/reflector/tc
-  netem), TexLive/console-ninja/ESP-IDF/Android PATH entries, host-specific tmux
-  session creation (kept auto-attach only).
+`bat`, `eza`, `gh` — still bare packages; could gain HM modules for config
+(theme, aliases, settings). `eza` aliases are currently set inline in `zsh.nix`.
 
-### CLI tools to HM modules (MEDIUM)
-
-`fzf`, `zoxide`, `pay-respects`, `oh-my-posh` — **ported** to dedicated HM
-modules (`fzf.nix`, `zoxide.nix`, `pay-respects.nix`, `oh-my-posh.nix`) with
-shell integrations. Removed from system `packages.nix`.
-
-Still bare packages: `bat`, `eza`, `gh` — could gain HM modules for config.
+`delta` — installed as a system package; could be wired into the git HM module
+via `programs.git.delta`.
 
 ### GUI app configs (MEDIUM)
 
@@ -164,7 +155,7 @@ fish as an alternative shell, a parallel config would need to be written fresh
 
 | Strategy | When to use | Examples |
 |----------|-------------|----------|
-| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, lazygit, swaync, zen-browser |
+| **HM module** (`programs.<x>.enable` + `.settings`) | Tool has a Home Manager module | btop, kitty, git, tmux, gtk, rbw, lazygit, swaync, zen-browser, zsh, fzf, zoxide, oh-my-posh, pay-respects, qt, opencode |
 | **Out-of-store symlink** (`mkOutOfStoreSymlink`) | Large configs or configs better maintained in their native language (Lua, Vimscript, TOML, Rasi) | neovim, hyprland, matugen, rofi, fsh |
-| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, fzf, ... |
+| **System package** (`environment.systemPackages`) | CLI utilities with no config, or tools awaiting HM module port | bat, eza, gh, fd, ripgrep, ... |
 | **Not in flake** (stateful runtime data) | Browser profiles, wallpapers, generated color files | `.zen/`, `colors.conf`, `~/.local/share` |
