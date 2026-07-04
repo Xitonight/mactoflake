@@ -4,13 +4,11 @@
   environment.systemPackages = with pkgs; [
     # --- CLI ---
     bat
-    eza
     fd
     file
     ripgrep
     killall
     delta
-    gh
     fastfetch
     tmuxinator
     rsync
@@ -66,8 +64,6 @@
     cava
 
     # --- Media ---
-    yazi
-    zathura
     mpv
 
     cmake

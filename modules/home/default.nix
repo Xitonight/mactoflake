@@ -9,6 +9,7 @@
 
   imports = [
     ./btop.nix
+    ./eza.nix
     ./fzf.nix
     ./fsh
     ./git.nix
@@ -27,6 +28,8 @@
     ./swaync
     ./tmux.nix
     ./xdg.nix
+    ./yazi.nix
+    ./zathura.nix
     ./zsh.nix
     ./zen.nix
     ./zoxide.nix
