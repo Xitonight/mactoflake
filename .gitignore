@@ -3,3 +3,4 @@ result-*
 .direnv
 
 modules/home/hypr/source/colors.lua
+modules/home/rofi/source/shared/colors.rasi
