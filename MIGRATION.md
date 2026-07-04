@@ -91,7 +91,7 @@ module equivalent.
 | **rofi (rofi-emoji, rofi-rbw), swaynotificationcenter** | No HM module | Desktop apps; config symlinked (rofi) or via HM module (swaync); system pkg provides the binary |
 | **hyprpolkitagent, cliphist, udiskie, hyprshot, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
 | **papirus-icon-theme, qt5/qt6 wayland, nwg-look** | No HM module | Theming; qt config handled via `qt.nix` HM module |
-| **stow** | — | Legacy from Arch migration; can be removed |
+| **stow** | — | Removed — legacy Arch migration leftover, no longer needed |
 
 ---
 
@@ -105,11 +105,13 @@ _(None remaining — bat, delta, gh all resolved.)_
 
 _(None remaining — mpv ported.)_
 
-### nvidia.nix (MEDIUM)
+### nvidia.nix (MEDIUM — reserved for future `macto` host)
 
 `modules/system/nvidia.nix` exists with modesetting/open/gsp config and
-kernelParams but is **not imported**. Needs wiring behind a `mactoflake.gpu.nvidia`
-option and enabling in `hosts/mactopad/default.nix`.
+kernelParams but is **intentionally not imported** by `vm` or `mactopad` (both
+non-NVIDIA). It is reserved for the future `macto` desktop host and will be
+wired behind a `mactoflake.gpu.nvidia` option when that host is added. Not
+pending work for current hosts.
 
 ### sops-nix (LOW)
 

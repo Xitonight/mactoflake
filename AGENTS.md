@@ -58,7 +58,7 @@ Applied as a shared base to every host via `./modules/system/default.nix`. Each 
 | `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 
-`nvidia.nix` exists but is **not imported** — dead code pending wiring behind an option. (It will be used for mactone host)
+`nvidia.nix` is **reserved for the future `macto` desktop host** — intentionally not imported by `vm` or `mactopad` (both non-NVIDIA). It will be wired behind a `mactoflake.gpu.nvidia` option when that host is added.
 
 ### Home modules (`modules/home/`)
 
@@ -133,10 +133,12 @@ Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` 
 
 ## 6. Remaining Work
 
-See `MIGRATION.md` for the full porting status, including what's already done and what's still TODO. Key remaining items:
+See `MIGRATION.md` for the full porting status. All major xidots configs have
+been ported (zsh, rofi, swaync, yazi, zathura, mpv, matugen, bat, delta, etc.).
+Remaining items:
 
-- **zsh HM module** — currently only `programs.zsh.enable` system-wide; no zinit/oh-my-posh/vi-mode/aliases ported yet (user runs the raw `.zshrc` from xidots for now).
-- **CLI tools to HM modules** — bat, eza, fzf, zoxide, gh, oh-my-posh are installed as bare packages; could gain HM modules for shell integrations and config.
-- **GUI app configs** — rofi, swaync, yazi, zathura, mpv, matugen templates are not yet shipped.
-- **nvidia.nix** — exists but not wired.
-- **sops-nix** — secrets management not yet added.
+- **nvidia.nix** — reserved for the future `macto` desktop host; intentionally
+  not imported by `vm` or `mactopad`. Not pending work for current hosts.
+- **sops-nix** — secrets management not yet added (pending).
+- **Fish HM module** — `programs.fish.enable` is set system-wide but no HM
+  config exists; low priority (zsh is the daily driver).

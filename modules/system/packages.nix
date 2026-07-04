@@ -29,7 +29,6 @@
     hyprpolkitagent
     cliphist
     udiskie
-    stow
     hyprshot
     grim
     slurp
