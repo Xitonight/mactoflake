@@ -79,19 +79,22 @@ module equivalent.
 | **sesh** | `programs.sesh` (already used in tmux.nix) | Also installed as system pkg |
 | **fastfetch** | No HM module | Bare package; config not yet shipped |
 | **tmuxinator** | No HM module | Bare package |
-| **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype, xdg-user-dirs** | No HM module | Pure CLI utilities; no config needed |
+| **fd, ripgrep, file, killall, rsync, just, wl-clipboard, unzip, zip, wtype, xdg-user-dirs, wget, usbutils, inetutils** | No HM module | Pure CLI utilities; no config needed |
 | **neovim** | — | Package installed system-wide; config symlinked (see above) |
 | **gcc, rustc, cargo, cmake, gnumake** | — | Build toolchains; needed by nvim (blink.cmp) |
 | **mpv** | `programs.mpv` | Ported — `modules/home/mpv.nix` |
 | **obsidian** | No HM module | Bare package |
 | **telegram-desktop** | No HM module | Bare package |
 | **cava** | No HM module | Bare package; config is matugen-generated |
+| **obs-studio** | No HM module | Bare package; screen recording |
+| **scrcpy** | No HM module | Bare package; Android screen mirroring |
 | **awww** | No HM module | Installed; wallpaper manager |
 | **pywal** | No HM module | Installed |
 | **rofi (rofi-emoji, rofi-rbw), swaynotificationcenter** | No HM module | Desktop apps; config symlinked (rofi) or via HM module (swaync); system pkg provides the binary |
-| **hyprpolkitagent, cliphist, udiskie, hyprshot, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
+| **hyprpolkitagent, cliphist, udiskie, hyprshot, hyprpicker, grim, slurp, playerctl, brightnessctl, ddcutil, wiremix** | No HM module | Desktop utilities; launched via hyprland config |
 | **papirus-icon-theme, qt5/qt6 wayland, nwg-look** | No HM module | Theming; qt config handled via `qt.nix` HM module |
 | **stow** | — | Removed — legacy Arch migration leftover, no longer needed |
+| **cowsay, figlet, lolcat, pipes** | No HM module | Fun cosmetic CLI tools |
 
 ---
 

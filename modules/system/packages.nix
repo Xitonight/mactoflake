@@ -18,6 +18,9 @@
     xdg-user-dirs
     zip
     wtype
+    wget
+    usbutils
+    inetutils
 
     # --- Editor ---
     neovim
@@ -30,6 +33,7 @@
     cliphist
     udiskie
     hyprshot
+    hyprpicker
     grim
     slurp
     playerctl
@@ -59,6 +63,14 @@
     obsidian
     telegram-desktop
     cava
+    obs-studio
+    scrcpy
+
+    # --- Fun ---
+    cowsay
+    figlet
+    lolcat
+    pipes
 
     # --- Build ---
     cmake
