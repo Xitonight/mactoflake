@@ -47,6 +47,7 @@
     ];
 
     shellAliases = {
+      pls = "sudo";
       aurora = ''for code in {000..18}; do print -P -- "$code: %F{$code}Color%f"; done'';
       l = "eza -lh --icons=auto";
       ls = "eza --icons=auto";
@@ -133,10 +134,6 @@
 
               # split ssh in two panes
               tmux split-window -h -t main:2
-
-              # automatically connect to mini in both panes in "ssh" window
-              tmux send-keys -t main:2.1 'tailscale ssh xitonight@mini' Enter
-              tmux send-keys -t main:2.2 'tailscale ssh xitonight@mini' Enter
             fi
             if [ -z "$(tmux list-clients -t main 2>/dev/null)" ]; then
               tmux attach -t main 2>/dev/null
