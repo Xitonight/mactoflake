@@ -90,19 +90,19 @@ config; others have no module equivalent.
 
 ## Remaining Work
 
-### zsh Home Manager module (HIGH)
+### zsh Home Manager module — DONE
 
-Currently only `programs.zsh.enable` at the system level. The user runs the raw
-`.zshrc` from xidots. To port:
-
-- **zinit** plugin manager: `zsh-completions`, `fzf-tab`, `zsh-autosuggestions`,
-  `fast-syntax-highlighting`, `zsh-vi-mode`, OMZ `sudo` snippet (Esc-Esc for sudo).
-- **oh-my-posh** prompt via `programs.oh-my-posh.enable` + config.
-- **Aliases:** eza `ls/l/la/ll/ld/lt*`, `-h/--help` -> bat, `v/vim` -> nvim,
-  `j` -> just, `open` -> xdg-open, `C` -> wl-copy, `p()` fzf-jump, `y()` yazi wrapper.
-- **Env vars:** `BAT_THEME`, `MANPAGER`, `EDITOR/VISUAL=nvim`, `PNPM_HOME`, `GOPATH`.
-- **Drop Arch-only aliases:** `yay`/pacman, `upmirrors` (reflector),
-  `slowwifi`/`resetwifi` (tc netem).
+Ported to `modules/home/zsh.nix`. Uses HM native plugin management:
+- **Plugins:** `fzf-tab` (fetchFromGitHub), `zsh-vi-mode` (nixpkgs) via
+  `programs.zsh.plugins`; `fast-syntax-highlighting` via
+  `programs.zsh.fastSyntaxHighlighting`; autosuggestions via
+  `programs.zsh.autosuggestion`; completions via `pkgs.zsh-completions`.
+- **OMZ sudo snippet** reimplemented inline as a ZLE widget.
+- **oh-my-posh** already handled by `modules/home/oh-my-posh.nix`.
+- **Aliases, functions, history, zstyle, shell integrations** all in HM module.
+- **Dropped:** zinit (replaced by HM), Arch-only aliases (yay/pacman/reflector/tc
+  netem), TexLive/console-ninja/ESP-IDF/Android PATH entries, host-specific tmux
+  session creation (kept auto-attach only).
 
 ### CLI tools to HM modules (MEDIUM)
 

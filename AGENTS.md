@@ -58,7 +58,7 @@ Applied as a shared base to every host via `./modules/system/default.nix`. Each 
 | `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 
-`nvidia.nix` exists but is **not imported** — dead code pending wiring behind an option.
+`nvidia.nix` exists but is **not imported** — dead code pending wiring behind an option. (It will be used for mactone host)
 
 ### Home modules (`modules/home/`)
 
@@ -108,7 +108,7 @@ Current symlinked configs:
 
 ### Stateful runtime data (never in flake)
 
-Browser profiles (`.zen/`), wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` are pure state and excluded from the flake entirely.
+Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` are pure state and excluded from the flake entirely.
 
 ## 4. Code Style (Nix)
 
@@ -136,7 +136,7 @@ Browser profiles (`.zen/`), wallpapers, matugen-generated color files (`colors.c
 See `MIGRATION.md` for the full porting status, including what's already done and what's still TODO. Key remaining items:
 
 - **zsh HM module** — currently only `programs.zsh.enable` system-wide; no zinit/oh-my-posh/vi-mode/aliases ported yet (user runs the raw `.zshrc` from xidots for now).
-- **CLI tools to HM modules** — bat, eza, fzf, zoxide, gh, lazygit, oh-my-posh are installed as bare packages; could gain HM modules for shell integrations and config.
+- **CLI tools to HM modules** — bat, eza, fzf, zoxide, gh, oh-my-posh are installed as bare packages; could gain HM modules for shell integrations and config.
 - **GUI app configs** — rofi, swaync, yazi, zathura, mpv, matugen templates are not yet shipped.
-- **nvidia.nix** — exists but not wired (mactopad has NVIDIA).
+- **nvidia.nix** — exists but not wired.
 - **sops-nix** — secrets management not yet added.
