@@ -25,6 +25,7 @@
     ./swaync
     ./tmux.nix
     ./xdg.nix
+    ./zsh.nix
     ./zen.nix
   ];
 }
