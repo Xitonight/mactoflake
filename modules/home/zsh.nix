@@ -126,6 +126,18 @@
           stty -ixon
 
           if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
+            if ! tmux has-session -t "main" 2>/dev/null; then
+              # create session and windows
+              tmux new-session -d -s "main" -n "main"
+              tmux neww -d -t "main:2" -n "ssh" 2>/dev/null
+
+              # split ssh in two panes
+              tmux split-window -h -t main:2
+
+              # automatically connect to mini in both panes in "ssh" window
+              tmux send-keys -t main:2.1 'tailscale ssh xitonight@mini' Enter
+              tmux send-keys -t main:2.2 'tailscale ssh xitonight@mini' Enter
+            fi
             if [ -z "$(tmux list-clients -t main 2>/dev/null)" ]; then
               tmux attach -t main 2>/dev/null
             fi
