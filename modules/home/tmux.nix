@@ -2,9 +2,6 @@
 
 {
   programs = {
-    fzf = {
-      tmux.enableShellIntegration = true;
-    };
     sesh = {
       enable = true;
       icons = true;

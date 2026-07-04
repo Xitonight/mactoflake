@@ -17,9 +17,6 @@
     just
     wl-clipboard
     unzip
-    fzf
-    zoxide
-    pay-respects
     lazygit
     sesh
     xdg-user-dirs

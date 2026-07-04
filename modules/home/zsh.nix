@@ -124,9 +124,6 @@
 
         shellIntegrations = ''
           stty -ixon
-          eval "$(pay-respects zsh)"
-          source <(fzf --zsh)
-          eval "$(zoxide init --cmd cd zsh)"
 
           if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
             if [ -z "$(tmux list-clients -t main 2>/dev/null)" ]; then

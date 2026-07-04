@@ -9,6 +9,7 @@
 
   imports = [
     ./btop.nix
+    ./fzf.nix
     ./fsh
     ./git.nix
     ./gtk.nix
@@ -19,6 +20,7 @@
     ./nvim
     ./oh-my-posh.nix
     ./opencode
+    ./pay-respects.nix
     ./qt.nix
     ./rbw.nix
     ./rofi
@@ -27,5 +29,6 @@
     ./xdg.nix
     ./zsh.nix
     ./zen.nix
+    ./zoxide.nix
   ];
 }
