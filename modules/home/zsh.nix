@@ -44,6 +44,16 @@
         src = pkgs.zsh-vi-mode;
         file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
       }
+      {
+        name = "omz-sudo";
+        src = pkgs.fetchFromGitHub {
+          owner = "ohmyzsh";
+          repo = "ohmyzsh";
+          rev = "master";
+          sha256 = "sha256-bp6tivQNAfboU+Q5M3/bH5dGjbHBh2mdbxsv8Y8FCuM=";
+        };
+        file = "plugins/sudo/sudo.plugin.zsh";
+      }
     ];
 
     shellAliases = {
@@ -142,21 +152,6 @@
         '';
 
         functions = lib.mkOrder 1050 ''
-          sudo-command-line() {
-            [[ -z $BUFFER ]] && zle up-line-or-history
-            if [[ $BUFFER == sudo\ * ]]; then
-              LBUFFER="''${LBUFFER#sudo }"
-            elif [[ $BUFFER == *\ --\ * ]]; then
-              LBUFFER="''${LBUFFER%% -- *} -- sudo ''${LBUFFER#* -- }"
-            else
-              LBUFFER="sudo $LBUFFER"
-            fi
-          }
-          zle -N sudo-command-line
-          bindkey -M emacs '\e\e' sudo-command-line
-          bindkey -M vicmd '\e\e' sudo-command-line
-          bindkey -M viins '\e\e' sudo-command-line
-
           p() {
             local dir
             dir=$(find ~/Projects -maxdepth 2 -type d | sed "s|^$HOME/Projects/||" | fzf --header="Select Project")
@@ -201,7 +196,6 @@
               sesh connect $session
             }
           }
-
         '';
       in
       lib.mkMerge [

@@ -10,6 +10,7 @@
     ./locale.nix
     ./network.nix
     ./nix.nix
+    ./overlays.nix
     ./packages.nix
     ./shell.nix
     ./tailscale.nix
