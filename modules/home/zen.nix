@@ -123,6 +123,7 @@ in
       extensions.packages = with firefox-addons; [
         ublock-origin
         vimium
+        bitwarden
       ];
 
       keyboardShortcutsVersion = 19;
