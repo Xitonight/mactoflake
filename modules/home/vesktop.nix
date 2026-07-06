@@ -16,7 +16,7 @@
       hardwareAcceleration = true;
       discordBranch = "stable";
     };
-    vencord = {
+    vencord.settings = {
       autoUpdate = false;
       autoUpdateNotification = false;
       notifyAboutUpdates = false;
