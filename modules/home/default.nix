@@ -29,6 +29,7 @@
     ./rofi
     ./swaync
     ./tmux.nix
+    ./vesktop.nix
     ./xdg.nix
     ./yazi.nix
     ./zathura.nix
