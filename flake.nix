@@ -42,7 +42,6 @@
           modules = [
             { networking.hostName = "${hostName}"; }
             ./hosts/${hostName}
-            ./modules/system
             inputs.minegrub-theme.nixosModules.default
 
             home-manager.nixosModules.home-manager
@@ -65,6 +64,6 @@
       };
     in
     {
-      nixosConfigurations = (mkHost "vm") // (mkHost "mactopad");
+      nixosConfigurations = (mkHost "vm") // (mkHost "mactopad") // (mkHost "mactone");
     };
 }
