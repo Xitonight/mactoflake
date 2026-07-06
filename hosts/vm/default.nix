@@ -1,11 +1,19 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  networking.hostName = "vm";
+  imports = [ 
+    ./hardware-configuration.nix
+    ../../modules/system
+  ];
 
   mactoflake.boot.loader = "grub";
+
+  mactoflake.input.kanata.enable = false;
+
+  mactoflake.network.tailscale = {
+    enable = true;
+    enableSSH = true;
+  };
 
   mactoflake.hyprland.monitors = [
     {
@@ -22,17 +30,12 @@
       "wheel"
       "networkmanager"
     ];
-    initialPassword = "2110";
+    initialPassword = "1234";
   };
 
   security.sudo.wheelNeedsPassword = false;
 
   services.getty.autologinUser = "xitonight";
-
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
 
   # Lets QEMU do clean shutdown / guest commands.
   services.qemuGuest.enable = true;

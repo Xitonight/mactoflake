@@ -1,9 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  networking.hostName = "mactopad";
+  imports = [ 
+    ./hardware-configuration.nix
+    ../../modules/system
+  ];
 
   mactoflake.boot.loader = "grub";
 
@@ -35,11 +36,6 @@
   security.sudo.wheelNeedsPassword = false;
 
   services.getty.autologinUser = "xitonight";
-
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
 
   system.stateVersion = "26.05";
 }

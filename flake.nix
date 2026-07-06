@@ -40,6 +40,7 @@
             inherit inputs flakeDir;
           };
           modules = [
+            { networking.hostName = "${hostName}"; }
             ./hosts/${hostName}
             ./modules/system
             inputs.minegrub-theme.nixosModules.default
