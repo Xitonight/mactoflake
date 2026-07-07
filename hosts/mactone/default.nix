@@ -7,7 +7,10 @@
     ../../modules/system/nvidia.nix
   ];
 
-  mactoflake.boot.loader = "grub";
+  mactoflake.boot = {
+    loader = "grub";
+    grub.efiInstallAsRemovable = true;
+  };
 
   mactoflake.input.kanata.enable = false;
 

@@ -4,13 +4,26 @@ let
   cfg = config.mactoflake.boot;
 in
 {
-  options.mactoflake.boot.loader = lib.mkOption {
-    type = lib.types.enum [
-      "grub"
-      "systemd-boot"
-    ];
-    default = "systemd-boot";
-    description = "Which bootloader to use. Set per-host in hosts/<name>/default.nix.";
+  options.mactoflake.boot = {
+    loader = lib.mkOption {
+      type = lib.types.enum [
+        "grub"
+        "systemd-boot"
+      ];
+      default = "systemd-boot";
+      description = "Which bootloader to use. Set per-host in hosts/<name>/default.nix.";
+    };
+
+    grub.efiInstallAsRemovable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Install GRUB to the fallback removable EFI path
+        (\EFI\BOOT\BOOTX64.EFI) instead of relying on a boot entry in NVRAM.
+        Useful on boards that wipe EFI variables on reboot. When enabled,
+        canTouchEfiVariables is forced to false.
+      '';
+    };
   };
 
   config = lib.mkMerge [
@@ -18,7 +31,9 @@ in
       boot.loader.grub = {
         enable = true;
         efiSupport = true;
+        efiInstallAsRemovable = cfg.grub.efiInstallAsRemovable;
         devices = [ "nodev" ];
+        device = "nodev";
         minegrub-theme = {
           enable = true;
           splash = "Flakes go brrr";
@@ -34,7 +49,7 @@ in
 
     {
       boot = {
-        loader.efi.canTouchEfiVariables = true;
+        loader.efi.canTouchEfiVariables = !cfg.grub.efiInstallAsRemovable;
         consoleLogLevel = 0;
         kernelParams = [
           "quiet"
