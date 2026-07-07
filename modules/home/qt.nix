@@ -4,7 +4,8 @@ let
       color_scheme_path = "${colorsDir}/matugen.conf";
       custom_palette = true;
       icon_theme = "Papirus-Dark";
-      standard_dialogs = "xdgdesktopportal";
+      standard_dialogs = "gtk3";
+      style = "Fusion";
     };
     Fonts = {
       fixed = "\"CaskaydiaCove Nerd Font Mono,12\"";
@@ -15,8 +16,8 @@ in
 {
   qt = {
     enable = true;
-    platformTheme.name = "qt5ct";
-    qt5ctSettings = mkQtctSettings "~/.config/qt5ct/colors";
-    qt6ctSettings = mkQtctSettings "~/.config/qt6ct/colors";
+    platformTheme.name = "qtct";
+    qt5ctSettings = mkQtctSettings "/home/xitonight/.config/qt5ct/colors";
+    qt6ctSettings = mkQtctSettings "/home/xitonight/.config/qt6ct/colors";
   };
 }
