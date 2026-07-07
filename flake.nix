@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -43,6 +48,7 @@
             { networking.hostName = "${hostName}"; }
             ./hosts/${hostName}
             inputs.minegrub-theme.nixosModules.default
+            inputs.nix-index-database.nixosModules.nix-index
 
             home-manager.nixosModules.home-manager
             (
