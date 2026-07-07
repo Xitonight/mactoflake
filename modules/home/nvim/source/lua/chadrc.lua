@@ -11,7 +11,7 @@ M.stbufnr = function()
 end
 
 M.base46 = {
-  theme = "chadwal",
+  theme = "wallsync",
   transparency = false,
   integrations = {
     "flash",
