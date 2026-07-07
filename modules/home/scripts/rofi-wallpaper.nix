@@ -1,0 +1,18 @@
+{ pkgs, ... }:
+
+{
+  home.packages = [
+    (pkgs.writeShellScriptBin "rofi-wallpaper" ''
+      [ -f "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ] && . "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+      WALLPAPER_DIR="''${XDG_PICTURES_DIR:-$HOME/pictures}/papers"
+
+      selection=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -exec basename {} \; | sort | while read -r name; do
+        printf '%s\x00icon\x1f%s\n' "$name" "$WALLPAPER_DIR/$name"
+      done | ${pkgs.rofi}/bin/rofi -dmenu -p "  Wallpapers" -config ~/.config/rofi/wallpaper.rasi)
+
+      [ -z "$selection" ] && exit
+
+      ${pkgs.matugen}/bin/matugen image "$WALLPAPER_DIR/$selection" --source-color-index 0
+    '')
+  ];
+}

@@ -27,6 +27,7 @@
     ./qt.nix
     ./rbw.nix
     ./rofi
+    ./scripts
     ./swaync
     ./tmux.nix
     ./vesktop.nix

@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     # --- CLI ---
     fd
-    file
     ripgrep
     killall
     fastfetch

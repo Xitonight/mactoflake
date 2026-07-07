@@ -137,8 +137,8 @@ hl.bind("SUPER + R", hl.dsp.exec_cmd("pkill rofi || rofi -show run -config ~/.co
 hl.bind("SUPER + B", hl.dsp.exec_cmd("pkill rofi || rofi-rbw -a copy"))
 hl.bind("SUPER + TAB", hl.dsp.exec_cmd("pkill rofi || rofi -show window -config ~/.config/rofi/window.rasi"))
 hl.bind("SUPER + Period", hl.dsp.exec_cmd("pkill rofi || rofi -show emoji -config ~/.config/rofi/emoji.rasi"))
-hl.bind("SUPER + Comma", hl.dsp.exec_cmd("pkill rofi || ~/.local/bin/rofi-wallpaper"))
-hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill rofi || ~/.local/bin/rofi-clipboard"))
+hl.bind("SUPER + Comma", hl.dsp.exec_cmd("pkill rofi || rofi-wallpaper"))
+hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill rofi || rofi-clipboard"))
 
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
@@ -167,5 +167,5 @@ hl.bind("SUPER + ALT + P", hl.dsp.exec_cmd("hyprshot -m window -m active --clipb
 hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
 
 -- Brightness
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("~/.local/bin/brightness up"), { repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.local/bin/brightness down"), { repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightness up"), { repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness down"), { repeating = true })
