@@ -20,8 +20,9 @@ in
       description = ''
         Install GRUB to the fallback removable EFI path
         (\EFI\BOOT\BOOTX64.EFI) instead of relying on a boot entry in NVRAM.
-        Useful on boards that wipe EFI variables on reboot. When enabled,
-        canTouchEfiVariables is forced to false.
+        Useful on boards that wipe EFI variables on reboot. Only takes effect
+        when loader is "grub"; when active, canTouchEfiVariables is forced to
+        false. Safe to leave enabled when switching to systemd-boot.
       '';
     };
   };
@@ -49,7 +50,7 @@ in
 
     {
       boot = {
-        loader.efi.canTouchEfiVariables = !cfg.grub.efiInstallAsRemovable;
+        loader.efi.canTouchEfiVariables = !(cfg.grub.efiInstallAsRemovable && cfg.loader == "grub");
         consoleLogLevel = 0;
         kernelParams = [
           "quiet"
