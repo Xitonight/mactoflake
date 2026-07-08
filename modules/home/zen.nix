@@ -1,6 +1,28 @@
 { pkgs, inputs, ... }:
 let
   firefox-addons = inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+  spaces = {
+    "Uni" = {
+      id = "a6de093b-408d-4206-961d-ab11f989d41b";
+      position = 1000;
+      icon = "🎓";
+    };
+    "Dots" = {
+      id = "edd11fae-1fc5-494b-9041-325e5759198c";
+      position = 2000;
+      icon = "💠";
+    };
+    "Default" = {
+      id = "8015cee6-9f50-4dc1-8ecf-baa25f8c8fd7";
+      position = 3000;
+      icon = "🩷";
+    };
+    "Projects" = {
+      id = "beb980ca-fcde-38ba-9d54-04a84569e2c3";
+      position = 4000;
+      icon = "🌙";
+    };
+  };
 in
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
@@ -51,7 +73,6 @@ in
                 ];
               }
             ];
-            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [ "@ud" ];
           };
         };
@@ -74,28 +95,7 @@ in
       };
 
       spacesForce = true;
-      spaces = {
-        "Uni" = {
-          id = "a6de089b-408d-4206-961d-ab11f989d41b";
-          position = 1000;
-          icon = "🎓";
-        };
-        "Dots" = {
-          id = "edd11fae-4fc5-494b-9041-325e5759198c";
-          position = 2000;
-          icon = "💠";
-        };
-        "Default" = {
-          id = "8015cee3-9f50-4dc1-8ecf-baa25f8c8fd7";
-          position = 3000;
-          icon = "🩷";
-        };
-        "Projects" = {
-          id = "beb980ca-fcde-42ba-9d54-04a84569e2c3";
-          position = 4000;
-          icon = "🌙";
-        };
-      };
+      inherit spaces;
 
       pinsForce = true;
       pinsForceAction = "remove";
@@ -117,6 +117,17 @@ in
           url = "https://mail.google.com";
           position = 103;
           isEssential = true;
+        };
+        "Gemini" = {
+          id = "57c4cf02-c422-4631-bbc8-4fade8d1b883";
+          url = "https://gemini.google.com/app";
+          position = 104;
+          isEssential = true;
+        };
+        "AulaWeb" = {
+          id = "28a03b59-e235-4b1b-9dac-e484d7d9d510";
+          url = "https://2025.aulaweb.unige.it/my/";
+          workspace = spaces."Uni".id;
         };
       };
 
