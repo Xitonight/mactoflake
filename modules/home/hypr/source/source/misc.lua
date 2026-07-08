@@ -1,4 +1,7 @@
 hl.config({
+	cursor = {
+		no_hardware_cursors = true,
+	},
   misc = {
     force_default_wallpaper = 1,
     disable_hyprland_logo = 1,

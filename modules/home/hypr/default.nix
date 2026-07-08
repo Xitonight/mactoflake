@@ -37,6 +37,15 @@ let
   };
 in
 {
+  home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+
+    GDK_BACKEND = "wayland,x11,*";
+    SDL_VIDEODRIVER = "wayland";
+  };
+
   xdg.configFile = lib.listToAttrs (map makeEntry (lib.attrNames nonMonitorFiles)) // {
     "hypr/hyprland.lua".source = mkOutOfStoreSymlink "${hyprDir}/hyprland.lua";
     "hypr/source/monitors.lua".source = monitorsLua;

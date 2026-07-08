@@ -210,4 +210,8 @@ in
       ];
     };
   };
+
+  home.sessionVariables = {
+    MOZ_DBUS_REMOTE = "1";
+  };
 }

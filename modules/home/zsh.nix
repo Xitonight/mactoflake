@@ -214,6 +214,8 @@
 
   home = {
     sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";
       MANROFFOPT = "-c";
       GOPATH = "${config.home.homeDirectory}/.go";

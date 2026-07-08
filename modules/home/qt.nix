@@ -20,4 +20,10 @@ in
     qt5ctSettings = mkQtctSettings "/home/xitonight/.config/qt5ct/colors";
     qt6ctSettings = mkQtctSettings "/home/xitonight/.config/qt6ct/colors";
   };
+
+  home.sessionVariables = {
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+  };
 }

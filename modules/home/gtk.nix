@@ -46,4 +46,8 @@
       theme = lib.mkForce null;
     };
   };
+
+  home.sessionVariables = {
+    XCURSOR_SIZE = "24";
+  };
 }
