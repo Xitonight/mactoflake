@@ -46,6 +46,10 @@ in
         "font.size.monospace.x-western" = 14;
         "font.size.variable.x-western" = 14;
 
+        # Remove popups for "ask to save password" and translations
+        "signon.rememberSignons" = false;
+        "browser.translations.automaticallyPopup" = false;
+
         # UI
         "zen.workspaces.continue-where-left-off" = true;
         "zen.view.compact.hide-tabbar" = true;
@@ -60,6 +64,15 @@ in
         force = true;
         default = "unduck";
         engines = {
+          searchix = {
+            name = "Searchix";
+            urls = [
+              {
+                template = "https://searchix.ovh/options/home-manager/search?query={searchTerms}";
+              }
+            ];
+            definedAliases = [ "@nix" ];
+          };
           unduck = {
             name = "Unduck";
             urls = [
