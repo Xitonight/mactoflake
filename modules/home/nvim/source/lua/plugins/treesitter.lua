@@ -12,6 +12,7 @@ return {
       "json",
       "kotlin",
       "lua",
+      "nix",
       "markdown",
       "markdown_inline",
       "python",

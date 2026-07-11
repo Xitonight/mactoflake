@@ -24,6 +24,7 @@
     # --- Editor ---
     neovim
     gcc
+    tree-sitter
     rustc
     cargo
 
