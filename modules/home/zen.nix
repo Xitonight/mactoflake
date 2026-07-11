@@ -171,6 +171,164 @@ in
           id = "key_duplicateTab";
           disabled = true;
         }
+        {
+          id = "key_switchTextDirection";
+          disabled = true;
+        }
+        {
+          id = "zen-new-unsynced-window";
+          disabled = true;
+        }
+        {
+          id = "zen-glance-expand";
+          disabled = true;
+        }
+        {
+          id = "key_newNavigator";
+          disabled = true;
+        }
+        {
+          id = "key_closeWindow";
+          disabled = true;
+        }
+        {
+          id = "key_quitApplication";
+          disabled = true;
+        }
+        {
+          id = "goHome";
+          disabled = true;
+        }
+        {
+          id = "key_gotoHistory";
+          disabled = true;
+        }
+        {
+          id = "key_viewSource";
+          disabled = true;
+        }
+        {
+          id = "key_viewInfo";
+          disabled = true;
+        }
+        {
+          id = "showAllHistoryKb";
+          disabled = true;
+        }
+        {
+          id = "addBookmarkAsKb";
+          disabled = true;
+        }
+        {
+          id = "manBookmarkKb";
+          disabled = true;
+        }
+        {
+          id = "key_openDownloads";
+          disabled = true;
+        }
+        {
+          id = "key_openAddons";
+          disabled = true;
+        }
+        {
+          id = "key_enterFullScreen";
+          disabled = true;
+        }
+        {
+          id = "key_aboutProcesses";
+          disabled = true;
+        }
+        {
+          id = "viewGenaiChatSidebarKb";
+          disabled = true;
+        }
+        {
+          id = "toggleSidebarKb";
+          disabled = true;
+        }
+        {
+          id = "key_showAllTabs";
+          disabled = true;
+        }
+        {
+          id = "key_wrCaptureCmd";
+          disabled = true;
+        }
+        {
+          id = "key_wrToggleCaptureSequenceCmd";
+          disabled = true;
+        }
+
+        # DevTools
+        {
+          id = "key_accessibility";
+          disabled = true;
+        }
+        {
+          id = "key_dom";
+          disabled = true;
+        }
+        {
+          id = "key_storage";
+          disabled = true;
+        }
+        {
+          id = "key_performance";
+          disabled = true;
+        }
+        {
+          id = "key_styleeditor";
+          disabled = true;
+        }
+        {
+          id = "key_netmonitor";
+          disabled = true;
+        }
+        {
+          id = "key_jsdebugger";
+          disabled = true;
+        }
+        {
+          id = "key_webconsole";
+          disabled = true;
+        }
+        {
+          id = "key_inspector";
+          disabled = true;
+        }
+        {
+          id = "key_responsiveDesignMode";
+          disabled = true;
+        }
+        {
+          id = "key_browserConsole";
+          disabled = true;
+        }
+        {
+          id = "key_browserToolbox";
+          disabled = true;
+        }
+        {
+          id = "key_toggleToolbox";
+          disabled = true;
+        }
+        {
+          id = "focusURLBar";
+          disabled = true;
+        }
+
+        # Navigation
+        {
+          id = "goBackKb";
+          key = "h";
+          modifiers.shift = true;
+        }
+        {
+          id = "goForwardKb";
+          key = "l";
+          modifiers.shift = true;
+        }
 
         # Zen-specific
         {
@@ -204,11 +362,8 @@ in
         }
         {
           id = "zen-split-view-vertical";
-          key = "%";
-          modifiers = {
-            shift = true;
-            accel = true;
-          };
+          key = "5";
+          modifiers.accel = true;
         }
         {
           id = "zen-split-view-horizontal";
