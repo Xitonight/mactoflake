@@ -10,6 +10,7 @@
   imports = [
     ./bat.nix
     ./btop.nix
+    ./devenv.nix
     ./eza.nix
     ./fzf.nix
     ./fsh
