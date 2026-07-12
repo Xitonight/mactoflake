@@ -17,12 +17,6 @@
   # to the same revision as the flake.
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
-  };
-
   nixpkgs.config = {
     allowUnfree = true;
     # obsidian bundles an EOL Electron runtime flagged insecure by nixpkgs.
