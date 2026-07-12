@@ -6,6 +6,10 @@ local function focus_workspace(n)
 	hl.dispatch(hl.dsp.focus({ workspace = tostring(n) }))
 end
 
+-- Logging
+hl.bind("SUPER + ALT + C", hl.dsp.exec_cmd("hyprctl clients > ~/.cache/clients.txt"))
+hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("hyprctl layers > ~/.cache/layers.txt"))
+
 -- Window management
 hl.bind("SUPER + Q", hl.dsp.window.close())
 hl.bind("SUPER + Space", hl.dsp.window.float({ action = "toggle" }))
