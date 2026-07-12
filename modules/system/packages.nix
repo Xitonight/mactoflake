@@ -16,6 +16,7 @@
     wget
     usbutils
     inetutils
+    secretspec
 
     # --- Editor ---
     neovim
