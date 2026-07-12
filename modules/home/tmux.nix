@@ -11,16 +11,8 @@
         blacklist = [ "scratch" ];
         dir_length = 2;
         default_session = {
-          startup_command = "tmuxinator start --append && exit || clear";
           preview_command = "eza --all -1 --git --icons --color=always {}";
         };
-        session = [
-          {
-            name = "papers";
-            path = "~/Pictures/Wallpapers";
-            preview_command = "eza -1 --icons --color=always ~/Pictures/Wallpapers";
-          }
-        ];
       };
     };
     tmux = {
