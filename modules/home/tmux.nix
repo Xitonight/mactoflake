@@ -6,8 +6,7 @@
       enable = true;
       icons = true;
       enableAlias = true;
-      enableTmuxIntegration = true;
-      tmuxKey = "\"-n \"M-s";
+      enableTmuxIntegration = false;
       settings = {
         blacklist = [ "scratch" ];
         dir_length = 2;
@@ -122,8 +121,9 @@
         bind '"' split-window -v -c "#{pane_current_path}"
         bind % split-window -h -c "#{pane_current_path}"
 
-        # Sesh last (M-l)
-        bind -n M-l run-shell "sesh last"
+        # Sesh (M-s, M-l) — disabled in scratch session
+        bind -n M-s run-shell "[ \"#{session_name}\" != \"scratch\" ] && sesh connect \"$(sesh list --icons | fzf --tmux 80%,70% --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' --bind 'tab:down,btab:up' --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list --icons)' --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list --icons -t)' --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list --icons -c)' --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list --icons -z)' --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~)' --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload(sesh list --icons)' --preview-window 'right:55%' --preview 'sesh preview {}' -- --ansi)\" || tmux display-message \"Disabled in scratch session\""
+        bind -n M-l run-shell '[ "#{session_name}" != "scratch" ] && sesh last || tmux display-message "Disabled in scratch session"'
 
         # Lazygit popup (M-g)
         bind -n M-g popup -d '#{pane_current_path}' -w80% -h80% -E 'lazygit'
