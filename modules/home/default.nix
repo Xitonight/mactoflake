@@ -26,9 +26,9 @@
     ./opencode
     ./pay-respects.nix
     ./qt.nix
-    # ./rbw.nix
     ./rofi
     ./scripts
+    ./ssh.nix
     ./swaync
     ./tmux.nix
     ./vesktop.nix
