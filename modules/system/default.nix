@@ -13,6 +13,7 @@
     ./nix.nix
     ./overlays.nix
     ./packages.nix
+    ./polkit.nix
     ./shell.nix
     ./tailscale.nix
   ];
