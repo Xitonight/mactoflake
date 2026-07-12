@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  firefox-addons = inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+  firefox-addons = pkgs.firefox-addons;
   spaces = {
     "Uni" = {
       id = "a6de093b-408d-4206-961d-ab11f989d41b";
@@ -148,6 +148,7 @@ in
         ublock-origin
         vimium
         bitwarden
+        onepassword-password-manager
       ];
 
       keyboardShortcutsVersion = 19;

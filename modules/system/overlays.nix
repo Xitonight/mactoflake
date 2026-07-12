@@ -1,7 +1,8 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   nixpkgs.overlays = [
+    inputs.firefox-addons.overlays.default
     (_final: prev: {
       zsh-vi-mode = prev.zsh-vi-mode.overrideAttrs (old: {
         # Revert upstream fa5e6fc: it broke escape-prefixed key bindings such
