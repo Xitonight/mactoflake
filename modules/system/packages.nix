@@ -54,7 +54,6 @@
 
     # --- Rofi ---
     (pkgs.rofi.override { plugins = [ pkgs.rofi-emoji ]; })
-    pkgs.rofi-rbw
 
     # --- Notifications ---
     swaynotificationcenter

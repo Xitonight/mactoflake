@@ -151,7 +151,6 @@ in
       extensions.packages = with firefox-addons; [
         ublock-origin
         vimium
-        bitwarden
         onepassword-password-manager
       ];
 
