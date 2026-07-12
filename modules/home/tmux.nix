@@ -20,18 +20,6 @@
             path = "~/Pictures/Wallpapers";
             preview_command = "eza -1 --icons --color=always ~/Pictures/Wallpapers";
           }
-          {
-            name = "tmux conf";
-            path = "~/.config/tmux";
-            startup_command = "nvim tmux.conf";
-            preview_command = "bat --color=always ~/.config/tmux/tmux.conf";
-          }
-          {
-            name = "nvim conf";
-            path = "~/.config/nvim";
-            startup_command = "nvim";
-            preview_command = "bat --color=always ~/.config/nvim/init.lua";
-          }
         ];
       };
     };
