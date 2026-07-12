@@ -12,6 +12,6 @@ hl.on("hyprland.start", function()
 
 	hl.exec_cmd("[workspace special silent] Telegram")
 	hl.exec_cmd("[workspace 2 silent] zen-beta")
-	hl.exec_cmd("[workspace 3 silent] bitwarden-desktop")
+	hl.exec_cmd("[workspace 3 silent] 1password")
 	hl.exec_cmd("[workspace 1 silent] kitty")
 end)
