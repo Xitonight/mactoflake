@@ -1,6 +1,10 @@
 { pkgs, inputs, ... }:
 let
   firefox-addons = pkgs.firefox-addons;
+  disabled = map (id: {
+    inherit id;
+    disabled = true;
+  });
   spaces = {
     "Uni" = {
       id = "a6de093b-408d-4206-961d-ab11f989d41b";
@@ -152,242 +156,121 @@ in
       ];
 
       keyboardShortcutsVersion = 19;
-      keyboardShortcuts = [
+      keyboardShortcuts =
         # Ported from ~/.xidots/dots/.zen/xitonight/zen-keyboard-shortcuts.json
+        disabled [
+          "key_undoCloseWindow"
+          "key_toggleReaderMode"
+          "key_exitFullScreen"
+          "key_duplicateTab"
+          "key_switchTextDirection"
+          "zen-new-unsynced-window"
+          "zen-glance-expand"
+          "key_newNavigator"
+          "key_closeWindow"
+          "key_quitApplication"
+          "goHome"
+          "key_gotoHistory"
+          "key_viewSource"
+          "key_viewInfo"
+          "showAllHistoryKb"
+          "addBookmarkAsKb"
+          "manBookmarkKb"
+          "key_openDownloads"
+          "key_openAddons"
+          "key_enterFullScreen"
+          "key_aboutProcesses"
+          "viewGenaiChatSidebarKb"
+          "toggleSidebarKb"
+          "key_showAllTabs"
+          "key_wrCaptureCmd"
+          "key_wrToggleCaptureSequenceCmd"
+          "key_accessibility"
+          "key_dom"
+          "key_storage"
+          "key_performance"
+          "key_styleeditor"
+          "key_netmonitor"
+          "key_jsdebugger"
+          "key_webconsole"
+          "key_inspector"
+          "key_responsiveDesignMode"
+          "key_browserConsole"
+          "key_browserToolbox"
+          "key_toggleToolbox"
+          "focusURLBar"
+        ]
 
-        # Disabled defaults
-        {
-          id = "key_undoCloseWindow";
-          disabled = true;
-        }
-        {
-          id = "key_toggleReaderMode";
-          disabled = true;
-        }
-        {
-          id = "key_exitFullScreen";
-          disabled = true;
-        }
-        {
-          id = "key_duplicateTab";
-          disabled = true;
-        }
-        {
-          id = "key_switchTextDirection";
-          disabled = true;
-        }
-        {
-          id = "zen-new-unsynced-window";
-          disabled = true;
-        }
-        {
-          id = "zen-glance-expand";
-          disabled = true;
-        }
-        {
-          id = "key_newNavigator";
-          disabled = true;
-        }
-        {
-          id = "key_closeWindow";
-          disabled = true;
-        }
-        {
-          id = "key_quitApplication";
-          disabled = true;
-        }
-        {
-          id = "goHome";
-          disabled = true;
-        }
-        {
-          id = "key_gotoHistory";
-          disabled = true;
-        }
-        {
-          id = "key_viewSource";
-          disabled = true;
-        }
-        {
-          id = "key_viewInfo";
-          disabled = true;
-        }
-        {
-          id = "showAllHistoryKb";
-          disabled = true;
-        }
-        {
-          id = "addBookmarkAsKb";
-          disabled = true;
-        }
-        {
-          id = "manBookmarkKb";
-          disabled = true;
-        }
-        {
-          id = "key_openDownloads";
-          disabled = true;
-        }
-        {
-          id = "key_openAddons";
-          disabled = true;
-        }
-        {
-          id = "key_enterFullScreen";
-          disabled = true;
-        }
-        {
-          id = "key_aboutProcesses";
-          disabled = true;
-        }
-        {
-          id = "viewGenaiChatSidebarKb";
-          disabled = true;
-        }
-        {
-          id = "toggleSidebarKb";
-          disabled = true;
-        }
-        {
-          id = "key_showAllTabs";
-          disabled = true;
-        }
-        {
-          id = "key_wrCaptureCmd";
-          disabled = true;
-        }
-        {
-          id = "key_wrToggleCaptureSequenceCmd";
-          disabled = true;
-        }
+        ++ [
+          # Navigation
+          {
+            id = "goBackKb";
+            key = "h";
+            modifiers.shift = true;
+          }
+          {
+            id = "goForwardKb";
+            key = "l";
+            modifiers.shift = true;
+          }
 
-        # DevTools
-        {
-          id = "key_accessibility";
-          disabled = true;
-        }
-        {
-          id = "key_dom";
-          disabled = true;
-        }
-        {
-          id = "key_storage";
-          disabled = true;
-        }
-        {
-          id = "key_performance";
-          disabled = true;
-        }
-        {
-          id = "key_styleeditor";
-          disabled = true;
-        }
-        {
-          id = "key_netmonitor";
-          disabled = true;
-        }
-        {
-          id = "key_jsdebugger";
-          disabled = true;
-        }
-        {
-          id = "key_webconsole";
-          disabled = true;
-        }
-        {
-          id = "key_inspector";
-          disabled = true;
-        }
-        {
-          id = "key_responsiveDesignMode";
-          disabled = true;
-        }
-        {
-          id = "key_browserConsole";
-          disabled = true;
-        }
-        {
-          id = "key_browserToolbox";
-          disabled = true;
-        }
-        {
-          id = "key_toggleToolbox";
-          disabled = true;
-        }
-        {
-          id = "focusURLBar";
-          disabled = true;
-        }
-
-        # Navigation
-        {
-          id = "goBackKb";
-          key = "h";
-          modifiers.shift = true;
-        }
-        {
-          id = "goForwardKb";
-          key = "l";
-          modifiers.shift = true;
-        }
-
-        # Zen-specific
-        {
-          id = "zen-compact-mode-toggle";
-          key = "e";
-          modifiers.accel = true;
-        }
-        {
-          id = "zen-workspace-forward";
-          key = "l";
-          modifiers = {
-            alt = true;
-            shift = true;
-          };
-        }
-        {
-          id = "zen-workspace-backward";
-          key = "h";
-          modifiers = {
-            alt = true;
-            shift = true;
-          };
-        }
-        {
-          id = "zen-split-view-grid";
-          key = "g";
-          modifiers = {
-            alt = true;
-            accel = true;
-          };
-        }
-        {
-          id = "zen-split-view-vertical";
-          key = "5";
-          modifiers.accel = true;
-        }
-        {
-          id = "zen-split-view-horizontal";
-          key = ";";
-          modifiers.accel = true;
-        }
-        {
-          id = "zen-split-view-unsplit";
-          key = "x";
-          modifiers = {
-            shift = true;
-            accel = true;
-          };
-        }
-        {
-          id = "zen-copy-url";
-          key = "c";
-          modifiers = {
-            shift = true;
-            accel = true;
-          };
-        }
-      ];
+          # Zen-specific
+          {
+            id = "zen-compact-mode-toggle";
+            key = "e";
+            modifiers.accel = true;
+          }
+          {
+            id = "zen-workspace-forward";
+            key = "l";
+            modifiers = {
+              alt = true;
+              shift = true;
+            };
+          }
+          {
+            id = "zen-workspace-backward";
+            key = "h";
+            modifiers = {
+              alt = true;
+              shift = true;
+            };
+          }
+          {
+            id = "zen-split-view-grid";
+            key = "g";
+            modifiers = {
+              alt = true;
+              accel = true;
+            };
+          }
+          {
+            id = "zen-split-view-vertical";
+            key = "5";
+            modifiers.accel = true;
+          }
+          {
+            id = "zen-split-view-horizontal";
+            key = ";";
+            modifiers.accel = true;
+          }
+          {
+            id = "zen-split-view-unsplit";
+            key = "x";
+            modifiers = {
+              shift = true;
+              accel = true;
+            };
+          }
+          {
+            id = "zen-copy-url";
+            key = "c";
+            modifiers = {
+              shift = true;
+              accel = true;
+            };
+          }
+        ];
     };
   };
 
