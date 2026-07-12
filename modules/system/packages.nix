@@ -9,12 +9,8 @@
     fastfetch
     tmuxinator
     rsync
-    just
     wl-clipboard
     unzip
-    lazygit
-    sesh
-    xdg-user-dirs
     zip
     wtype
     wget
@@ -41,12 +37,6 @@
     ddcutil
     wiremix
 
-    # --- GTK / Qt ---
-    papirus-icon-theme
-    libsForQt5.qtwayland
-    qt6.qtwayland
-    nwg-look
-
     # --- Theming ---
     matugen
     awww
@@ -64,16 +54,5 @@
     cava
     obs-studio
     scrcpy
-
-    # --- Fun ---
-    cowsay
-    figlet
-    lolcat
-    pipes
-
-    # --- Build ---
-    cmake
-    gnumake
   ];
-
 }
