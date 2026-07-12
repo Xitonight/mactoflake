@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
 
 {
   gtk = {
@@ -35,10 +35,10 @@
       };
 
       bookmarks = [
-        "file:///home/xitonight/dl/ Downloads"
-        "file:///home/xitonight/projects/ Projects"
-        "file:///home/xitonight/pictures/papers/ Wallpapers"
-        "file:///home/xitonight/.xidots/ Dotfiles"
+        "file:///home/${username}/dl/ Downloads"
+        "file:///home/${username}/projects/ Projects"
+        "file:///home/${username}/pictures/papers/ Wallpapers"
+        "file:///home/${username}/.xidots/ Dotfiles"
       ];
     };
 

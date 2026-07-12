@@ -23,20 +23,6 @@
     }
   ];
 
-  users.users.xitonight = {
-    isNormalUser = true;
-    description = "Xitonight";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-    initialPassword = "1234";
-  };
-
-  security.sudo.wheelNeedsPassword = false;
-
-  services.getty.autologinUser = "xitonight";
-
   # Lets QEMU do clean shutdown / guest commands.
   services.qemuGuest.enable = true;
 

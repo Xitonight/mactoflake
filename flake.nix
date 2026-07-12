@@ -36,16 +36,30 @@
       ...
     }@inputs:
     let
-      flakeDir = "/etc/nixos";
+      username = "xitonight";
+      flakeDir = "/home/${username}/.mactoflake";
 
       mkHost = hostName: {
         ${hostName} = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs flakeDir;
+            inherit inputs flakeDir username;
           };
           modules = [
-            { networking.hostName = "${hostName}"; }
+            {
+              networking.hostName = "${hostName}";
+              users.users."${username}" = {
+                isNormalUser = true;
+                description = "Xitonight";
+                extraGroups = [
+                  "wheel"
+                  "networkmanager"
+                ];
+                initialPassword = "1234";
+              };
+              security.sudo.wheelNeedsPassword = false;
+              services.getty.autologinUser = "${username}";
+            }
             ./hosts/${hostName}
             inputs.minegrub-theme.nixosModules.default
             inputs.nix-index-database.nixosModules.nix-index
@@ -58,10 +72,10 @@
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   extraSpecialArgs = {
-                    inherit inputs flakeDir;
+                    inherit inputs flakeDir username;
                     monitorsConfig = config.mactoflake.hyprland.monitors;
                   };
-                  users.xitonight = import ./modules/home;
+                  users."${username}" = import ./modules/home;
                 };
               }
             )

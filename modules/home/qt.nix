@@ -1,3 +1,4 @@
+{ username, ... }:
 let
   mkQtctSettings = colorsDir: {
     Appearance = {
@@ -17,8 +18,8 @@ in
   qt = {
     enable = true;
     platformTheme.name = "qtct";
-    qt5ctSettings = mkQtctSettings "/home/xitonight/.config/qt5ct/colors";
-    qt6ctSettings = mkQtctSettings "/home/xitonight/.config/qt6ct/colors";
+    qt5ctSettings = mkQtctSettings "/home/${username}/.config/qt5ct/colors";
+    qt6ctSettings = mkQtctSettings "/home/${username}/.config/qt6ct/colors";
   };
 
   home.sessionVariables = {

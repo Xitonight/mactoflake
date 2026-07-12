@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  username,
   ...
 }:
 
@@ -16,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     hardware.uinput.enable = true;
 
-    users.users.xitonight.extraGroups = [ "input" ];
+    users.users."${username}".extraGroups = [ "input" ];
 
     environment.etc."kanata/kanata.kbd".source = ./kanata.kbd;
 

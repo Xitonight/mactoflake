@@ -1,4 +1,4 @@
-{ ... }:
+{ username, ... }:
 
 {
   environment.etc = {
@@ -14,6 +14,6 @@
   programs._1password.enable = true;
   programs._1password-gui = {
     enable = true;
-    polkitPolicyOwners = [ "xitonight" "root" ];
+    polkitPolicyOwners = [ "${username}" "root" ];
   };
 }

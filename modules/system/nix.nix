@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, username, ... }:
 
 {
   nix.settings = {
@@ -9,7 +9,7 @@
     auto-optimise-store = true;
     trusted-users = [
       "root"
-      "xitonight"
+      "${username}"
     ];
   };
 

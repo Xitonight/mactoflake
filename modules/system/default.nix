@@ -10,6 +10,7 @@
     ./kanata.nix
     ./locale.nix
     ./network.nix
+    ./nh.nix
     ./nix.nix
     ./overlays.nix
     ./packages.nix
