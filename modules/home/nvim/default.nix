@@ -5,8 +5,17 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  home.packages = [
-    pkgs.lsof
+  home.packages = with pkgs; [
+    lsof
+
+    # Global LSPs / formatters
+
+    # Nix
+    nixd
+    nixfmt
+
+    # Lua
+    lua-language-server
   ];
 
   xdg.configFile."nvim".source = mkOutOfStoreSymlink nvimDir;

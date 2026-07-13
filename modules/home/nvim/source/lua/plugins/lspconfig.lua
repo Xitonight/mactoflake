@@ -15,6 +15,7 @@ local servers = {
   jsonls = {},
   kotlin_lsp = {},
   lua_ls = {},
+  nixd = {},
   prismals = {},
   qmlls = {},
   svelte = {},
