@@ -30,6 +30,7 @@
     ./qt.nix
     ./rofi
     ./scripts
+    ./secretspec
     ./ssh.nix
     ./swaync
     ./tmux.nix
