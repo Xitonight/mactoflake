@@ -26,6 +26,11 @@ let
       position = 4000;
       icon = "🌙";
     };
+    "Work" = {
+      id = "decf5613-69b4-4e57-927a-68ad8068808e";
+      position = 5000;
+      icon = "🎓";
+    };
   };
 in
 {
@@ -145,6 +150,11 @@ in
           id = "28a03b59-e235-4b1b-9dac-e484d7d9d510";
           url = "https://2025.aulaweb.unige.it/my/";
           workspace = spaces."Uni".id;
+        };
+        "Teams" = {
+          id = "1a223ccc-25b0-43e1-a3a5-3bd5e3e8cf40";
+          url = "https://teams.cloud.microsoft/";
+          workspace = spaces."Work".id;
         };
       };
 
