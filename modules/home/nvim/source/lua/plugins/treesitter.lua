@@ -5,6 +5,7 @@ return {
       "bash",
       "cpp",
       "css",
+      "c_sharp",
       "go",
       "html",
       "hyprlang",

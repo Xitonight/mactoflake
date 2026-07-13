@@ -7,6 +7,7 @@ local servers = {
   bashls = {},
   cmake = {},
   clangd = {},
+  csharp_ls = {},
   cssls = {},
   denols = {},
   gopls = {},
