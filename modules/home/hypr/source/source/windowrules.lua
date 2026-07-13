@@ -17,7 +17,7 @@ hl.window_rule({
 hl.window_rule({
 	match = { class = "kitty-nmtui" },
 	float = true,
-	size = { "monitor_w*0.4", "monitor_h*0.6" },
+	size = { "monitor_w*0.7", "monitor_h*0.7" },
 	center = true,
 })
 hl.window_rule({
