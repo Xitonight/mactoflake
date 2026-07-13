@@ -55,5 +55,6 @@
     cava
     obs-studio
     scrcpy
+    vial
   ];
 }

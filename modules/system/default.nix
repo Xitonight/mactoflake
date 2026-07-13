@@ -17,5 +17,6 @@
     ./polkit.nix
     ./shell.nix
     ./tailscale.nix
+    ./udev.nix
   ];
 }
