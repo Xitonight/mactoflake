@@ -25,6 +25,7 @@
     ./matugen
     ./nvim
     ./oh-my-posh.nix
+    ./starship.nix
     ./opencode
     ./pay-respects.nix
     ./qt.nix
