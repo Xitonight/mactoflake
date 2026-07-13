@@ -1,6 +1,6 @@
 return {
   "nickjvandyke/opencode.nvim",
-  lazy = true,
+  lazy = false,
   version = "*", -- Latest stable release
   dependencies = {
     {
@@ -46,10 +46,10 @@ return {
     },
     {
       "<leader>os",
-      function()
-        require("opencode").select_server()
+           function()
+        require("opencode").select("server.select")
       end,
-      desc = "Select opencode server",
+      desc = "Select opencode (prompts, commands, servers)",
       mode = { "n", "t" },
     },
     {
