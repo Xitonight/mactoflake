@@ -29,7 +29,7 @@ let
     "Work" = {
       id = "decf5613-69b4-4e57-927a-68ad8068808e";
       position = 5000;
-      icon = "🎓";
+      icon = "🗂";
     };
   };
 in
