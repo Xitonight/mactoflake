@@ -82,6 +82,7 @@
       zconf = "nvim ${flakeDir}/modules/home/zsh.nix";
       kittyconf = "nvim ${flakeDir}/modules/home/kitty.nix";
       nvconf = "nvim $HOME/.config/nvim";
+      nos = "nh os switch";
       ".." = "cd ..";
       "..." = "cd ../..";
       ".3" = "cd ../../..";
