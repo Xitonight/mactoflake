@@ -59,13 +59,10 @@
         success_symbol = "[❯](green)";
         error_symbol = "[❯](red)";
         vicmd_symbol = "[❯](green)";
-        format = "$symbol";
+        format = "$symbol ";
       };
 
-      transient_prompt = {
-        success_symbol = "[❯ ](green)";
-        error_symbol = "[❯ ](red)";
-      };
+      profiles.transient = "$character";
     };
   };
 }

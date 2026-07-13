@@ -198,12 +198,31 @@
             }
           }
         '';
+        transientPrompt = lib.mkOrder 1100 ''
+          TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
+
+          autoload -Uz add-zsh-hook
+          add-zsh-hook precmd transient-prompt-precmd
+
+          transient-prompt-precmd() {
+              TRAPINT() { transient-prompt; return $(( 128 + $1 )) }
+              SAVED_PROMPT="$(eval "printf '%s' \"''${TRANSIENT_PROMPT}\"")"
+          }
+
+          autoload -Uz add-zle-hook-widget
+          add-zle-hook-widget zle-line-finish transient-prompt
+
+          transient-prompt() {
+              PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
+          }
+        '';
       in
       lib.mkMerge [
         zstyleConfig
         zvmConfig
         shellIntegrations
         functions
+        transientPrompt
       ];
 
     profileExtra = ''
