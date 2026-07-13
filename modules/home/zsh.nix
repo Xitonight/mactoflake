@@ -58,7 +58,7 @@
 
     shellAliases = {
       pls = "sudo";
-      aurora = ''for code in {000..18}; do print -P -- "$code: %F{$code}Color%f"; done'';
+      aurora = ''for code in {000..256}; do print -P -- "$code: %F{$code}Color%f"; done'';
       l = "eza -lh --icons=auto";
       ls = "eza --icons=auto";
       la = "eza -A --icons=auto";
@@ -198,7 +198,7 @@
             }
           }
         '';
-        transientPrompt = lib.mkOrder 1100 ''
+        transientPrompt = lib.mkIf config.programs.starship.enable (lib.mkOrder 1100 ''
           TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
 
           autoload -Uz add-zsh-hook
@@ -215,7 +215,7 @@
           transient-prompt() {
               PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
           }
-        '';
+        '');
       in
       lib.mkMerge [
         zstyleConfig

@@ -2,12 +2,12 @@
 
 {
   programs.starship = {
-    enable = true;
+    enable = false;
     enableZshIntegration = true;
 
     settings = {
       add_newline = true;
-      format = "$directory$git_branch$git_status$nix_shell$line_break$character";
+      format = "$directory$git_branch$git_status$custom$line_break$character";
       right_format = "$cmd_duration";
 
       directory = {
@@ -19,12 +19,12 @@
 
       git_branch = {
         symbol = "";
-        style = "bright-black";
+        style = "245";
         format = "[ $branch]($style)";
       };
 
       git_status = {
-        style = "bright-black";
+        style = "245";
         modified = "*";
         staged = "*";
         untracked = "*";
@@ -39,14 +39,12 @@
         format = "([$modified$staged$untracked$deleted$renamed$conflicted]($style)) [$ahead_behind](cyan)";
       };
 
-      nix_shell = {
-        symbol = "󱄅 ";
+      custom.devenv = {
+        description = "devenv shell indicator";
+        when = ''[ -n "$DEVENV_ROOT" ] || [ -n "$DEVENV_STATE" ]'';
+        format = "[ $symbol devenv]($style)";
+        symbol = "󱄅";
         style = "blue";
-        format = "[ $symbol$state( \\($name\\))]($style)";
-        heuristic = true;
-        unknown_msg = "";
-        impure_msg = "impure";
-        pure_msg = "pure";
       };
 
       cmd_duration = {

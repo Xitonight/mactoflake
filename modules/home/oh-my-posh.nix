@@ -1,6 +1,6 @@
 {
   programs.oh-my-posh = {
-    enable = false;
+    enable = true;
     enableZshIntegration = true;
 
     settings = {
@@ -38,11 +38,11 @@
               };
             }
             {
-              type = "nix-shell";
+              type = "text";
               style = "plain";
               foreground = "blue";
               background = "transparent";
-              template = " {{ if ne .Type \"unknown\" }}󱄅 {{ .Type }}{{ end }}";
+              template = "{{ if or .Env.DEVENV_ROOT .Env.DEVENV_STATE }} 󱄅 devenv{{ end }}";
             }
           ];
         }
