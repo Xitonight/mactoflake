@@ -1,4 +1,4 @@
-local hostname = io.popen("hostname"):read("*a"):gsub("%s+", "")
+hostname = io.popen("hostname"):read("*a"):gsub("%s+", "")
 
 require("source/autostart")
 require("source/misc")

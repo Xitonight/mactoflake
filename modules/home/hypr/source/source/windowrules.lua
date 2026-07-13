@@ -57,6 +57,11 @@ hl.window_rule({
 hl.workspace_rule({ workspace = "special:telegram", persistent = true })
 hl.workspace_rule({ workspace = "special:obsidian", persistent = true })
 
+if hostname == "mactopad" then
+	hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-1", default = true })
+	hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-1", default = true })
+end
+
 -- Layer rules
 hl.layer_rule({
 	match = { namespace = "selection" },
