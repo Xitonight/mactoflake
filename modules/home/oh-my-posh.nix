@@ -37,6 +37,13 @@
                 fetch_status = true;
               };
             }
+            {
+              type = "nix-shell";
+              style = "plain";
+              foreground = "blue";
+              background = "transparent";
+              template = " {{ if ne .Type \"unknown\" }}󱄅 {{ .Type }}{{ end }}";
+            }
           ];
         }
         {
