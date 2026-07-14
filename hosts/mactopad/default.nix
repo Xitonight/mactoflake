@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
     ../../modules/system
   ];
@@ -20,6 +20,12 @@
       output = "eDP-1";
       mode = "1920x1080@60";
       scale = 1;
+    }
+    {
+      output = "HDMI-A-1";
+      mode = "1920x1080@75";
+      scale = 1;
+      position = "-1920x0";
     }
   ];
 
