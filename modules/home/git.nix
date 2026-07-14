@@ -1,4 +1,9 @@
-{ ... }:
+{
+  pkgs,
+  lib,
+  osConfig,
+  ...
+}:
 
 {
   programs.git = {
@@ -9,6 +14,12 @@
         email = "xitonight@gmail.com";
       };
       safe.directory = "/etc/nixos";
+    };
+    signing = {
+      signByDefault = true;
+      format = "ssh";
+      signer = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+      key = osConfig.mactoflake.git.signingKey;
     };
   };
 

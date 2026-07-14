@@ -6,6 +6,7 @@
     ./boot.nix
     ./cachix.nix
     ./fonts.nix
+    ./git.nix
     ./hyprland.nix
     ./kanata.nix
     ./locale.nix

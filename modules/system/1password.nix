@@ -1,4 +1,10 @@
-{ username, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  username,
+  ...
+}:
 
 {
   environment.etc = {
@@ -14,6 +20,10 @@
   programs._1password.enable = true;
   programs._1password-gui = {
     enable = true;
-    polkitPolicyOwners = [ "${username}" "root" ];
+    polkitPolicyOwners = [
+      "${username}"
+      "root"
+    ];
   };
+
 }
