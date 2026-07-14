@@ -7,6 +7,7 @@
       poppins
       noto-fonts-color-emoji
       font-awesome
+      monocraft
     ];
 
     fontconfig = {
