@@ -19,5 +19,6 @@
     ./shell.nix
     ./tailscale.nix
     ./udev.nix
+    ./virtualization.nix
   ];
 }
