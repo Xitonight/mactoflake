@@ -156,6 +156,11 @@ in
           url = "https://teams.cloud.microsoft/";
           workspace = spaces."Work".id;
         };
+        "Outlook" = {
+          id = "28c0d9e7-dfb2-42c1-aa91-65e5744277db";
+          url = "https://outlook.office.com/mail/";
+          workspace = spaces."Work".id;
+        };
       };
 
       extensions.packages = with firefox-addons; [
