@@ -14,6 +14,16 @@ in
       description = "Which bootloader to use. Set per-host in hosts/<name>/default.nix.";
     };
 
+    silent-boot = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Silence kernel/initrd/console logging during boot.
+        Adds kernelParams (quiet, splash, udev log suppression),
+        sets consoleLogLevel to 0, and disables initrd verbosity.
+      '';
+    };
+
     grub.efiInstallAsRemovable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -51,16 +61,16 @@ in
     {
       boot = {
         loader.efi.canTouchEfiVariables = !(cfg.grub.efiInstallAsRemovable && cfg.loader == "grub");
-        consoleLogLevel = 0;
-        kernelParams = [
+        initrd.systemd.enable = true;
+        consoleLogLevel = lib.mkIf cfg.silent-boot 0;
+        kernelParams = lib.mkIf cfg.silent-boot [
           "quiet"
           "splash"
           "rd.systemd.show_status=false"
           "rd.udev.log_level=3"
           "udev.log_priority=3"
         ];
-        initrd.verbose = false;
-        initrd.systemd.enable = true;
+        initrd.verbose = lib.mkIf cfg.silent-boot false;
       };
     }
   ];

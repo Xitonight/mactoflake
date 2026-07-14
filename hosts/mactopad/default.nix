@@ -6,7 +6,10 @@
     ../../modules/system
   ];
 
-  mactoflake.boot.loader = "grub";
+  mactoflake.boot = {
+    loader = "grub";
+    silent-boot = false;
+  };
 
   mactoflake.input.kanata.enable = true;
 
