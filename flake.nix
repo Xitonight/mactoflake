@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
+    minecraft-plymouth-theme.url = "github:nikp123/minecraft-plymouth-theme";
     hyprland.url = "github:hyprwm/Hyprland";
 
     home-manager = {
@@ -62,6 +63,7 @@
             }
             ./hosts/${hostName}
             inputs.minegrub-theme.nixosModules.default
+            inputs.minecraft-plymouth-theme.nixosModules.plymouth-minecraft-theme
             inputs.nix-index-database.nixosModules.nix-index
 
             home-manager.nixosModules.home-manager

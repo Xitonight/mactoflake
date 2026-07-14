@@ -9,6 +9,8 @@
 
   mactoflake.boot = {
     loader = "grub";
+    silent-boot = true;
+    plymouth = true;
     grub.efiInstallAsRemovable = true;
   };
 

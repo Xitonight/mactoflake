@@ -8,7 +8,8 @@
 
   mactoflake.boot = {
     loader = "grub";
-    silent-boot = false;
+    silent-boot = true;
+    plymouth = true;
   };
 
   mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGOx7KW5d4Xtx3fvBDCSeBylB5hTPYIzMB/ss7qJwva/ mactopad";
