@@ -56,5 +56,6 @@
     obs-studio
     scrcpy
     vial
+    qbittorrent
   ];
 }
