@@ -16,6 +16,13 @@
           newline = true;
           segments = [
             {
+              type = "text";
+              style = "plain";
+              background = "transparent";
+              foreground = "18";
+              template = "{{ if .Env.SSH_CONNECTION }}{{ .UserName }}@{{ .HostName }}:{{ end }}";
+            }
+            {
               type = "path";
               style = "plain";
               background = "transparent";
