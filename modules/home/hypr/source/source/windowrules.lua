@@ -59,7 +59,7 @@ hl.workspace_rule({ workspace = "special:obsidian", persistent = true })
 
 if hostname == "mactopad" then
 	hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-1", default = true })
-	hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-1", default = true })
+	hl.workspace_rule({ workspace = "2", monitor = "DP-1", default = true })
 end
 
 -- Layer rules
