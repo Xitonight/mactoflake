@@ -65,6 +65,11 @@ in
           background = "background_options/1.20 - [Trails & Tales].png";
           boot-options-count = 3;
         };
+        splashImage = lib.mkForce null;
+        extraPerEntryConfig = ''
+          echo "Loading Linux..."
+          echo "Loading initial ramdisk..."
+        '';
       };
     })
 

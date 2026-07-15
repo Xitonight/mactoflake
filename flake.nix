@@ -59,7 +59,16 @@
                 initialPassword = "1234";
               };
               security.sudo.wheelNeedsPassword = false;
-              services.getty.autologinUser = "${username}";
+              services.greetd = {
+                enable = true;
+                settings = rec {
+                  initial_session = {
+                    command = "uwsm start hyprland.desktop >/dev/null 2>&1";
+                    user = "${username}";
+                  };
+                  default_session = initial_session;
+                };
+              };
             }
             ./hosts/${hostName}
             inputs.minegrub-theme.nixosModules.default
