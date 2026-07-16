@@ -67,8 +67,31 @@ in
         };
         splashImage = lib.mkForce null;
         extraPerEntryConfig = ''
-          echo "Loading Linux..."
-          echo "Loading initial ramdisk..."
+          echo ""
+          echo "          ▗▄▄▄       ▗▄▄▄▄    ▄▄▄▖             "
+          echo "          ▜███▙       ▜███▙  ▟███▛             "
+          echo "           ▜███▙       ▜███▙▟███▛              "
+          echo "            ▜███▙       ▜██████▛               "
+          echo "     ▟█████████████████▙ ▜████▛     ▟▙         "
+          echo "    ▟███████████████████▙ ▜███▙    ▟██▙        "
+          echo "           ▄▄▄▄▖           ▜███▙  ▟███▛        "
+          echo "          ▟███▛             ▜██▛ ▟███▛         "
+          echo "         ▟███▛               ▜▛ ▟███▛          "
+          echo "▟███████████▛                  ▟██████████▙    "
+          echo "▜██████████▛                  ▟███████████▛    "
+          echo "      ▟███▛ ▟▙               ▟███▛             "
+          echo "     ▟███▛ ▟██▙             ▟███▛              "
+          echo "    ▟███▛  ▜███▙           ▝▀▀▀▀               "
+          echo "    ▜██▛    ▜███▙ ▜██████████████████▛         "
+          echo "     ▜▛     ▟████▙ ▜████████████████▛          "
+          echo "           ▟██████▙         ▜███▙              "
+          echo "          ▟███▛▜███▙         ▜███▙             "
+          echo "         ▟███▛  ▜███▙         ▜███▙            "
+          echo "         ▝▀▀▀    ▀▀▀▀▘         ▀▀▀▘            "
+          echo ""
+          echo "Loading the corn flakes..."
+          echo "Watching the snow flakes falling..."
+          echo "Chipping the obsidian flakes..."
         '';
       };
     })
