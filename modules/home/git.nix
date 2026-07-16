@@ -2,6 +2,7 @@
   pkgs,
   lib,
   osConfig,
+  email,
   ...
 }:
 
@@ -11,7 +12,7 @@
     settings = {
       user = {
         name = "Xitonight";
-        email = "xitonight@gmail.com";
+        inherit email;
       };
       safe.directory = "/etc/nixos";
     };

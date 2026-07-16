@@ -31,7 +31,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       home-manager,
       ...
@@ -39,19 +38,24 @@
     let
       username = "xitonight";
       flakeDir = "/home/${username}/.mactoflake";
+      email = "xitonight@gmail.com";
 
       mkHost = hostName: {
         ${hostName} = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs flakeDir username;
+            inherit
+              inputs
+              flakeDir
+              username
+              email
+              ;
           };
           modules = [
             {
               networking.hostName = "${hostName}";
               users.users."${username}" = {
                 isNormalUser = true;
-                description = "Xitonight";
                 extraGroups = [
                   "wheel"
                   "networkmanager"
@@ -83,7 +87,12 @@
                   useGlobalPkgs = true;
                   useUserPackages = true;
                   extraSpecialArgs = {
-                    inherit inputs flakeDir username;
+                    inherit
+                      inputs
+                      flakeDir
+                      username
+                      email
+                      ;
                     monitorsConfig = config.mactoflake.hyprland.monitors;
                   };
                   users."${username}" = import ./modules/home;
