@@ -38,6 +38,7 @@
     let
       username = "xitonight";
       flakeDir = "/home/${username}/.mactoflake";
+      papersDir = "$XDG_PICTURES_DIR/papers";
       email = "xitonight@gmail.com";
 
       mkHost = hostName: {
@@ -47,6 +48,7 @@
             inherit
               inputs
               flakeDir
+              papersDir
               username
               email
               ;
@@ -90,6 +92,7 @@
                     inherit
                       inputs
                       flakeDir
+                      papersDir
                       username
                       email
                       ;

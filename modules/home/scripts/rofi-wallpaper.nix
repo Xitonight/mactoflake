@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, papersDir, ... }:
 
 {
   home.packages = [
     (pkgs.writeShellScriptBin "rofi-wallpaper" ''
       [ -f "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ] && . "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
-      WALLPAPER_DIR="''${XDG_PICTURES_DIR:-$HOME/pictures}/papers"
+      WALLPAPER_DIR="${papersDir}"
 
       selection=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -exec basename {} \; | sort | while read -r name; do
         printf '%s\x00icon\x1f%s\n' "$name" "$WALLPAPER_DIR/$name"
