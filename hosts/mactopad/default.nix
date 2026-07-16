@@ -18,6 +18,8 @@
 
   mactoflake.input.kanata.enable = true;
 
+  mactoflake.power.enable = true;
+
   mactoflake.network.tailscale = {
     enable = true;
     enableSSH = true;

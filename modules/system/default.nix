@@ -16,6 +16,7 @@
     ./overlays.nix
     ./packages.nix
     ./polkit.nix
+    ./power.nix
     ./shell.nix
     ./tailscale.nix
     ./udev.nix
