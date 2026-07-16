@@ -1,7 +1,5 @@
-{ config, pkgs, ... }:
-
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
     ../../modules/system
     ../../modules/system/nvidia.nix
@@ -16,7 +14,7 @@
 
   mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVODpv0S1p5R9fCHeEy8AZTHjnFuVdB3UN6CNlyGuOt";
 
-  mactoflake.input.kanata.enable = false;
+  mactoflake.input.kanata.enable = true;
 
   mactoflake.network.tailscale = {
     enable = true;
