@@ -14,7 +14,7 @@
 
   mactoflake.virtualization.enable = true;
 
-  mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGOx7KW5d4Xtx3fvBDCSeBylB5hTPYIzMB/ss7qJwva/ mactopad";
+  mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2oLqyj5ZEhObKpgxHDy+5ME7KOf9EpF9wA/ZUNI+R";
 
   mactoflake.input.kanata.enable = true;
 

@@ -12,7 +12,7 @@
     grub.efiInstallAsRemovable = true;
   };
 
-  mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVODpv0S1p5R9fCHeEy8AZTHjnFuVdB3UN6CNlyGuOt";
+  mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHLE2wMLk6xKtPG8f5UYWWfUYqtx9j4naGQqvYdCA14o";
 
   mactoflake.input.kanata.enable = true;
 
