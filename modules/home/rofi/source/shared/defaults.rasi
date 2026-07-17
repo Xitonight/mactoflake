@@ -55,9 +55,11 @@ inputbar {
   padding: 12px 20px;
   margin: 0px;
 
-  border: 2px solid;
+  border: 0px;
 
   border-radius: 20px;
+
+  background-color: @primary;
 
   children: [prompt, entry];
 }
@@ -65,11 +67,15 @@ inputbar {
 prompt {
   margin: 0px;
 
-  text-color: @primary;
+  text-color: @on-primary;
+  background-color: inherit;
 }
 
 entry {
   placeholder: "Search...";
+
+  text-color: @on-primary;
+  background-color: inherit;
 }
 
 num-filtered-rows {
@@ -150,21 +156,17 @@ element normal.normal {
 }
 
 element normal.active {
-  background-color: @surface;
-  border-color: @primary-transparent-50;
+  background-color: @surface-bright;
   text-color: @tertiary;
 }
 
 element selected.normal {
-  background-color: @primary;
-  border-color: @on-primary;
-  text-color: @on-primary;
+  background-color: @surface-bright;
+  text-color: @on-surface;
 }
 
 element selected.active {
-  background-color: @surface;
-  border: 0px 0px 0px 2px;
-  border-color: @tertiary;
+  background-color: @surface-bright;
   text-color: @tertiary;
 }
 
