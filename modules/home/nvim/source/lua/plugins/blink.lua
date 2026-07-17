@@ -18,7 +18,7 @@ return {
     build = function()
       -- build the fuzzy matcher, wait up to 60 seconds
       -- you can use `gb` in `:Lazy` to rebuild the plugin as needed
-      require("blink.cmp").build():wait(60000)
+      require("blink.cmp").build():pwait()
     end,
     opts_extend = {
       "sources.completion.enabled_providers",
