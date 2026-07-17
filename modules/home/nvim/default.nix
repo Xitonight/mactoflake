@@ -1,4 +1,9 @@
-{ config, flakeDir, pkgs, ... }:
+{
+  config,
+  flakeDir,
+  pkgs,
+  ...
+}:
 
 let
   nvimDir = "${flakeDir}/modules/home/nvim/source";
@@ -16,6 +21,9 @@ in
 
     # Lua
     lua-language-server
+
+    #
+    vscode-json-languageserver
   ];
 
   xdg.configFile."nvim".source = mkOutOfStoreSymlink nvimDir;
