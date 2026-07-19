@@ -5,6 +5,7 @@
     ./bluetooth.nix
     ./boot.nix
     ./cachix.nix
+    ./containers.nix
     ./fonts.nix
     ./git.nix
     ./hyprland.nix
