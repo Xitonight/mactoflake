@@ -66,6 +66,7 @@ Applied as a shared base to every host via `./modules/system/default.nix`. Each 
 | `polkit.nix` | Polkit authentication agent |
 | `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
+| `containers.nix` | `mactoflake.containers` option; Docker (rooted/rootless) + compose + dive + weekly prune |
 | `nvidia.nix` | NVIDIA driver config (modesetting, open, GSP); imported by `mactone` only |
 
 ### Home modules (`modules/home/`)
