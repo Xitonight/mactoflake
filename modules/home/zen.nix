@@ -46,14 +46,41 @@ in
         force = true;
         default = "unduck";
         engines = {
-          searchix = {
-            name = "Searchix";
+          searchix-nixos = {
+            name = "Searchix nixos options";
+            urls = [
+              {
+                template = "https://searchix.ovh/options/nixos/search?query={searchTerms}";
+              }
+            ];
+            definedAliases = [ "@nixo" ];
+          };
+          searchix-hm = {
+            name = "Searchix home-manager options";
             urls = [
               {
                 template = "https://searchix.ovh/options/home-manager/search?query={searchTerms}";
               }
             ];
-            definedAliases = [ "@nix" ];
+            definedAliases = [ "@nixh" ];
+          };
+          searchix-all = {
+            name = "Searchix all";
+            urls = [
+              {
+                template = "https://searchix.ovh/?query={searchTerms}";
+              }
+            ];
+            definedAliases = [ "@nixa" ];
+          };
+          searchix-pkgs = {
+            name = "Searchix pkgs";
+            urls = [
+              {
+                template = "https://searchix.ovh/packages/nixpkgs/search?query={searchTerms}";
+              }
+            ];
+            definedAliases = [ "@nixp" ];
           };
           unduck = {
             name = "Unduck";
