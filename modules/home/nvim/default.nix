@@ -11,6 +11,7 @@ let
 in
 {
   home.packages = with pkgs; [
+    # Packages required by plugins
     lsof
 
     # Global LSPs / formatters
@@ -21,9 +22,14 @@ in
 
     # Lua
     lua-language-server
+    stylua
 
-    #
+    # Json
     vscode-json-languageserver
+    prettierd
+
+    # TOML
+    taplo
   ];
 
   xdg.configFile."nvim".source = mkOutOfStoreSymlink nvimDir;

@@ -37,6 +37,7 @@ return {
     event = { "InsertEnter", "CmdlineEnter" },
 
     opts = {
+      fuzzy = { implementation = "rust" },
       snippets = { preset = "default" },
       appearance = { nerd_font_variant = "normal" },
       signature = { enabled = false },
