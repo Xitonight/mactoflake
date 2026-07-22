@@ -65,7 +65,7 @@ end
 -- Layer rules
 hl.layer_rule({
 	match = { namespace = "selection" },
-  no_anim = true,
+	no_anim = true,
 })
 hl.layer_rule({
 	match = { namespace = "rofi" },

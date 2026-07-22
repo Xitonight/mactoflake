@@ -20,9 +20,15 @@
 
   mactoflake.power.enable = true;
 
-  mactoflake.network.tailscale = {
-    enable = true;
-    enableSSH = true;
+  mactoflake.network = {
+    openvpn = {
+      enable = true;
+      servers.work.configFile = "/etc/openvpn/work.ovpn";
+    };
+    tailscale = {
+      enable = true;
+      enableSSH = true;
+    };
   };
 
   mactoflake.hyprland.monitors = [

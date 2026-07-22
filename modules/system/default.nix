@@ -14,6 +14,7 @@
     ./network.nix
     ./nh.nix
     ./nix.nix
+    ./openvpn.nix
     ./overlays.nix
     ./packages.nix
     ./polkit.nix
