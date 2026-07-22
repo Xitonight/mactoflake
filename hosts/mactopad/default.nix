@@ -46,5 +46,7 @@
     }
   ];
 
+  mactoflake.containers.enable = true;
+
   system.stateVersion = "26.05";
 }
