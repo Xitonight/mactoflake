@@ -24,6 +24,7 @@ let
             mode = "${m.mode}",
             position = "${m.position}",
             scale = ${toString m.scale},
+            transform = ${toString m.transform}
           })
         '') monitorsConfig
       );
