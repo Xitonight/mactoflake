@@ -48,5 +48,7 @@
 
   mactoflake.containers.enable = true;
 
+  programs.kdeconnect.enable = true;
+
   system.stateVersion = "26.05";
 }
