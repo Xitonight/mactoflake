@@ -46,8 +46,8 @@ return {
     },
     {
       "<leader>os",
-           function()
-        require("opencode").select("server.select")
+      function()
+        require("opencode").select()
       end,
       desc = "Select opencode (prompts, commands, servers)",
       mode = { "n", "t" },

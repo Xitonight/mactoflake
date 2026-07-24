@@ -30,6 +30,9 @@ in
 
     # TOML
     taplo
+
+    # Markdown
+    markdownlint-cli
   ];
 
   xdg.configFile."nvim".source = mkOutOfStoreSymlink nvimDir;
