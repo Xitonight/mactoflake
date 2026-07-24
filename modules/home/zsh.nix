@@ -31,15 +31,6 @@
 
     plugins = [
       {
-        name = "fzf-tab";
-        src = pkgs.fetchFromGitHub {
-          owner = "Aloxaf";
-          repo = "fzf-tab";
-          rev = "v1.2.0";
-          sha256 = "sha256-q26XVS/LcyZPRqDNwKKA9exgBByE0muyuNb0Bbar2lY=";
-        };
-      }
-      {
         name = "zsh-vi-mode";
         src = pkgs.zsh-vi-mode;
         file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
@@ -53,6 +44,15 @@
           sha256 = "sha256-bp6tivQNAfboU+Q5M3/bH5dGjbHBh2mdbxsv8Y8FCuM=";
         };
         file = "plugins/sudo/sudo.plugin.zsh";
+      }
+      {
+        name = "fzf-tab";
+        src = pkgs.fetchFromGitHub {
+          owner = "Aloxaf";
+          repo = "fzf-tab";
+          rev = "v1.2.0";
+          sha256 = "sha256-q26XVS/LcyZPRqDNwKKA9exgBByE0muyuNb0Bbar2lY=";
+        };
       }
     ];
 
@@ -105,9 +105,13 @@
           zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
           zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
           zstyle ':completion:*' menu no
+          zstyle ':completion:*:git-checkout:*' sort false
+          zstyle ':completion:*:descriptions' format '[%d]'
           zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -A -1 --color=always $realpath'
           zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza -A -1 --color=always $realpath'
           zstyle ':fzf-tab:complete:git-(commit|add|diff|restore):*' fzf-preview 'git diff $realpath | delta --syntax-theme=base16'
+          zstyle ':fzf-tab:*' switch-group '<' '>'
+          zstyle ':fzf-tab:*' use-fzf-default-opts yes
         '';
 
         zvmConfig = lib.mkOrder 800 ''
@@ -198,24 +202,26 @@
             }
           }
         '';
-        transientPrompt = lib.mkIf config.programs.starship.enable (lib.mkOrder 1100 ''
-          TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
+        transientPrompt = lib.mkIf config.programs.starship.enable (
+          lib.mkOrder 1100 ''
+            TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
 
-          autoload -Uz add-zsh-hook
-          add-zsh-hook precmd transient-prompt-precmd
+            autoload -Uz add-zsh-hook
+            add-zsh-hook precmd transient-prompt-precmd
 
-          transient-prompt-precmd() {
-              TRAPINT() { transient-prompt; return $(( 128 + $1 )) }
-              SAVED_PROMPT="$(eval "printf '%s' \"''${TRANSIENT_PROMPT}\"")"
-          }
+            transient-prompt-precmd() {
+                TRAPINT() { transient-prompt; return $(( 128 + $1 )) }
+                SAVED_PROMPT="$(eval "printf '%s' \"''${TRANSIENT_PROMPT}\"")"
+            }
 
-          autoload -Uz add-zle-hook-widget
-          add-zle-hook-widget zle-line-finish transient-prompt
+            autoload -Uz add-zle-hook-widget
+            add-zle-hook-widget zle-line-finish transient-prompt
 
-          transient-prompt() {
-              PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
-          }
-        '');
+            transient-prompt() {
+                PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
+            }
+          ''
+        );
       in
       lib.mkMerge [
         zstyleConfig
