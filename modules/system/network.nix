@@ -1,4 +1,6 @@
 {
-  networking.networkmanager.enable = true;
-  services.openssh.enable = true;
+  flake.nixosModules.network = {
+    networking.networkmanager.enable = true;
+    services.openssh.enable = true;
+  };
 }
