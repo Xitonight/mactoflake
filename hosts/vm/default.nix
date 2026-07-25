@@ -1,27 +1,28 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
     ../../modules/system
   ];
 
-  mactoflake.boot.loader = "grub";
+  mactoflake = {
+    boot.loader = "grub";
+    input.kanata.enable = false;
 
-  mactoflake.input.kanata.enable = false;
+    network.tailscale = {
+      enable = true;
+      enableSSH = true;
+    };
 
-  mactoflake.network.tailscale = {
-    enable = true;
-    enableSSH = true;
+    hyprland.monitors = [
+      {
+        output = "Virtual-1";
+        mode = "1920x1080";
+        scale = 1;
+      }
+    ];
   };
-
-  mactoflake.hyprland.monitors = [
-    {
-      output = "Virtual-1";
-      mode = "1920x1080";
-      scale = 1;
-    }
-  ];
 
   # Lets QEMU do clean shutdown / guest commands.
   services.qemuGuest.enable = true;

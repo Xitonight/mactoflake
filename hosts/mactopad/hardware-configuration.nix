@@ -13,34 +13,38 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "ehci_pci"
-    "xhci_pci"
-    "usb_storage"
-    "sd_mod"
-    "sdhci_pci"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelParams = [ "iommu=soft" ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    initrd.availableKernelModules = [
+      "nvme"
+      "ehci_pci"
+      "xhci_pci"
+      "usb_storage"
+      "sd_mod"
+      "sdhci_pci"
+    ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-amd" ];
+    kernelParams = [ "iommu=soft" ];
+    extraModulePackages = [ ];
+  };
 
   hardware.amdgpu.initrd.enable = lib.mkDefault true;
   services.xserver.videoDrivers = lib.mkDefault [ "modesetting" ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/79db2615-33a8-40c6-9308-4576510a14c2";
-    fsType = "ext4";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/79db2615-33a8-40c6-9308-4576510a14c2";
+      fsType = "ext4";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B664-C6DB";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
+    "/boot" = {
+      device = "/dev/disk/by-uuid/B664-C6DB";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
   };
 
   swapDevices = [

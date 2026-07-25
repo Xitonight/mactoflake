@@ -198,24 +198,26 @@
             }
           }
         '';
-        transientPrompt = lib.mkIf config.programs.starship.enable (lib.mkOrder 1100 ''
-          TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
+        transientPrompt = lib.mkIf config.programs.starship.enable (
+          lib.mkOrder 1100 ''
+            TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"
 
-          autoload -Uz add-zsh-hook
-          add-zsh-hook precmd transient-prompt-precmd
+            autoload -Uz add-zsh-hook
+            add-zsh-hook precmd transient-prompt-precmd
 
-          transient-prompt-precmd() {
-              TRAPINT() { transient-prompt; return $(( 128 + $1 )) }
-              SAVED_PROMPT="$(eval "printf '%s' \"''${TRANSIENT_PROMPT}\"")"
-          }
+            transient-prompt-precmd() {
+                TRAPINT() { transient-prompt; return $(( 128 + $1 )) }
+                SAVED_PROMPT="$(eval "printf '%s' \"''${TRANSIENT_PROMPT}\"")"
+            }
 
-          autoload -Uz add-zle-hook-widget
-          add-zle-hook-widget zle-line-finish transient-prompt
+            autoload -Uz add-zle-hook-widget
+            add-zle-hook-widget zle-line-finish transient-prompt
 
-          transient-prompt() {
-              PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
-          }
-        '');
+            transient-prompt() {
+                PROMPT="$SAVED_PROMPT" RPROMPT="" zle .reset-prompt
+            }
+          ''
+        );
       in
       lib.mkMerge [
         zstyleConfig

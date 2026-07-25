@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  firefox-addons = pkgs.firefox-addons;
+  inherit (pkgs) firefox-addons;
   disabled = map (id: {
     inherit id;
     disabled = true;

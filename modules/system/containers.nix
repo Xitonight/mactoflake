@@ -35,7 +35,7 @@ in
   config = lib.mkIf cfg.enable {
     virtualisation.docker = {
       enable = !cfg.rootless;
-      enableOnBoot = cfg.enableOnBoot;
+      inherit (cfg) enableOnBoot;
 
       rootless = {
         enable = cfg.rootless;
@@ -54,7 +54,6 @@ in
       dive
     ];
 
-    users.users."${username}".extraGroups =
-      lib.mkIf (!cfg.rootless) [ "docker" ];
+    users.users."${username}".extraGroups = lib.mkIf (!cfg.rootless) [ "docker" ];
   };
 }
