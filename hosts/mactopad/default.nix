@@ -39,7 +39,7 @@
           network = {
             openvpn = {
               enable = true;
-              servers.work.configFile = "/etc/openvpn/work.ovpn";
+              servers.htb.configFile = "/etc/openvpn/academy-regular.ovpn";
             };
             tailscale = {
               enable = true;
