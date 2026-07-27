@@ -55,6 +55,7 @@
               position = "-1920x0";
             }
             {
+              disabled = true;
               output = "DP-1";
               mode = "1920x1080@75";
               scale = 1;
@@ -64,7 +65,7 @@
               output = "HDMI-A-1";
               mode = "1920x1080@75";
               scale = 1;
-              position = "1920x0";
+              position = "0x0";
             }
           ];
         };

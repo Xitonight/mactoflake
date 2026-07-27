@@ -11,6 +11,12 @@
         type = lib.types.listOf (
           lib.types.submodule {
             options = {
+              disabled = lib.mkOption {
+                type = lib.types.bool;
+                example = false;
+                default = false;
+                description = "Removes the monitor from the layout";
+              };
               output = lib.mkOption {
                 type = lib.types.str;
                 example = "eDP-1";
@@ -89,6 +95,7 @@
           pkgs.writeText "monitors.lua" (
             lib.concatMapStringsSep "\n\n" (m: ''
               hl.monitor({
+                disabled = ${lib.boolToString m.disabled},
                 output = "${m.output}",
                 mode = "${m.mode}",
                 position = "${m.position}",
