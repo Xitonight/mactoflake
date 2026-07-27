@@ -21,22 +21,30 @@
       ...
     }:
     {
-      programs.git = {
-        enable = true;
-        settings = {
-          user = {
-            name = "Xitonight";
-            inherit email;
+      programs.git =
+        let
+          signingKey =
+            if osConfig == null then
+              null
+            else
+              osConfig.mactoflake.git.signingKey;
+        in
+        {
+          enable = true;
+          settings = {
+            user = {
+              name = "Xitonight";
+              inherit email;
+            };
+            safe.directory = "/etc/nixos";
           };
-          safe.directory = "/etc/nixos";
+          signing = {
+            signByDefault = signingKey != null;
+            format = "ssh";
+            signer = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+            key = signingKey;
+          };
         };
-        signing = {
-          signByDefault = true;
-          format = "ssh";
-          signer = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-          key = osConfig.mactoflake.git.signingKey;
-        };
-      };
 
       programs.delta = {
         enable = true;
