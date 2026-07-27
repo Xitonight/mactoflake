@@ -32,15 +32,6 @@
 
         plugins = [
           {
-            name = "fzf-tab";
-            src = pkgs.fetchFromGitHub {
-              owner = "Aloxaf";
-              repo = "fzf-tab";
-              rev = "v1.2.0";
-              sha256 = "sha256-q26XVS/LcyZPRqDNwKKA9exgBByE0muyuNb0Bbar2lY=";
-            };
-          }
-          {
             name = "zsh-vi-mode";
             src = pkgs.zsh-vi-mode;
             file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
@@ -54,6 +45,15 @@
               sha256 = "sha256-bp6tivQNAfboU+Q5M3/bH5dGjbHBh2mdbxsv8Y8FCuM=";
             };
             file = "plugins/sudo/sudo.plugin.zsh";
+          }
+          {
+            name = "fzf-tab";
+            src = pkgs.fetchFromGitHub {
+              owner = "Aloxaf";
+              repo = "fzf-tab";
+              rev = "v1.2.0";
+              sha256 = "sha256-q26XVS/LcyZPRqDNwKKA9exgBByE0muyuNb0Bbar2lY=";
+            };
           }
         ];
 
