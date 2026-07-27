@@ -48,7 +48,7 @@ The flake expects to live at:
 /home/<your-user>/.mactoflake
 ```
 
-This is **not mandatory** — it can live anywhere — but `flakeDir` is declared in [`flake.nix`](flake.nix) and threaded through every module that builds out-of-store symlinks (nvim, hyprland, matugen, etc.). Keeping it there means everything Just Works™ out of the box, and `nh` (the nix helper, see [`modules/system/nh.nix`](modules/system/nh.nix)) reads `NH_OS_FLAKE` so you can deploy with a bare `nh os switch` (or better, `nos`). If you clone elsewhere, just update `flakeDir` in `flake.nix`.
+This is **not mandatory** — it can live anywhere — but `flakeDir` is declared in [`modules/parts.nix`](modules/parts.nix) (under `flake.const`) and threaded through every module that builds out-of-store symlinks (nvim, hyprland, matugen, etc.). Keeping it there means everything Just Works™ out of the box, and `nh` (the nix helper, see [`modules/system/nh.nix`](modules/system/nh.nix)) reads `NH_OS_FLAKE` so you can deploy with a bare `nh os switch` (or better, `nos`). If you clone elsewhere, just update `flakeDir` in [`modules/parts.nix`](modules/parts.nix).
 
 > [!NOTE]
 > Of course, flakeDir will be wired in AFTER you rebuild, so the first time you rebuild using the flake you'll still have to pass the right path with the usual `sudo nixos-rebuild switch --flake /path/to/the/flake#<your_hostname>`
@@ -57,7 +57,7 @@ This is **not mandatory** — it can live anywhere — but `flakeDir` is declare
 
 ## The `username` and `flakeDir` variables
 
-At the top of [`flake.nix`](flake.nix) there are a handful of `let` bindings:
+In [`modules/parts.nix`](modules/parts.nix) the shared constants live under `flake.const` (and become `self.const.*` to the rest of the flake):
 
 | Variable | Default | What it does |
 |----------|---------|--------------|
@@ -80,43 +80,57 @@ When tailoring this flake, you should **create your own host** rather than reusi
   ```
   This inspects your hardware and spits out a `hardware-configuration.nix` (and a `configuration.nix` you can ignore). Drop the generated `hardware-configuration.nix` into `hosts/<name>/`. If you're unsure when/how to run this during a NixOS install, the [NixOS manual](https://nixos.org/manual/nixos/stable/) walks through the whole install flow.
 
-- **`default.nix`** — imports its own `hardware-configuration.nix` and pulls in the shared system base. The simplest version just imports **almost everything**:
+- **`default.nix`** — a `flake-parts` module that defines `flake.nixosConfigurations.<name>`. It pulls in the shared base (`self.nixosModules.core` + `self.nixosModules.home-manager`), its own `hardware-configuration.nix`, and declares all per-machine `mactoflake.*` options:
 
   ```nix
   # hosts/<your-host>/default.nix
+  { self, inputs, ... }:
   {
-    imports = [
-      ./hardware-configuration.nix
-      ../../modules/system          # the shared base (everything by default)
-      # ../../modules/system/nvidia.nix  # add host-specific modules as needed
-    ];
-
-    # Declare any machine-specific config here. I put all my custom
-    # mactoflake.* options in here, but you can set whatever you need.
-    mactoflake.boot.loader = "systemd-boot";
-    mactoflake.hyprland.monitors = [ /* ... */ ];
-
-    system.stateVersion = "26.05";
+    flake.nixosConfigurations.<your-host> = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = {
+        inherit inputs;
+        inherit (self.const) username flakeDir papersDir email;
+      };
+      modules = [
+        ./hardware-configuration.nix
+        self.nixosModules.core           # the shared base (everything by default)
+        self.nixosModules.home-manager
+        # self.nixosModules.nvidia       # add host-specific modules as needed
+        { networking.hostName = "<your-host>"; }
+        { home-manager.users.${self.const.username} = { imports = self.homeImports; }; }
+        {
+          # Declare any machine-specific config here. I put all my custom
+          # mactoflake.* options in here, but you can set whatever you need.
+          mactoflake.boot.loader = "systemd-boot";
+          mactoflake.hyprland.monitors = [ /* ... */ ];
+        }
+      ];
+    };
   }
   ```
 
-Importing `../../modules/system` gives you the whole shared base in one line; import individual modules instead (or in addition) when you need host-specific ones like `nvidia.nix`. This is where you declare your per-machine `mactoflake.*` options (and any other host-specific config).
+`self.nixosModules.core` gives you the whole shared base in one line; add individual modules (like `nvidia`) to the `modules` list when you need host-specific ones. This is where you declare your per-machine `mactoflake.*` options (and any other host-specific config).
 
-Finally, **register the host in `flake.nix`** via the `mkHost` helper, e.g. at [`flake.nix:109-111`](flake.nix):
+Finally, **register the host in [`flake.nix`](flake.nix)** by adding its path to the `imports` of the `mkFlake` call:
 
 ```nix
-# The // simply merges the configurations created,
-# it's needed only if you use multiple hosts
-nixosConfigurations = (mkHost "vm") // (mkHost "mactopad") // (mkHost "mactone");
+outputs = inputs:
+  inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+    imports = [
+      (inputs.import-tree ./modules)   # auto-imports every module file
+      ./hosts/<your-host>              # <- add your host here
+    ];
+  };
 ```
 
-Just add your own `(mkHost "<your-host>")` to that set and it's wired in.
+`import-tree ./modules` auto-discovers every `.nix` file under `modules/` (the [Dendritic Pattern](https://github.com/mightyiam/dendritic) — each file is a `flake-parts` module), so you never maintain a manual `imports` list for features. Hosts are listed explicitly so their `hardware-configuration.nix` (a plain NixOS module, not a flake-parts module) isn't auto-evaluated.
 
 ---
 
 ## Custom options
 
-Almost all system modules in [`modules/system/`](modules/system/) are imported **by default** via [`modules/system/default.nix`](modules/system/default.nix). To opt *out* of one, remove its import line. The toggleable / configurable behaviour lives behind a set of custom `mactoflake.*` options — set them per-host in `hosts/<name>/default.nix`:
+Almost all system modules in [`modules/system/`](modules/system/) are imported **by default** via [`modules/core.nix`](modules/core.nix) (`flake.nixosModules.core`). To opt *out* of one, remove its line from `core.nix`'s `imports`. The toggleable / configurable behaviour lives behind a set of custom `mactoflake.*` options — set them per-host in `hosts/<name>/default.nix`:
 
 | Option | Type | Default | Effect |
 |--------|------|---------|--------|
@@ -161,12 +175,12 @@ mactoflake.hyprland.monitors = [
 
 ## Important: impure symlinks & the `--impure` flag
 
-Neovim and Hyprland configs are **not** translated to Nix. Instead, the raw source trees (Lua) live under `modules/home/<name>/source/` and are symlinked into `~/.config/` via `config.lib.file.mkOutOfStoreSymlink`:
+Neovim and Hyprland configs are **not** translated to Nix. Instead, the raw source trees (Lua) live under the repo and are symlinked into `~/.config/` via `config.lib.file.mkOutOfStoreSymlink`:
 
 | Config | Source | Symlink target |
 |--------|--------|----------------|
-| Neovim | [`modules/home/nvim/source/`](modules/home/nvim/source/) | `~/.config/nvim` |
-| Hyprland | [`modules/home/hypr/source/`](modules/home/hypr/source/) | `~/.config/hypr/` (per-file) |
+| Neovim | [`modules/dev/nvim/source/`](modules/dev/nvim/source/) | `~/.config/nvim` |
+| Hyprland | [`modules/desktop/hyprland/source/`](modules/desktop/hyprland/source/) | `~/.config/hypr/` (per-file) |
 
 Because `mkOutOfStoreSymlink` resolves paths **outside** the Nix store, building is impure.
 
@@ -223,7 +237,7 @@ nh os switch        # or: nixos-rebuild switch --flake .#<host> --impure
 
 ## Zen Browser
 
-The browser of choice is [Zen Browser](https://zen-browser.app/), configured declaratively in [`modules/home/zen.nix`](modules/home/zen.nix) via the [zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) Home Manager module.
+The browser of choice is [Zen Browser](https://zen-browser.app/), configured declaratively in [`modules/desktop/zen.nix`](modules/desktop/zen.nix) via the [zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake) Home Manager module.
 
 It's a **complete but personal** setup: custom search engines (incl. a Searchix shortcut `@nix`), a curated set of disabled default shortcuts, vertical tabs on the right, compact UI, pinned workspaces, and addons (uBlock Origin, Vimium, 1Password). Use it as a base to learn from — expect to rewrite a lot of it.
 
@@ -251,7 +265,7 @@ It's a **complete but personal** setup: custom search engines (incl. a Searchix 
 [1Password](https://1password.com/) is enabled system-wide ([`modules/system/1password.nix`](modules/system/1password.nix)) with GUI + CLI and the Zen browser allow-listed for integration. **I cannot recommend this enough.** It unlocks:
 
 - 🔑 **SSH key management** — your SSH keys live in 1Password and are served by its built-in SSH agent. No plaintext keys on disk.
-- ✍️ **Signed git commits** — set your SSH public key via `mactoflake.git.signingKey` (per-host) and the git module ([`modules/home/git.nix`](modules/home/git.nix)) signs every commit/tag using 1Password's `op-ssh-sign`.
+- ✍️ **Signed git commits** — set your SSH public key via `mactoflake.git.signingKey` (per-host) and the git module ([`modules/dev/git.nix`](modules/dev/git.nix)) signs every commit/tag using 1Password's `op-ssh-sign`.
 - 🌐 **A fantastic Zen/Firefox extension** — autofill everywhere, bundled into the Zen addons.
 
 This is the single biggest quality-of-life upgrade in the whole flake.
@@ -260,7 +274,7 @@ This is the single biggest quality-of-life upgrade in the whole flake.
 
 ## The terminal experience
 
-The terminal is where this setup shines. A few highlights (all keyboard-driven, see [`modules/home/tmux.nix`](modules/home/tmux.nix)):
+The terminal is where this setup shines. A few highlights (all keyboard-driven, see [`modules/shell/tmux.nix`](modules/shell/tmux.nix)):
 
 - **`tmux`** with a custom **two-line status bar** at the top — tuned to pair visually with NvChad's statusline.
 - **`tmux-floax`** — press <kbd>Alt</kbd>+<kbd>F</kbd> to pop a floating scratch terminal.
@@ -274,11 +288,11 @@ Plus a shell decked out with `zsh`, `fzf`, `eza`, `bat`, `zoxide`, `yazi`, `btop
 
 ## Hyprland
 
-[Hyprland](https://hyprland.org/) is the window manager, enabled via `programs.hyprland` (with UWSM, xwayland, and the upstream package from the flake input). The config is written in **Hyprland's native Lua API** (`hl.*` calls) under [`modules/home/hypr/source/`](modules/home/hypr/source/), split into focused files: `keybinds.lua`, `windowrules.lua`, `animations.lua`, `input.lua`, `submaps.lua`, `autostart.lua`, and more.
+[Hyprland](https://hyprland.org/) is the window manager, enabled via `programs.hyprland` (with UWSM, xwayland, and the upstream package from the flake input). The config is written in **Hyprland's native Lua API** (`hl.*` calls) under [`modules/desktop/hyprland/source/`](modules/desktop/hyprland/source/), split into focused files: `keybinds.lua`, `windowrules.lua`, `animations.lua`, `input.lua`, `submaps.lua`, `autostart.lua`, and more.
 
 **Per-host monitors** are declared in Nix via `mactoflake.hyprland.monitors` and compiled into a `monitors.lua` that Hyprland imports — so you configure monitors declaratively without touching Lua. Leave the list empty to fall back to the repo's bundled `monitors.lua`.
 
-The keybinds are extensive and submap-heavy. Plan to spend time in [`source/source/keybinds.lua`](modules/home/hypr/source/source/keybinds.lua).
+The keybinds are extensive and submap-heavy. Plan to spend time in [`source/source/keybinds.lua`](modules/desktop/hyprland/source/source/keybinds.lua).
 
 ---
 
@@ -294,9 +308,9 @@ Because it's behind a single toggle — `mactoflake.input.kanata.enable` — it'
 
 Both GTK and Qt are themed consistently. On top of that, [**matugen**](https://github.com/InioX/matugen) generates a full **Material You** colour palette from a wallpaper and feeds it into every program that supports custom themes (kitty reads a generated `colors.conf`, Hyprland imports a generated `colors.lua`, etc.).
 
-Wallpaper picking is one keystroke away via the **rofi wallpaper script** ([`modules/home/scripts/rofi-wallpaper.nix`](modules/home/scripts/rofi-wallpaper.nix)): pick an image and matugen runs automatically.
+Wallpaper picking is one keystroke away via the **rofi wallpaper script** (inlined in [`modules/desktop/scripts/default.nix`](modules/desktop/scripts/default.nix)): pick an image and matugen runs automatically.
 
-- **Wallpapers location:** `$XDG_PICTURES_DIR/papers` (i.e. `~/Pictures/papers`). Change the `papersDir` variable in `flake.nix` to point elsewhere.
+- **Wallpapers location:** `$XDG_PICTURES_DIR/papers` (i.e. `~/Pictures/papers`). Change the `papersDir` constant in [`modules/parts.nix`](modules/parts.nix) to point elsewhere.
 - **Want wallpapers?** I keep a public, contribution-friendly wallpapers repo: **[github.com/Xitonight/papers](https://github.com/Xitonight/papers)** — free to use and add to.
 
 > [!NOTE]
@@ -343,7 +357,7 @@ These kick in automatically on any rebuild *after* the first install. Fair warni
 
 ## Development: devenv
 
-[**devenv**](https://devenv.sh/) is already wired up ([`modules/home/devenv.nix`](modules/home/devenv.nix)) and is the recommended way to handle per-project development environments on NixOS.
+[**devenv**](https://devenv.sh/) is already wired up ([`modules/dev/devenv.nix`](modules/dev/devenv.nix)) and is the recommended way to handle per-project development environments on NixOS.
 
 📖 I won't write a guide here — head to the official wiki: **[devenv.sh](https://devenv.sh/)**.
 

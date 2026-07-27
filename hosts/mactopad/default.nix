@@ -1,60 +1,76 @@
-{ ... }:
+{
+  self,
+  inputs,
+  ...
+}:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ../../modules/system
-  ];
-
-  mactoflake.boot = {
-    loader = "grub";
-    silent-boot = true;
-    plymouth = true;
-  };
-
-  mactoflake.virtualization.enable = true;
-
-  mactoflake.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2oLqyj5ZEhObKpgxHDy+5ME7KOf9EpF9wA/ZUNI+R";
-
-  mactoflake.input.kanata.enable = true;
-
-  mactoflake.power.enable = true;
-
-  mactoflake.network = {
-    openvpn = {
-      enable = true;
-      servers.htb.configFile = "/etc/openvpn/academy-regular.ovpn";
+  flake.nixosConfigurations.mactopad = inputs.nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = {
+      inherit inputs;
+      inherit (self.const)
+        username
+        flakeDir
+        papersDir
+        email
+        ;
     };
-    tailscale = {
-      enable = true;
-      enableSSH = true;
-    };
+    modules = [
+      ./hardware-configuration.nix
+      self.nixosModules.core
+      self.nixosModules.home-manager
+      { networking.hostName = "mactopad"; }
+      { home-manager.users.${self.const.username} = { imports = self.homeImports; }; }
+      {
+        mactoflake = {
+          containers.enable = true;
+          virtualization.enable = true;
+          git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2oLqyj5ZEhObKpgxHDy+5ME7KOf9EpF9wA/ZUNI+R";
+          input.kanata.enable = true;
+          power.enable = true;
+
+          boot = {
+            loader = "grub";
+            silent-boot = true;
+            plymouth = true;
+          };
+
+          network = {
+            openvpn = {
+              enable = true;
+              servers.work.configFile = "/etc/openvpn/work.ovpn";
+            };
+            tailscale = {
+              enable = true;
+              enableSSH = true;
+            };
+          };
+
+          hyprland.monitors = [
+            {
+              output = "eDP-1";
+              mode = "1920x1080@60";
+              scale = 1;
+              position = "-1920x0";
+            }
+            {
+              output = "DP-1";
+              mode = "1920x1080@75";
+              scale = 1;
+              position = "0x0";
+            }
+            {
+              output = "HDMI-A-1";
+              mode = "1920x1080@75";
+              scale = 1;
+              position = "1920x0";
+            }
+          ];
+        };
+
+        programs.kdeconnect.enable = true;
+      }
+    ];
   };
-
-  mactoflake.hyprland.monitors = [
-    {
-      output = "eDP-1";
-      mode = "1920x1080@60";
-      scale = 1;
-      position = "-1920x0";
-    }
-    {
-      output = "DP-1";
-      mode = "1920x1080@75";
-      scale = 1;
-      position = "1920x0";
-    }
-    {
-      output = "HDMI-A-1";
-      mode = "1920x1080@75";
-      scale = 1;
-      position = "0x0";
-    }
-  ];
-
-  mactoflake.containers.enable = true;
-
-  programs.kdeconnect.enable = true;
-
-  system.stateVersion = "26.05";
 }
