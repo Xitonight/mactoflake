@@ -5,19 +5,17 @@
 }:
 
 let
-  username = self.const.username;
+  workUser = "alexpitzalis";
+  workFlakeDir = "/home/${workUser}/.mactoflake";
 in
 {
   flake.homeConfigurations.work = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     extraSpecialArgs = {
       inherit inputs;
-      inherit (self.const)
-        username
-        flakeDir
-        papersDir
-        email
-        ;
+      username = workUser;
+      flakeDir = workFlakeDir;
+      inherit (self.const) papersDir email;
     };
     modules = [
       self.homeModules.base
