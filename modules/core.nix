@@ -31,6 +31,7 @@
         self.nixosModules.packages
         self.nixosModules.polkit
         self.nixosModules.power
+        self.nixosModules.quickshare
         self.nixosModules.shell
         self.nixosModules.tailscale
         self.nixosModules.udev
