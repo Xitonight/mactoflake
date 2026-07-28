@@ -41,8 +41,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "ohmyzsh";
               repo = "ohmyzsh";
-              rev = "master";
-              sha256 = "sha256-bp6tivQNAfboU+Q5M3/bH5dGjbHBh2mdbxsv8Y8FCuM=";
+              rev = "7ea697fd8138550ddf7262456d412f0dcd1cbf84";
+              sha256 = "sha256-9g74T/IsTVY4mymLGtO7+8t/ZW+6ovQjr7wqZSofhJE=";
             };
             file = "plugins/sudo/sudo.plugin.zsh";
           }
