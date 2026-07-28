@@ -13,7 +13,7 @@
     {
       home.packages = with pkgs; [
         neovim
-        rg
+        ripgrep
 
         # Packages required by plugins
         lsof
