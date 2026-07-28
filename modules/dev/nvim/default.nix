@@ -12,6 +12,8 @@
     in
     {
       home.packages = with pkgs; [
+        neovim
+
         # Packages required by plugins
         lsof
 
