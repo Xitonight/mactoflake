@@ -36,6 +36,7 @@
         self.nixosModules.tailscale
         self.nixosModules.udev
         self.nixosModules.virtualization
+        self.nixosModules.steam
 
         inputs.minegrub-theme.nixosModules.default
         inputs.minecraft-plymouth-theme.nixosModules.plymouth-minecraft-theme
