@@ -66,11 +66,11 @@
             set -g status-format[1] " "
             set -g status 2
             set -g status-style bg=default,fg=brightblack
-            set -g @round-separator-style-prefix fg=colour1,bg=colour0
-            set -g @round-separator-style fg=colour4,bg=colour0
+            set -g @round-separator-style-prefix fg=colour1,bg=default
+            set -g @round-separator-style fg=colour4,bg=default
             set -g @left-text-style-prefix fg=colour8,bg=colour1
             set -g @left-text-style fg=colour8,bg=colour4
-            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=colour0]  "
+            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=default]  "
             set -g status-left-length 50
             set -g status-right "#[fg=colour5]%H:%M  "
             set -g window-status-format "#{window_name}"
