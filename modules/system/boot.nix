@@ -39,16 +39,25 @@
           '';
         };
 
-        grub.efiInstallAsRemovable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-          description = ''
-            Install GRUB to the fallback removable EFI path
-            (\EFI\BOOT\BOOTX64.EFI) instead of relying on a boot entry in NVRAM.
-            Useful on boards that wipe EFI variables on reboot. Only takes effect
-            when loader is "grub"; when active, canTouchEfiVariables is forced to
-            false. Safe to leave enabled when switching to systemd-boot.
-          '';
+        grub = {
+          useOSProber = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              Enable the grub OS prober to find other system entries automatically.
+            '';
+          };
+          efiInstallAsRemovable = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              Install GRUB to the fallback removable EFI path
+              (\EFI\BOOT\BOOTX64.EFI) instead of relying on a boot entry in NVRAM.
+              Useful on boards that wipe EFI variables on reboot. Only takes effect
+              when loader is "grub"; when active, canTouchEfiVariables is forced to
+              false. Safe to leave enabled when switching to systemd-boot.
+            '';
+          };
         };
       };
 
@@ -60,6 +69,7 @@
             efiInstallAsRemovable = cfg.grub.efiInstallAsRemovable;
             devices = [ "nodev" ];
             device = "nodev";
+            useOSProber = cfg.grub.useOSProber;
             minegrub-theme = {
               enable = true;
               splash = "Flakes go brrr";

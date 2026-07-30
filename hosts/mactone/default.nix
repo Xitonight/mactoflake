@@ -36,7 +36,10 @@
             loader = "grub";
             silent-boot = true;
             plymouth = true;
-            grub.efiInstallAsRemovable = true;
+            grub = {
+              efiInstallAsRemovable = true;
+              useOSProber = true;
+            };
           };
 
           network.tailscale = {
