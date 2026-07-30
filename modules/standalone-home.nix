@@ -24,6 +24,7 @@ in
       self.homeModules.base
       self.homeModules.bat
       self.homeModules.btop
+      self.homeModules.devenv
       self.homeModules.eza
       self.homeModules.fsh
       self.homeModules.git
