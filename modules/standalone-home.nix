@@ -27,7 +27,6 @@ in
       self.homeModules.devenv
       self.homeModules.eza
       self.homeModules.fsh-work
-      self.homeModules.git
       self.homeModules.lazygit
       self.homeModules.nvim
       self.homeModules.oh-my-posh-work
