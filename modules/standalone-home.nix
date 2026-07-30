@@ -30,7 +30,7 @@ in
       self.homeModules.git
       self.homeModules.lazygit
       self.homeModules.nvim
-      self.homeModules.oh-my-posh
+      self.homeModules.oh-my-posh-work
       self.homeModules.opencode
       self.homeModules.pay-respects
       self.homeModules.secretspec
