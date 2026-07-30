@@ -26,7 +26,7 @@ in
       self.homeModules.btop
       self.homeModules.devenv
       self.homeModules.eza
-      self.homeModules.fsh
+      self.homeModules.fsh-work
       self.homeModules.git
       self.homeModules.lazygit
       self.homeModules.nvim
@@ -35,7 +35,7 @@ in
       self.homeModules.pay-respects
       self.homeModules.secretspec
       self.homeModules.ssh
-      self.homeModules.tmux
+      self.homeModules.tmux-work
       self.homeModules.yazi
       self.homeModules.zoxide
       self.homeModules.zsh
