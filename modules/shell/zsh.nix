@@ -72,6 +72,7 @@
           v = "nvim";
           vim = "nvim";
           j = "just";
+          oc = "opencode --port";
           open = "xdg-open";
           rsy = "rsync -ahP";
           nvims = "sudoedit";
