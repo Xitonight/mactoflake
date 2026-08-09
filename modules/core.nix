@@ -35,6 +35,7 @@
         self.nixosModules.quickshare
         self.nixosModules.shell
         self.nixosModules.sops
+        self.nixosModules.sudo
         self.nixosModules.tailscale
         self.nixosModules.udev
         self.nixosModules.virtualization
