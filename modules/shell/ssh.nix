@@ -13,14 +13,6 @@
         settings."*" = {
           IdentityAgent = onePassPath;
         };
-        settings.windev = {
-          HostName = "192.168.188.152";
-          Port = "2222";
-          User = "alexpitzalis";
-          IdentityFile = "${config.home.homeDirectory}/.ssh/id_ed25519";
-          IdentitiesOnly = "yes";
-          LogLevel = "ERROR";
-        };
       };
     };
 }
