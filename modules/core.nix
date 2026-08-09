@@ -20,6 +20,7 @@
         self.nixosModules.containers
         self.nixosModules.fonts
         self.nixosModules.git
+        self.nixosModules.greetd
         self.nixosModules.hyprland
         self.nixosModules.kanata
         self.nixosModules.locale
@@ -54,15 +55,6 @@
           "wheel"
           "networkmanager"
         ];
-      services.greetd = {
-        enable = true;
-        settings = rec {
-          initial_session = {
-            command = "uwsm start hyprland.desktop >/dev/null 2>&1";
-            user = "${username}";
-          };
-          default_session = initial_session;
-        };
         hashedPasswordFile = config.sops.secrets.xitonight-password.path;
       };
 
