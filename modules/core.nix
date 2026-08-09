@@ -8,6 +8,7 @@
   flake.nixosModules.core =
     {
       username,
+      config,
       ...
     }:
     {
@@ -33,6 +34,7 @@
         self.nixosModules.power
         self.nixosModules.quickshare
         self.nixosModules.shell
+        self.nixosModules.sops
         self.nixosModules.tailscale
         self.nixosModules.udev
         self.nixosModules.virtualization
@@ -43,17 +45,14 @@
         inputs.nix-index-database.nixosModules.nix-index
       ];
 
+      users.mutableUsers = false;
+
       users.users."${username}" = {
         isNormalUser = true;
         extraGroups = [
           "wheel"
           "networkmanager"
         ];
-        initialPassword = "1234";
-      };
-
-      security.sudo.wheelNeedsPassword = false;
-
       services.greetd = {
         enable = true;
         settings = rec {
@@ -63,6 +62,7 @@
           };
           default_session = initial_session;
         };
+        hashedPasswordFile = config.sops.secrets.xitonight-password.path;
       };
 
       system.stateVersion = "26.05";

@@ -1,0 +1,15 @@
+keys:
+  # Age keys derived from each host's SSH host key (no separate key management).
+  # On a host, get its age public key with:
+  #   nix shell nixpkgs#ssh-to-age -c ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
+  - &mactone age1exlpzc83ldmjtcwsvkzws820lzdle2lgqma630jm9d6pe7y6n5hqrxnvsx
+  # - &mactopad age1...
+  # - &vm age1...
+
+creation_rules:
+  - path_regex: ^secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *mactone
+          # - *mactopad
+          # - *vm
