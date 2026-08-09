@@ -43,6 +43,7 @@
         ./hosts/mactone
         ./hosts/mactopad
         ./hosts/vm
+        ./hosts/NTB0000001
       ];
     };
 }

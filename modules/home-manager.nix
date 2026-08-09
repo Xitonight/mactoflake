@@ -1,6 +1,4 @@
 {
-  self,
-  inputs,
   ...
 }:
 
@@ -29,6 +27,7 @@
             username
             email
             ;
+          limitedColors = false;
           monitorsConfig = config.mactoflake.hyprland.monitors;
         };
       };

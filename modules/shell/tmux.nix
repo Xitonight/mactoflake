@@ -1,6 +1,15 @@
 {
   flake.homeModules.tmux =
-    { pkgs, ... }:
+    {
+      pkgs,
+      limitedColors ? false,
+      ...
+    }:
+    let
+      c16 = if limitedColors then "colour4" else "colour16";
+      c18 = if limitedColors then "colour5" else "colour18";
+      c19 = if limitedColors then "default" else "colour19";
+    in
     {
       programs = {
         sesh = {
@@ -66,23 +75,23 @@
             set -g status-format[1] " "
             set -g status 2
             set -g status-style bg=default,fg=brightblack
-            set -g @round-separator-style-prefix fg=colour1,bg=colour19
-            set -g @round-separator-style fg=colour16,bg=colour19
+            set -g @round-separator-style-prefix fg=colour1,bg=${c19}
+            set -g @round-separator-style fg=${c16},bg=${c19}
             set -g @left-text-style-prefix fg=colour8,bg=colour1
-            set -g @left-text-style fg=colour8,bg=colour16
-            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=colour19]  "
+            set -g @left-text-style fg=colour8,bg=${c16}
+            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=${c19}]  "
             set -g status-left-length 50
-            set -g status-right "#[fg=colour18]%H:%M  "
+            set -g status-right "#[fg=${c18}]%H:%M  "
             set -g window-status-format "#{window_name}"
-            set -g window-status-current-format "#[fg=colour16]#{?window_zoomed_flag,*}#{window_name}"
-            set -g window-status-current-style "fg=colour16"
+            set -g window-status-current-format "#[fg=${c16}]#{?window_zoomed_flag,*}#{window_name}"
+            set -g window-status-current-style "fg=${c16}"
             set -g window-status-bell-style "fg=red,nobold"
             set -g status-justify left
 
             # Borders
             set -g pane-border-lines single
             set -g pane-border-style fg=colour8
-            set -g pane-active-border-style fg=colour16
+            set -g pane-active-border-style fg=${c16}
 
             # BINDINGS
 

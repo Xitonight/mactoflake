@@ -1,6 +1,6 @@
 # Agent Guidelines for Mactoflake Repository
 
-NixOS flake configuration, originally ported from the Arch Linux dotfiles repo at `https://github.com/Xitonight/mactodots` (stow-based). Three hosts are configured: `mactone` (physical desktop), `mactopad` (physical laptop), and `vm` (QEMU test host).
+NixOS flake configuration, originally ported from the Arch Linux dotfiles repo at `https://github.com/Xitonight/mactodots` (stow-based). Four hosts are configured: `mactone` (physical desktop), `mactopad` (physical laptop), `vm` (QEMU test host), and `NTB0000001` (work laptop, standalone Home Manager on WSL).
 
 ## 1. Build / Deploy / Check Commands
 
@@ -17,6 +17,10 @@ NixOS flake configuration, originally ported from the Arch Linux dotfiles repo a
   ```bash
   nixos-rebuild -- switch \
     --flake .#<host> --impure --target-host xitonight@<host> --ask-sudo-password
+  ```
+- **Deploy standalone Home Manager (`NTB0000001` / WSL):**
+  ```bash
+  home-manager switch --flake .#NTB0000001
   ```
 - **Update an input** (do one at a time, never bulk):
   ```bash
@@ -35,7 +39,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
 
 - **Inputs:** `nixpkgs` (unstable), `flake-parts`, `import-tree`, `home-manager` (follows nixpkgs), `minegrub-theme`, `minecraft-plymouth-theme`, `hyprland`, `firefox-addons`, `zen-browser`, `devenv`, `nix-index-database`. All pinned in `flake.lock`.
 - **Structure follows the [Dendritic Pattern](https://github.com/mightyiam/dendritic): every Nix file is a `flake-parts` module.** `flake.nix` is a thin entry point; `import-tree` auto-imports every `.nix` file under `modules/`, so there are no manual `imports = [...]` lists to maintain. Each file sets one or more `flake.<class>s.<name>` outputs (`flake.nixosModules.*`, `flake.homeModules.*`, `flake.nixosConfigurations.*`).
-- **Home Manager runs as a NixOS module** (`useGlobalPkgs = true`, `useUserPackages = true`), NOT standalone. System + home build atomically in one `nh os switch`.
+- **Home Manager runs as a NixOS module** (`useGlobalPkgs = true`, `useUserPackages = true`) for all hosts except `NTB0000001`, which uses standalone Home Manager (WSL, no NixOS). System + home build atomically in one `nh os switch`.
 - **Layout:**
   ```
   flake.nix                # inputs + flake-parts mkFlake + import-tree ./modules (+ explicit host imports)
@@ -54,7 +58,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
   # Every file is a flake-parts module setting flake.nixosModules.<x> and/or flake.homeModules.<x>.
   # Grouping is by DOMAIN, not by nixos/home class — a cross-cutting feature (hyprland, git) lives in ONE
   # file under the relevant domain and exports both classes.
-  modules/<domain>/<name>/source/  # raw config trees for symlinked configs (nvim, rofi, matugen, fsh, hyprland)
+  modules/<domain>/<name>/source/  # raw config trees for symlinked configs (nvim, rofi, matugen, hyprland)
   ```
 
 ### Wiring modules (`modules/*.nix`)
@@ -65,7 +69,7 @@ These are the only files that know how the features fit together. Feature files 
 |------|------|
 | `parts.nix` | Imports `home-manager.flakeModules.home-manager` (declares the `flake.homeModules` option), sets `systems`, and `flake.const` (`username`, `flakeDir`, `papersDir`, `email`) |
 | `core.nix` | `flake.nixosModules.core` — shared base (user, sudo, greetd, stateVersion) + imports every system feature + the 3 input-provided modules (minegrub, plymouth, nix-index) |
-| `home-manager.nix` | `flake.nixosModules.home-manager` — HM NixOS module + `extraSpecialArgs` (incl. `monitorsConfig = config.mactoflake.hyprland.monitors`) |
+| `home-manager.nix` | `flake.nixosModules.home-manager` — HM NixOS module + `extraSpecialArgs` (incl. `monitorsConfig = config.mactoflake.hyprland.monitors`, `limitedColors = false`) |
 | `home.nix` | `flake.homeModules.base` (home username/dir/stateVersion) + `flake.homeImports` (the ordered list of all home features applied to the user) |
 
 ### NixOS-class modules
@@ -111,7 +115,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `lazygit.nix` | `programs.lazygit` | Terminal UI for git |
 | `matugen/` | matugen integration | Material You color generation |
 | `mpv.nix` | `programs.mpv` | Media player config |
-| `oh-my-posh.nix` | `programs.oh-my-posh` | Cross-shell prompt theme |
+| `oh-my-posh.nix` | `programs.oh-my-posh` | Cross-shell prompt theme; `limitedColors` swaps extended color indices for named colors (WSL/Windows Terminal) |
 | `opencode/` | `programs.opencode` | opencode (this tool) settings + tui keybinds |
 | `pay-respects.nix` | pay-respects | `cd` replacement with smart suggestions |
 | `qt.nix` | Qt theming | Qt theme configuration |
@@ -121,7 +125,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `ssh.nix` | SSH config | SSH client configuration |
 | `starship.nix` | `programs.starship` | Alt prompt (currently `enable = false`; oh-my-posh is active) |
 | `swaync/` | swaync config | Notification daemon |
-| `tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` | Plugins via `pkgs.tmuxPlugins` |
+| `tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` | Plugins via `pkgs.tmuxPlugins`; `limitedColors` swaps extended color indices for standard ones |
 | `vesktop.nix` | vesktop config | Discord client |
 | `xdg.nix` | `xdg.userDirs` | Custom dirs (dl/pics/docs/projects/videos) |
 | `yazi.nix` | `programs.yazi` | Terminal file manager |
@@ -130,13 +134,13 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `zoxide.nix` | `programs.zoxide` | Smart cd replacement |
 | `zsh.nix` | `programs.zsh` | Shell config + plugins |
 | `nvim/` | `mkOutOfStoreSymlink` | See symlink strategy below |
-| `fsh/` | `mkOutOfStoreSymlink` | zsh fast-syntax-highlighting theme |
+| `fsh/` | `xdg.configFile` (generated) | zsh fast-syntax-highlighting theme; `limitedColors` swaps extended color indices for standard ones |
 | `hypr/` → `modules/desktop/hyprland/` | **Merged** `mkOutOfStoreSymlink` | See symlink strategy below |
 
 ### `specialArgs` / `extraSpecialArgs`
 
 - The constants (`username`, `flakeDir`, `papersDir`, `email`) live in `flake.const` (`modules/parts.nix`). Each host's `nixosSystem` call forwards them: `specialArgs = { inherit inputs; inherit (self.const) username flakeDir papersDir email; };`.
-- `extraSpecialArgs` (set in `modules/home-manager.nix`) re-forwards `inputs`, `flakeDir`, `papersDir`, `username`, `email` to home modules and adds `monitorsConfig = config.mactoflake.hyprland.monitors`.
+- `extraSpecialArgs` (set in `modules/home-manager.nix`) re-forwards `inputs`, `flakeDir`, `papersDir`, `username`, `email` to home modules and adds `monitorsConfig = config.mactoflake.hyprland.monitors` and `limitedColors = false`. The standalone `NTB0000001` host sets `limitedColors = true` (WSL/Windows Terminal can't redefine terminal colors 16+).
 - Any module can declare `{ inputs, flakeDir, username, monitorsConfig, ... }:` and access these. `self` is NOT passed into the NixOS eval (it's used only at the flake-parts level to compose `modules` lists and `home-manager.users`).
 - **Never reference `self.homeModules.*` from inside a `flake.homeModules.*` definition** — it causes an infinite recursion (a module can't reference the submodule it's part of). Cross-module references live in the wiring files (`core.nix`, `home.nix`) or host modules, which are under different `flake.*` branches.
 
@@ -188,6 +192,7 @@ Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` 
   - `mactone` — physical desktop, NixOS, Hyprland, NVIDIA, tailscale.
   - `mactopad` — physical laptop, NixOS, Hyprland, tailscale.
   - `vm` — QEMU/libvirt, UEFI boot, test/throwaway host.
-- All machines run Tailscale and are reachable via their hostname over the tailnet.
+  - `NTB0000001` — work laptop, standalone Home Manager (WSL, no NixOS); `limitedColors = true`.
+- All NixOS machines run Tailscale and are reachable via their hostname over the tailnet.
 - **Timezone:** `Europe/Rome`; locale `en_US.UTF-8` with `it_IT.UTF-8` regional formatting.
 - **Hyprland** uses Lua as its native config language (since v0.55). The `hl.*` calls are the official Lua API — no rewrite or wrapper package needed.
