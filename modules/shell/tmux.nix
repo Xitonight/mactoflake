@@ -79,7 +79,7 @@
             set -g @round-separator-style fg=${c16},bg=${c19}
             set -g @left-text-style-prefix fg=colour8,bg=colour1
             set -g @left-text-style fg=colour8,bg=${c16}
-            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=${c19}]  "
+            set-option -g status-left "#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[#{?client_prefix,#{@left-text-style-prefix},#{@left-text-style}}]󱄅 #S#[#{?client_prefix,#{@round-separator-style-prefix},#{@round-separator-style}}]#[bg=${c19}]  "
             set -g status-left-length 50
             set -g status-right "#[fg=${c18}]%H:%M  "
             set -g window-status-format "#{window_name}"
