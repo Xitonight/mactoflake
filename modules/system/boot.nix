@@ -124,7 +124,6 @@
               "rd.systemd.show_status=false"
               "rd.udev.log_level=3"
               "udev.log_priority=3"
-              "audit=0"
             ];
             initrd.verbose = lib.mkIf cfg.silent-boot false;
           };
@@ -136,6 +135,26 @@
             plymouth-minecraft-theme.enable = true;
           };
         })
+
+        {
+          security.auditd.enable = true;
+
+          boot.kernel.sysctl = {
+            "kernel.kptr_restrict" = 2;
+            "kernel.dmesg_restrict" = 1;
+            "kernel.unprivileged_bpf_disabled" = 1;
+            "kernel.yama.ptrace_scope" = 2;
+            "dev.tty.ldisc_autoload" = 0;
+            "net.ipv4.tcp_syncookies" = 1;
+            "net.ipv4.conf.all.rp_filter" = 1;
+            "net.ipv4.conf.default.rp_filter" = 1;
+            "net.ipv4.conf.all.accept_redirects" = 0;
+            "net.ipv4.conf.default.accept_redirects" = 0;
+            "net.ipv4.conf.all.send_redirects" = 0;
+            "net.ipv6.conf.all.accept_redirects" = 0;
+            "net.ipv6.conf.default.accept_redirects" = 0;
+          };
+        }
       ];
     };
 }

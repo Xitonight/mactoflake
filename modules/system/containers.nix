@@ -16,7 +16,7 @@
 
         rootless = lib.mkOption {
           type = lib.types.bool;
-          default = false;
+          default = true;
           description = ''
             Run Docker rootless so the daemon runs under the user account,
             avoiding the privileged docker socket and setuid docker-rootlessproxy.
@@ -55,7 +55,11 @@
           dive
         ];
 
-        users.users."${username}".extraGroups = lib.mkIf (!cfg.rootless) [ "docker" ];
+        users.users."${username}" = {
+          extraGroups = lib.mkIf (!cfg.rootless) [ "docker" ];
+          subUidRanges = lib.mkIf cfg.rootless [{ startUid = 100000; count = 65536; }];
+          subGidRanges = lib.mkIf cfg.rootless [{ startGid = 100000; count = 65536; }];
+        };
       };
     };
 }
