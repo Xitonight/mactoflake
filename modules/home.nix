@@ -19,6 +19,7 @@
     self.homeModules.btop
     self.homeModules.devenv
     self.homeModules.eza
+    self.homeModules.fzf
     self.homeModules.fsh
     self.homeModules.git
     self.homeModules.gtk
