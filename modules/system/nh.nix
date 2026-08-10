@@ -2,6 +2,10 @@
   flake.nixosModules.nh =
     { flakeDir, ... }:
     {
+      environment.variables = {
+        NH_HOME_FLAKE = "${flakeDir}";
+        NH_OS_FLAKE = "${flakeDir}";
+      };
       programs.nh = {
         enable = true;
         clean.enable = true;
