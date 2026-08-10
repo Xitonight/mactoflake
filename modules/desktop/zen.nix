@@ -265,7 +265,7 @@
             onepassword-password-manager
           ];
 
-          keyboardShortcutsVersion = 19;
+          keyboardShortcutsVersion = 20;
           keyboardShortcuts =
             # Ported from ~/.xidots/dots/.zen/xitonight/zen-keyboard-shortcuts.json
             disabled [
