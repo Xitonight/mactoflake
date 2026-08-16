@@ -2,6 +2,7 @@
   flake.nixosModules.sudo =
     { username, ... }:
     {
+      users.users."${username}".extraGroups = [ "wheel" ];
       security.sudo.extraRules = [
         {
           users = [ username ];

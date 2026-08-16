@@ -49,14 +49,7 @@
 
       users.mutableUsers = false;
 
-      users.users."${username}" = {
-        isNormalUser = true;
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-        ];
         hashedPasswordFile = config.sops.secrets.xitonight-password.path;
-      };
 
       system.stateVersion = "26.05";
     };
