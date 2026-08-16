@@ -25,8 +25,6 @@
       self.nixosModules.steam
       self.nixosModules.udev
       self.nixosModules.virtualization
-
-      inputs.nix-index-database.nixosModules.nix-index
     ];
   };
 }

@@ -29,6 +29,7 @@
 
         inputs.minegrub-theme.nixosModules.default
         inputs.minecraft-plymouth-theme.nixosModules.plymouth-minecraft-theme
+        inputs.nix-index-database.nixosModules.nix-index
       ];
 
       users.mutableUsers = false;
