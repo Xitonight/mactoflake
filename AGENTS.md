@@ -1,6 +1,6 @@
 # Agent Guidelines for Mactoflake Repository
 
-NixOS flake configuration, originally ported from the Arch Linux dotfiles repo at `https://github.com/Xitonight/mactodots` (stow-based). Four hosts are configured: `mactone` (physical desktop), `mactopad` (physical laptop), `vm` (QEMU test host), and `NTB0000001` (work laptop, standalone Home Manager on WSL).
+NixOS flake configuration, originally ported from the Arch Linux dotfiles repo at `https://github.com/Xitonight/mactodots` (stow-based). Five hosts are configured: `mactone` (physical desktop), `mactopad` (physical laptop), `vm` (QEMU test host), `mactoncino` (headless media server: jellyfin + navidrome), and `NTB0000001` (work laptop, standalone Home Manager on WSL).
 
 ## 1. Build / Deploy / Check Commands
 
@@ -68,13 +68,14 @@ These are the only files that know how the features fit together. Feature files 
 | File | Role |
 |------|------|
 | `parts.nix` | Imports `home-manager.flakeModules.home-manager` (declares the `flake.homeModules` option), sets `systems`, and `flake.const` (`username`, `flakeDir`, `papersDir`, `email`) |
-| `core.nix` | `flake.nixosModules.core` — shared base (user, sudo, greetd, stateVersion) + imports every system feature + the 3 input-provided modules (minegrub, plymouth, nix-index) |
+| `base.nix` | `flake.nixosModules.base` — headless-safe foundation every NixOS host shares: user + SSH keys, sudo, shell, sops, boot, locale, network, nix/nh/cachix, overlays, git, tailscale, stateVersion |
+| `core.nix` | `flake.nixosModules.core` — `base` + all desktop/hardware features (audio, bluetooth, fonts, greetd, hyprland, kanata, 1password, openvpn, packages, polkit, power, quickshare, steam, udev, containers, virtualization, nix-index) |
 | `home-manager.nix` | `flake.nixosModules.home-manager` — HM NixOS module + `extraSpecialArgs` (incl. `monitorsConfig = config.mactoflake.hyprland.monitors`, `limitedColors = false`) |
-| `home.nix` | `flake.homeModules.base` (home username/dir/stateVersion) + `flake.homeImports` (the ordered list of all home features applied to the user) |
+| `home.nix` | `flake.homeModules.base` (home username/dir/stateVersion) + `flake.homeImports` (full desktop home feature list) + `flake.homeImportsServer` (CLI-only subset used by `mactoncino`) |
 
 ### NixOS-class modules
 
-Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. They live under `modules/system/` (plus cross-cutting `hyprland` in `modules/desktop/` and `git` in `modules/dev/`). `core.nix` pulls them all into every host (except `nvidia.nix`, which hosts opt into). Toggleable behaviour lives behind `mactoflake.*` options set per-host.
+Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. They live under `modules/system/` (plus cross-cutting `hyprland` in `modules/desktop/` and `git` in `modules/dev/`). `base.nix` provides the headless-safe foundation every NixOS host shares; `core.nix` pulls `base` plus all desktop/hardware features into desktop hosts. `nvidia.nix` and `media.nix` are opted into per-host. Toggleable behaviour lives behind `mactoflake.*` options set per-host.
 
 | File | Purpose |
 |------|---------|
@@ -96,6 +97,7 @@ Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. 
 | `tailscale.nix` | `mactoflake.network.tailscale` option + enableSSH |
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 | `containers.nix` | `mactoflake.containers` option; Docker (rooted/rootless) + compose + dive + weekly prune |
+| `media.nix` | Jellyfin + Navidrome; shared `media` group; tmpfiles-managed `/srv/media/{movies,tv,music}`; imported by `mactoncino` only |
 | `nvidia.nix` | NVIDIA driver config (modesetting, open, GSP); imported by `mactone` only |
 
 ### Home-class modules
@@ -192,6 +194,7 @@ Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` 
   - `mactone` — physical desktop, NixOS, Hyprland, NVIDIA, tailscale.
   - `mactopad` — physical laptop, NixOS, Hyprland, tailscale.
   - `vm` — QEMU/libvirt, UEFI boot, test/throwaway host.
+  - `mactoncino` — headless media server (`nixosModules.base` + `media`), systemd-boot with `boot.loader.timeout = 0` (no menu; hold Space to enter systemd-boot), tailscale; media under `/srv/media`.
   - `NTB0000001` — work laptop, standalone Home Manager (WSL, no NixOS); `limitedColors = true`.
 - All NixOS machines run Tailscale and are reachable via their hostname over the tailnet.
 - **Timezone:** `Europe/Rome`; locale `en_US.UTF-8` with `it_IT.UTF-8` regional formatting.
