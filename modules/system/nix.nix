@@ -14,6 +14,8 @@
         ];
       };
 
+      programs.nix-index-database.comma.enable = true;
+
       # Pin `nixpkgs` used by ad-hoc `nix run nixpkgs#...` / `nix shell nixpkgs#...`
       # to the same revision as the flake.
       nix.registry.nixpkgs.flake = inputs.nixpkgs;
