@@ -3,6 +3,7 @@ keys:
   # On a host, get its age public key with:
   #   nix shell nixpkgs#ssh-to-age -c ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub
   - &mactone age1exlpzc83ldmjtcwsvkzws820lzdle2lgqma630jm9d6pe7y6n5hqrxnvsx
+  - &mactoncino age17pf5h9fdxng5zpy4u0fxv9l3zc4rt55p9czeqw7qrmdmx77pvsxstnzrcx
   # - &mactopad age1...
   # - &vm age1...
 
@@ -11,5 +12,6 @@ creation_rules:
     key_groups:
       - age:
           - *mactone
+          - *mactoncino
           # - *mactopad
           # - *vm
