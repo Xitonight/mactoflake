@@ -3,6 +3,13 @@
     { lib, config, ... }:
     let
       cfg = config.mactoflake.network.tailscale;
+      hostName = config.networking.hostName;
+      authKeyHosts = [
+        "mactone"
+        "mactoncino"
+        "mactopad"
+      ];
+      hasAuthKey = builtins.elem hostName authKeyHosts;
     in
     {
       options.mactoflake.network.tailscale = {
@@ -22,9 +29,12 @@
         services.tailscale = {
           enable = true;
           openFirewall = true;
-          # Only works when using auth keys (yet to be setup)
-          # extraUpFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
+          authKeyFile = lib.mkIf hasAuthKey config.sops.secrets."${hostName}-key".path;
           extraSetFlags = lib.mkIf cfg.enableSSH [ "--ssh" ];
+        };
+
+        sops.secrets."${hostName}-key" = lib.mkIf hasAuthKey {
+          sopsFile = ../../secrets/tailscale.yaml;
         };
       };
     };
