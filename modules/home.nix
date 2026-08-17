@@ -29,6 +29,7 @@
       self.homeModules.lazygit
       self.homeModules.matugen
       self.homeModules.mpv
+      self.homeModules.nix
       self.homeModules.nvim
       self.homeModules.oh-my-posh
       self.homeModules.opencode
