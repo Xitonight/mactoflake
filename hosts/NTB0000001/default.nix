@@ -29,6 +29,7 @@ in
       self.homeModules.eza
       self.homeModules.fsh
       self.homeModules.lazygit
+      self.homeModules.nix
       self.homeModules.nvim
       self.homeModules.oh-my-posh
       self.homeModules.opencode
