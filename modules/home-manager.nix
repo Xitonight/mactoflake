@@ -1,8 +1,4 @@
 {
-  ...
-}:
-
-{
   flake.nixosModules.home-manager =
     {
       config,
