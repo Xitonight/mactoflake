@@ -9,7 +9,7 @@
       programs.devenv = {
         enable = true;
         enableZshIntegration = true;
-        package = inputs.devenv.packages.${pkgs.system}.devenv;
+        package = inputs.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv;
       };
     };
 }

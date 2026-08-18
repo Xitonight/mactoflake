@@ -6,7 +6,6 @@
 
 {
   flake.nixosConfigurations.mactopad = inputs.nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
     specialArgs = {
       inherit inputs;
       inherit (self.const)
@@ -21,7 +20,11 @@
       self.nixosModules.core
       self.nixosModules.home-manager
       { networking.hostName = "mactopad"; }
-      { home-manager.users.${self.const.username} = { imports = self.homeImports; }; }
+      {
+        home-manager.users.${self.const.username} = {
+          imports = self.homeImports;
+        };
+      }
       {
         mactoflake = {
           containers.enable = true;

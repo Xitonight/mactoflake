@@ -6,7 +6,6 @@
 
 {
   flake.nixosConfigurations.vm = inputs.nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
     specialArgs = {
       inherit inputs;
       inherit (self.const)
@@ -21,7 +20,11 @@
       self.nixosModules.core
       self.nixosModules.home-manager
       { networking.hostName = "vm"; }
-      { home-manager.users.${self.const.username} = { imports = self.homeImports; }; }
+      {
+        home-manager.users.${self.const.username} = {
+          imports = self.homeImports;
+        };
+      }
       {
         mactoflake = {
           boot.loader = "grub";
