@@ -26,6 +26,7 @@
         self.nixosModules.sops
         self.nixosModules.sudo
         self.nixosModules.tailscale
+        self.nixosModules.wifi
 
         inputs.minegrub-theme.nixosModules.default
         inputs.minecraft-plymouth-theme.nixosModules.plymouth-minecraft-theme

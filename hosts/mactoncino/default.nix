@@ -35,9 +35,19 @@
             silent-boot = true;
           };
 
-          network.tailscale = {
-            enable = true;
-            enableSSH = true;
+          network = {
+            tailscale = {
+              enable = true;
+              enableSSH = true;
+            };
+
+            wifi = {
+              enable = true;
+              networks = {
+                Mactofi.ssid = "Mactofi";
+                Mactofi-5G.ssid = "Mactofi 5G";
+              };
+            };
           };
         };
 
