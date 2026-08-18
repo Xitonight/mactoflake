@@ -5,7 +5,7 @@
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
         "https://hyprland.cachix.org"
-        "https://app.cachix.org/cache/devenv"
+        "https://devenv.cachix.org"
       ];
       trusted-substituters = [ "https://hyprland.cachix.org" ];
       trusted-public-keys = [
