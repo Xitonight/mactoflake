@@ -4,3 +4,14 @@ result-*
 
 modules/hyprland/source/colors.lua
 modules/home/rofi/source/shared/colors.rasi
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
