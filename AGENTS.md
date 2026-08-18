@@ -13,7 +13,11 @@ NixOS flake configuration, originally ported from the Arch Linux dotfiles repo a
   nh os switch
   ```
   `nh` reads `NH_OS_FLAKE` (set in `modules/system/nh.nix`) so no `--flake` flag is needed. `nh os switch` auto-detects the current hostname and builds the matching `nixosConfiguration` (each host lives in `hosts/<name>/default.nix`). For a different target use `nh os switch -- --hostname <host>`.
-- **Deploy remotely (from another machine):**
+- **Deploy remotely (`mactoncino`, via deploy-rs):**
+  ```bash
+  nix run nixpkgs#deploy-rs -- .#mactoncino
+  ```
+  Node config lives in `modules/deploy.nix` (`flake.deploy`); magic + auto rollback enabled. Other hosts still use:
   ```bash
   nixos-rebuild -- switch \
     --flake .#<host> --impure --target-host xitonight@<host> --ask-sudo-password
