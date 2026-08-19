@@ -22,6 +22,7 @@
       self.nixosModules.base
       self.nixosModules.media
       self.nixosModules.homepage
+      self.nixosModules.home-assistant
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
