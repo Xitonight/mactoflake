@@ -1,6 +1,7 @@
 keys:
   - &mactone age19yfzc8yruru3wzzz5h47u3q24x4tumr9f5my7z4vxmrlm8g52v3qcvt0h0
   - &mactoncino age1jyudkqkm6qpjhm6phwk0h0dp0n330kt6sfz4g542hmje0nz9qyvqh64h7y
+  - &mactopad age12uak6a9j8v6exdplp78t95vv69jrzpv07ezlpe22tktgtpjzl9dqa6rj8u
 
 creation_rules:
   - path_regex: ^secrets/.*\.yaml$
@@ -8,3 +9,4 @@ creation_rules:
       - age:
           - *mactone
           - *mactoncino
+          - *mactopad
