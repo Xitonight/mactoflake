@@ -52,6 +52,7 @@
         ./hosts/vm
         ./hosts/mactoncino
         ./hosts/NTB0000001
+        ./hosts/kali
       ];
     };
 }
