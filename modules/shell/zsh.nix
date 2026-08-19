@@ -5,6 +5,7 @@
       lib,
       config,
       flakeDir,
+      osConfig,
       ...
     }:
     {
@@ -29,6 +30,11 @@
           "GLOBDOTS"
           "EXTENDEDGLOB"
         ];
+
+        envExtra = lib.mkIf (osConfig == null) ''
+          typeset -U path PATH
+          path=("${config.xdg.stateHome}/nix/profiles/home-manager/home-path/bin" $path)
+        '';
 
         plugins = [
           {
