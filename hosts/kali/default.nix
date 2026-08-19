@@ -14,7 +14,7 @@
       inherit inputs;
       username = "kali";
       flakeDir = "/home/kali/.mactoflake";
-      limitedColors = false;
+      limitedColors = true;
       inherit (self.const) papersDir email;
     };
     modules = [
