@@ -102,6 +102,10 @@ Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. 
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 | `containers.nix` | `mactoflake.containers` option; Docker (rooted/rootless) + compose + dive + weekly prune |
 | `media.nix` | Jellyfin + Navidrome; shared `media` group; tmpfiles-managed `/srv/media/{movies,tv,music}`; imported by `mactoncino` only |
+| `paperless.nix` | Paperless-ngx document management on :28981; OCR in `ita+eng`; admin password from sops secret `paperless-password` (`secrets/paperless.yaml`); imported by `mactoncino` only |
+| `pihole.nix` | Pi-hole (native NixOS modules `pihole-ftl` + `pihole-web`): DNS ad blocking on :53, web UI on :3000; config is immutable (`misc.readOnly`) — all changes via Nix options, `pihole setpassword` won't persist |
+| `home-assistant.nix` | Home Assistant on :8123; `pi_hole`/`met`/`default_config` components; more integrations must be added to `extraComponents` |
+| `glance.nix` | Glance dashboard on :8080; declarative pages/widgets in `services.glance.settings`; imported by `mactoncino` only |
 | `nvidia.nix` | NVIDIA driver config (modesetting, open, GSP); imported by `mactone` only |
 
 ### Home-class modules
@@ -198,7 +202,7 @@ Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` 
   - `mactone` — physical desktop, NixOS, Hyprland, NVIDIA, tailscale.
   - `mactopad` — physical laptop, NixOS, Hyprland, tailscale.
   - `vm` — QEMU/libvirt, UEFI boot, test/throwaway host.
-  - `mactoncino` — headless media server (`nixosModules.base` + `media`), systemd-boot with `boot.loader.timeout = 0` (no menu; hold Space to enter systemd-boot), tailscale; media under `/srv/media`.
+  - `mactoncino` — headless server (`nixosModules.base` + `media` + `pihole` + `home-assistant` + `glance`), systemd-boot with `boot.loader.timeout = 0` (no menu; hold Space to enter systemd-boot), tailscale; media under `/srv/media`. Ports: 53 DNS (Pi-hole), 3000 Pi-hole UI, 4533 Navidrome, 8080 Glance, 8096 Jellyfin, 8123 Home Assistant, 28981 Paperless.
   - `NTB0000001` — work laptop, standalone Home Manager (WSL, no NixOS); `limitedColors = true`.
 - All NixOS machines run Tailscale and are reachable via their hostname over the tailnet.
 - **Timezone:** `Europe/Rome`; locale `en_US.UTF-8` with `it_IT.UTF-8` regional formatting.
