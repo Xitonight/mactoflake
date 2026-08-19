@@ -22,6 +22,7 @@
       self.homeModules.bat
       self.homeModules.btop
       self.homeModules.eza
+      self.homeModules.fonts
       self.homeModules.fsh
       self.homeModules.fzf
       self.homeModules.lazygit

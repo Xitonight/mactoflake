@@ -1,4 +1,15 @@
 {
+  flake.homeModules.fonts =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        nerd-fonts.caskaydia-cove
+        noto-fonts-color-emoji
+      ];
+
+      fonts.fontconfig.enable = true;
+    };
+
   flake.nixosModules.fonts =
     { pkgs, ... }:
     {
