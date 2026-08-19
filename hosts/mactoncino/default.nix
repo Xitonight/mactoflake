@@ -23,8 +23,8 @@
       self.nixosModules.media
       self.nixosModules.paperless
       self.nixosModules.pihole
-      self.nixosModules.homepage
       self.nixosModules.home-assistant
+      self.nixosModules.glance
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {

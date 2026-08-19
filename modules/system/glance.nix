@@ -1,0 +1,117 @@
+{
+  flake.nixosModules.glance = {
+    services.glance = {
+      enable = true;
+      openFirewall = true;
+      settings = {
+        server = {
+          host = "0.0.0.0";
+          port = 8080;
+        };
+
+        branding = {
+          app-name = "mactoncino";
+        };
+
+        pages = [
+          {
+            name = "Home";
+            columns = [
+              {
+                size = "small";
+                widgets = [
+                  {
+                    type = "clock";
+                    hour-format = "24h";
+                  }
+                  {
+                    type = "weather";
+                    location = "Rome, Italy";
+                    units = "metric";
+                    hour-format = "24h";
+                  }
+                  {
+                    type = "bookmarks";
+                    groups = [
+                      {
+                        title = "Network";
+                        links = [
+                          {
+                            title = "Router";
+                            url = "http://192.168.8.1";
+                            icon = "mdi:router-wireless";
+                          }
+                        ];
+                      }
+                      {
+                        title = "Developer";
+                        links = [
+                          {
+                            title = "mactoflake";
+                            url = "https://github.com/Xitonight/mactoflake";
+                            icon = "si:github";
+                          }
+                        ];
+                      }
+                    ];
+                  }
+                ];
+              }
+              {
+                size = "full";
+                widgets = [
+                  {
+                    type = "search";
+                    search-engine = "https://unduck.link?q={QUERY}";
+                    new-tab = true;
+                    autofocus = true;
+                  }
+                  {
+                    type = "monitor";
+                    title = "Services";
+                    sites = [
+                      {
+                        title = "Jellyfin";
+                        url = "http://mactoncino:8096";
+                        icon = "sh:jellyfin";
+                      }
+                      {
+                        title = "Navidrome";
+                        url = "http://mactoncino:4533";
+                        icon = "sh:navidrome";
+                      }
+                      {
+                        title = "Pi-hole";
+                        url = "http://mactoncino:3000";
+                        icon = "sh:pi-hole";
+                      }
+                      {
+                        title = "Home Assistant";
+                        url = "http://mactoncino:8123";
+                        icon = "sh:home-assistant";
+                      }
+                      {
+                        title = "Paperless";
+                        url = "http://mactoncino:28981";
+                        icon = "mdi:file-document-outline";
+                      }
+                      {
+                        title = "Router";
+                        url = "http://192.168.8.1";
+                        icon = "mdi:router-wireless";
+                        alt-status-codes = [
+                          401
+                          403
+                        ];
+                      }
+                    ];
+                  }
+                ];
+              }
+            ];
+          }
+        ];
+      };
+    };
+  };
+}
