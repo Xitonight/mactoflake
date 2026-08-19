@@ -231,7 +231,7 @@
           ];
 
         profileExtra = ''
-          if uwsm check may-start >/dev/null; then
+          if command -v uwsm >/dev/null && uwsm check may-start >/dev/null; then
             exec uwsm start hyprland.desktop >/dev/null 2>&1
           fi
         '';
