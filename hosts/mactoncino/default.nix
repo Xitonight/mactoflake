@@ -21,6 +21,7 @@
       ./disks.nix
       self.nixosModules.base
       self.nixosModules.media
+      self.nixosModules.paperless
       self.nixosModules.homepage
       self.nixosModules.home-assistant
       self.nixosModules.home-manager
