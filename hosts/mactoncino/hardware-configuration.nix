@@ -14,10 +14,10 @@
   boot = {
     initrd = {
       availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "ehci_pci"
         "nvme"
+        "xhci_pci"
+        "thunderbolt"
+        "usbhid"
         "usb_storage"
         "sd_mod"
       ];
@@ -29,12 +29,12 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/4183752b-bf84-48d0-a511-e90233ad2011";
+      device = "/dev/disk/by-uuid/400ed25d-425e-4418-ad53-db5e6aeef7b6";
       fsType = "ext4";
     };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/C9AC-5A94";
+      device = "/dev/disk/by-uuid/443E-F81D";
       fsType = "vfat";
       options = [
         "fmask=0022"
