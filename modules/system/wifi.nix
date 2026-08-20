@@ -46,42 +46,73 @@
         };
       };
 
-      config = lib.mkIf cfg.enable {
-        systemd.services.NetworkManager-ensure-profiles = {
-          after = [ "sops-install-secrets.service" ];
-          wants = [ "sops-install-secrets.service" ];
-          serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/timeout 30 ${pkgs.bash}/bin/bash -c 'while [ ! -s ${
-            config.sops.templates."wifi.env".path
-          } ]; do ${pkgs.coreutils}/bin/sleep 1; done'";
-        };
+      config =
+        let
+          nmBin = "${config.networking.networkmanager.package}/bin";
 
-        networking.networkmanager.ensureProfiles = {
-          environmentFiles = [ config.sops.templates."wifi.env".path ];
-          profiles = lib.mapAttrs (name: net: {
-            connection = {
-              id = name;
-              type = "wifi";
-              autoconnect = true;
-            };
-            wifi.ssid = net.ssid;
-            wifi-security = {
-              key-mgmt = "wpa-psk";
-              psk = "$${envVar name net}";
-            };
-            ipv4.method = "auto";
-            ipv6.method = "auto";
+          profiles = lib.mapAttrsToList (name: net: {
+            inherit name;
+            var = envVar name net;
+            subst = "$" + envVar name net;
+            secret = config.sops.secrets."wifi-psk-${name}".path;
+            template = pkgs.writeText "${name}.nmconnection" (
+              lib.generators.toINI { } {
+                connection = {
+                  id = name;
+                  type = "wifi";
+                  autoconnect = true;
+                };
+                wifi.ssid = net.ssid;
+                wifi-security = {
+                  key-mgmt = "wpa-psk";
+                  psk = "$" + envVar name net;
+                };
+                ipv4.method = "auto";
+                ipv6.method = "auto";
+              }
+            );
           }) cfg.networks;
+        in
+        lib.mkIf cfg.enable {
+          sops.secrets = lib.mapAttrs' (
+            name: _:
+            lib.nameValuePair "wifi-psk-${name}" {
+              sopsFile = ../../secrets/wifi.yaml;
+              restartUnits = [ "wifi-profiles.service" ];
+            }
+          ) cfg.networks;
+
+          systemd.services.wifi-profiles = {
+            description = "Render NetworkManager wifi profiles from sops secrets";
+            wantedBy = [ "multi-user.target" ];
+            before = [ "network-online.target" ];
+            after = [
+              "NetworkManager.service"
+              "sops-install-secrets.service"
+            ];
+            wants = [ "NetworkManager.service" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              UMask = "0177";
+            };
+            script = ''
+              install -d -m 700 /run/NetworkManager/system-connections
+            ''
+            + lib.concatMapStringsSep "\n" (p: ''
+              if [ ! -s ${lib.escapeShellArg p.secret} ]; then
+                echo "wifi-profiles: secret missing or empty: ${p.secret}" >&2
+                exit 1
+              fi
+              export ${p.var}="$(cat ${lib.escapeShellArg p.secret})"
+              ${pkgs.envsubst}/bin/envsubst ${lib.escapeShellArg p.subst} < ${lib.escapeShellArg "${p.template}"} > /run/NetworkManager/system-connections/${lib.escapeShellArg "${p.name}.nmconnection"}
+              unset ${p.var}
+            '') profiles
+            + ''
+
+              ${nmBin}/nmcli connection reload
+            '';
+          };
         };
-
-        sops.secrets = lib.mapAttrs' (
-          name: _: lib.nameValuePair "wifi-psk-${name}" { sopsFile = ../../secrets/wifi.yaml; }
-        ) cfg.networks;
-
-        sops.templates."wifi.env".content = lib.concatStrings (
-          lib.mapAttrsToList (
-            name: net: "${envVar name net}=${config.sops.placeholder."wifi-psk-${name}"}\n"
-          ) cfg.networks
-        );
-      };
     };
 }
