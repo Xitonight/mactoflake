@@ -1,6 +1,11 @@
 {
   flake.nixosModules.wifi =
-    { lib, config, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.mactoflake.network.wifi;
 
@@ -16,53 +21,60 @@
         enable = lib.mkEnableOption "declarative NetworkManager wifi profiles";
 
         networks = lib.mkOption {
-          type = lib.types.attrsOf (lib.types.submodule {
-            options = {
-              ssid = lib.mkOption {
-                type = lib.types.str;
-                description = "SSID to connect to.";
-              };
+          type = lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                ssid = lib.mkOption {
+                  type = lib.types.str;
+                  description = "SSID to connect to.";
+                };
 
-              pskEnvVar = lib.mkOption {
-                type = lib.types.nullOr lib.types.str;
-                default = null;
-                description = ''
-                  Environment variable name holding the PSK in the sops
-                  template. Defaults to <NAME>_PSK (uppercased, dashes to
-                  underscores).
-                '';
+                pskEnvVar = lib.mkOption {
+                  type = lib.types.nullOr lib.types.str;
+                  default = null;
+                  description = ''
+                    Environment variable name holding the PSK in the sops
+                    template. Defaults to <NAME>_PSK (uppercased, dashes to
+                    underscores).
+                  '';
+                };
               };
-            };
-          });
+            }
+          );
           default = { };
           description = "Wifi networks keyed by profile name.";
         };
       };
 
       config = lib.mkIf cfg.enable {
+        systemd.services.NetworkManager-ensure-profiles = {
+          after = [ "sops-install-secrets.service" ];
+          wants = [ "sops-install-secrets.service" ];
+          serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/timeout 30 ${pkgs.bash}/bin/bash -c 'while [ ! -s ${
+            config.sops.templates."wifi.env".path
+          } ]; do ${pkgs.coreutils}/bin/sleep 1; done'";
+        };
+
         networking.networkmanager.ensureProfiles = {
           environmentFiles = [ config.sops.templates."wifi.env".path ];
-          profiles = lib.mapAttrs (
-            name: net: {
-              connection = {
-                id = name;
-                type = "wifi";
-                autoconnect = true;
-              };
-              wifi.ssid = net.ssid;
-              wifi-security = {
-                key-mgmt = "wpa-psk";
-                psk = "$${envVar name net}";
-              };
-              ipv4.method = "auto";
-              ipv6.method = "auto";
-            }
-          ) cfg.networks;
+          profiles = lib.mapAttrs (name: net: {
+            connection = {
+              id = name;
+              type = "wifi";
+              autoconnect = true;
+            };
+            wifi.ssid = net.ssid;
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$${envVar name net}";
+            };
+            ipv4.method = "auto";
+            ipv6.method = "auto";
+          }) cfg.networks;
         };
 
         sops.secrets = lib.mapAttrs' (
-          name: _:
-          lib.nameValuePair "wifi-psk-${name}" { sopsFile = ../../secrets/wifi.yaml; }
+          name: _: lib.nameValuePair "wifi-psk-${name}" { sopsFile = ../../secrets/wifi.yaml; }
         ) cfg.networks;
 
         sops.templates."wifi.env".content = lib.concatStrings (
