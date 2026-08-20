@@ -8,6 +8,9 @@
         passwordFile = config.sops.secrets.paperless-password.path;
         settings = {
           PAPERLESS_OCR_LANGUAGE = "ita+eng";
+          PAPERLESS_FORCE_SCRIPT_NAME = "/paperless";
+          PAPERLESS_STATIC_URL = "/paperless/static/";
+          PAPERLESS_CSRF_TRUSTED_ORIGINS = [ "https://mactoncino.taila7373f.ts.net" ];
         };
       };
 
