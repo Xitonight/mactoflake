@@ -26,7 +26,7 @@
                   }
                   {
                     type = "weather";
-                    location = "Rome, Italy";
+                    location = "Diano Borello, Italy";
                     units = "metric";
                     hour-format = "24h";
                   }
@@ -104,6 +104,30 @@
                         title = "n8n";
                         url = "http://mactoncino:5678";
                         icon = "si:n8n";
+                      }
+                      {
+                        title = "Sonarr";
+                        url = "http://mactoncino:8989";
+                        icon = "di:sonarr";
+                      }
+                      {
+                        title = "Radarr";
+                        url = "http://mactoncino:7878";
+                        icon = "di:radarr";
+                      }
+                      {
+                        title = "Prowlarr";
+                        url = "http://mactoncino:9696";
+                        icon = "di:prowlarr";
+                      }
+                      {
+                        title = "qBittorrent";
+                        url = "http://mactoncino:8081";
+                        icon = "sh:qbittorrent";
+                        alt-status-codes = [
+                          401
+                          403
+                        ];
                       }
                       {
                         title = "Router";

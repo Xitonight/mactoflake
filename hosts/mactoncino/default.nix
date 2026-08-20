@@ -21,6 +21,7 @@
       ./disks.nix
       self.nixosModules.base
       self.nixosModules.media
+      self.nixosModules.arr
       self.nixosModules.paperless
       self.nixosModules.pihole
       self.nixosModules.home-assistant
