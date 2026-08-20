@@ -26,7 +26,7 @@
     };
 
     devenv = {
-      url = "github:cachix/devenv";
+      url = "github:cachix/devenv/v2.2.2";
     };
 
     nix-index-database = {
