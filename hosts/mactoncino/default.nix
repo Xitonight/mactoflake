@@ -25,6 +25,7 @@
       self.nixosModules.pihole
       self.nixosModules.home-assistant
       self.nixosModules.glance
+      self.nixosModules.n8n
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
