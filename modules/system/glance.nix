@@ -41,6 +41,11 @@
                             url = "http://192.168.8.1";
                             icon = "mdi:router-wireless";
                           }
+                          {
+                            title = "Tailscale";
+                            url = "https://console.tailscale.com/admin/machines";
+                            icon = "si:tailscale";
+                          }
                         ];
                       }
                       {
@@ -94,6 +99,11 @@
                         title = "Paperless";
                         url = "http://mactoncino:28981";
                         icon = "mdi:file-document-outline";
+                      }
+                      {
+                        title = "n8n";
+                        url = "http://mactoncino:5678";
+                        icon = "si:n8n";
                       }
                       {
                         title = "Router";
