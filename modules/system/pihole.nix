@@ -7,16 +7,20 @@
 
       lists = [
         {
-          url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-          description = "StevenBlack unified adlist";
+          url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt";
+          description = "HaGeZi blocklist";
+        }
+        {
+          url = "https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_thirdparty_international.txt";
+          description = "Italian blocklist";
         }
       ];
 
       settings = {
         dns = {
           upstreams = [
-            "9.9.9.9"
-            "149.112.112.112"
+            "8.8.8.8"
+            "8.8.4.4"
           ];
         };
       };
