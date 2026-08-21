@@ -102,6 +102,7 @@ Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. 
 | `cachix.nix` | Substituters (nix-community, hyprland) + trusted keys |
 | `containers.nix` | `mactoflake.containers` option; Docker (rooted/rootless) + compose + dive + weekly prune |
 | `media.nix` | Jellyfin + Navidrome; shared `media` group; tmpfiles-managed `/srv/media/{movies,tv,music}`; imported by `mactoncino` only |
+| `arr.nix` | *arr stack: Sonarr (:8989) + Radarr (:7878) + Prowlarr (:9696) + qBittorrent (WebUI :8081, torrent :6881 — 8080 taken by Glance); all run with `media` group; downloads in `/srv/media/downloads` (same fs as library → hardlink imports); imported by `mactoncino` only |
 | `paperless.nix` | Paperless-ngx document management on :28981; OCR in `ita+eng`; admin password from sops secret `paperless-password` (`secrets/paperless.yaml`); imported by `mactoncino` only |
 | `pihole.nix` | Pi-hole (native NixOS modules `pihole-ftl` + `pihole-web`): DNS ad blocking on :53, web UI on :3000; config is immutable (`misc.readOnly`) — all changes via Nix options, `pihole setpassword` won't persist |
 | `home-assistant.nix` | Home Assistant on :8123; `pi_hole`/`met`/`default_config` components; more integrations must be added to `extraComponents` |
@@ -203,7 +204,7 @@ Wallpapers, matugen-generated color files (`colors.conf`), and `~/.local/share` 
   - `mactone` — physical desktop, NixOS, Hyprland, NVIDIA, tailscale.
   - `mactopad` — physical laptop, NixOS, Hyprland, tailscale.
   - `vm` — QEMU/libvirt, UEFI boot, test/throwaway host.
-  - `mactoncino` — headless server (`nixosModules.base` + `media` + `pihole` + `home-assistant` + `glance` + `n8n`), systemd-boot with `boot.loader.timeout = 0` (no menu; hold Space to enter systemd-boot), tailscale; media under `/srv/media`. Ports: 53 DNS (Pi-hole), 3000 Pi-hole UI, 4533 Navidrome, 5678 n8n, 8080 Glance, 8096 Jellyfin, 8123 Home Assistant, 28981 Paperless.
+  - `mactoncino` — headless server (`nixosModules.base` + `media` + `arr` + `pihole` + `home-assistant` + `glance` + `n8n`), systemd-boot with `boot.loader.timeout = 0` (no menu; hold Space to enter systemd-boot), tailscale; media under `/srv/media`. Ports: 53 DNS (Pi-hole), 3000 Pi-hole UI, 4533 Navidrome, 5678 n8n, 6881 qBittorrent torrent, 7878 Radarr, 8080 Glance, 8081 qBittorrent WebUI, 8096 Jellyfin, 8123 Home Assistant, 8989 Sonarr, 9696 Prowlarr, 28981 Paperless.
   - `NTB0000001` — work laptop, standalone Home Manager (WSL, no NixOS); `limitedColors = true`.
 - All NixOS machines run Tailscale and are reachable via their hostname over the tailnet.
 - **Timezone:** `Europe/Rome`; locale `en_US.UTF-8` with `it_IT.UTF-8` regional formatting.
