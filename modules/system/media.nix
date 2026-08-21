@@ -25,6 +25,8 @@
         openFirewall = true;
       };
 
+      systemd.services.jellyfin.environment.DOTNET_SYSTEM_NET_DISABLEIPV6 = "1";
+
       services.navidrome = {
         enable = true;
         openFirewall = true;
