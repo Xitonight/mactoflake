@@ -26,6 +26,8 @@
         "ctrl+shift+j" = "send_text all \\x1b[74;5u";
         "ctrl+shift+k" = "send_text all \\x1b[75;5u";
         "ctrl+shift+l" = "send_text all \\x1b[76;5u";
+        "ctrl+shift+f" = ''kitten hints --type path --program "launch --type=overlay nvim"'';
+        "ctrl+shift+y" = "kitten hints --type path --program @";
       };
       extraConfig = ''
         include colors.conf
