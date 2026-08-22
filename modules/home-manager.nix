@@ -1,6 +1,7 @@
 {
   flake.nixosModules.home-manager =
     {
+      pkgs,
       config,
       inputs,
       flakeDir,
@@ -16,6 +17,7 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         backupFileExtension = "backup";
+        backupCommand = "${pkgs.coreutils}/bin/rm -f";
         extraSpecialArgs = {
           inherit
             inputs
