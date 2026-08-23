@@ -28,6 +28,7 @@
       self.nixosModules.pihole
       self.nixosModules.home-assistant
       self.nixosModules.glance
+      self.nixosModules.homepage
       self.nixosModules.n8n
       self.nixosModules.home-manager
       {
