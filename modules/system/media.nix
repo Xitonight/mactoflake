@@ -5,7 +5,7 @@
       ...
     }:
     {
-      users.groups.media = { };
+      users.groups.media.gid = 997;
 
       users.users = {
         jellyfin.extraGroups = [ "media" ];
