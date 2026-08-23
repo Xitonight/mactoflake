@@ -58,6 +58,7 @@
         scrcpy
         vial
         qbittorrent
+        picard
       ];
     };
 }

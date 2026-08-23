@@ -130,6 +130,15 @@
                         ];
                       }
                       {
+                        title = "slskd";
+                        url = "http://mactoncino:5030";
+                        icon = "di:slskd";
+                        alt-status-codes = [
+                          401
+                          403
+                        ];
+                      }
+                      {
                         title = "Router";
                         url = "http://192.168.8.1";
                         icon = "mdi:router-wireless";
