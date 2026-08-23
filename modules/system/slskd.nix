@@ -58,6 +58,7 @@
 
       sops.templates.slskd-env = {
         owner = "slskd";
+        restartUnits = [ "slskd.service" ];
         content = ''
           SLSKD_USERNAME=${config.sops.placeholder.slskd-web-username}
           SLSKD_PASSWORD=${config.sops.placeholder.slskd-web-password}

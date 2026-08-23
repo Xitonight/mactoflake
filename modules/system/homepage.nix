@@ -267,7 +267,6 @@
                     type = "pihole";
                     url = "http://mactoncino:3000";
                     version = 6;
-                    key = "{{HOMEPAGE_VAR_PIHOLE_PASSWORD}}";
                   };
                 };
               }
@@ -344,19 +343,22 @@
         };
       };
 
-      sops.templates.homepage-env.content = ''
-        HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder.homepage-jellyfin-api-key}
-        HOMEPAGE_VAR_HASS_TOKEN=${config.sops.placeholder.homepage-hass-token}
-        HOMEPAGE_VAR_PIHOLE_PASSWORD=${config.sops.placeholder.homepage-pihole-password}
-        HOMEPAGE_VAR_NAVIDROME_USER=${config.sops.placeholder.homepage-navidrome-user}
-        HOMEPAGE_VAR_NAVIDROME_TOKEN=${config.sops.placeholder.homepage-navidrome-token}
-        HOMEPAGE_VAR_NAVIDROME_SALT=${config.sops.placeholder.homepage-navidrome-salt}
-        HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder.homepage-sonarr-api-key}
-        HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder.homepage-radarr-api-key}
-        HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder.homepage-prowlarr-api-key}
-        HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
-        HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
-        HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
-      '';
+      sops.templates.homepage-env = {
+        restartUnits = [ "homepage-dashboard.service" ];
+        content = ''
+          HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder.homepage-jellyfin-api-key}
+          HOMEPAGE_VAR_HASS_TOKEN=${config.sops.placeholder.homepage-hass-token}
+          HOMEPAGE_VAR_PIHOLE_PASSWORD=${config.sops.placeholder.homepage-pihole-password}
+          HOMEPAGE_VAR_NAVIDROME_USER=${config.sops.placeholder.homepage-navidrome-user}
+          HOMEPAGE_VAR_NAVIDROME_TOKEN=${config.sops.placeholder.homepage-navidrome-token}
+          HOMEPAGE_VAR_NAVIDROME_SALT=${config.sops.placeholder.homepage-navidrome-salt}
+          HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder.homepage-sonarr-api-key}
+          HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder.homepage-radarr-api-key}
+          HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder.homepage-prowlarr-api-key}
+          HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
+          HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
+          HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
+        '';
+      };
     };
 }
