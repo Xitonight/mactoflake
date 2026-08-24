@@ -61,11 +61,30 @@
               header = false;
               useEqualHeights = false;
             };
-            Monitoring = {
+            Overview = {
+              tab = "Monitoring";
+              header = false;
+              style = "row";
+              columns = 1;
+            };
+            Compute = {
               tab = "Monitoring";
               header = false;
               style = "row";
               columns = 3;
+            };
+            Activity = {
+              tab = "Monitoring";
+              header = false;
+              style = "row";
+              columns = 2;
+              useEqualHeights = false;
+            };
+            Storage = {
+              tab = "Monitoring";
+              header = false;
+              style = "row";
+              columns = 2;
             };
           };
         };
@@ -294,7 +313,7 @@
             ];
           }
           {
-            Monitoring = [
+            Overview = [
               {
                 "System Info" = {
                   widget = {
@@ -305,6 +324,10 @@
                   };
                 };
               }
+            ];
+          }
+          {
+            Compute = [
               {
                 "CPU Usage" = {
                   widget = {
@@ -335,6 +358,10 @@
                   };
                 };
               }
+            ];
+          }
+          {
+            Activity = [
               {
                 Processes = {
                   widget = {
@@ -355,6 +382,10 @@
                   };
                 };
               }
+            ];
+          }
+          {
+            Storage = [
               {
                 "System Disk I/O" = {
                   widget = {
@@ -408,12 +439,12 @@
 
           .service-card,
           li.bookmark > a {
-            background-color: rgba(30, 41, 59, 0.35) !important;
+            background-color: rgba(30, 41, 59, 0.5) !important;
           }
 
           .service-card:hover,
           li.bookmark > a:hover {
-            background-color: rgba(30, 41, 59, 0.5) !important;
+            background-color: rgba(30, 41, 59, 0.65) !important;
           }
 
         '';
