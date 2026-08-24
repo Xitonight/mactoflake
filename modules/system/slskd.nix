@@ -24,6 +24,10 @@
             incomplete = "/srv/media/downloads/soulseek-incomplete";
           };
           shares.directories = [ "/srv/media/music" ];
+          transfers.upload = {
+            slots = 10;
+            speed_limit = 500;
+          };
         };
       };
 

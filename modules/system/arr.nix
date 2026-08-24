@@ -39,7 +39,10 @@
           torrentingPort = 6881;
           extraArgs = [ "--confirm-legal-notice" ];
           serverConfig = {
-            BitTorrent.Session.DefaultSavePath = "/srv/media/downloads";
+            BitTorrent.Session = {
+              DefaultSavePath = "/srv/media/downloads";
+              GlobalUPSpeedLimit = 2500;
+            };
             Preferences.WebUI = {
               Username = username;
               Password_PBKDF2 = "@ByteArray(8Eae0BwgsyPyd4LE6CVqRQ==:oV8tT5EooDyQpWV6CiXADu8Vc+3HZEIJimQP8yeX4298QDJIcpXn92Ehiqy31PA11O0hmtPkrM41SnVV/XYgIA==)";
