@@ -4,7 +4,6 @@
       enable = true;
 
       settings = {
-        plugin = [ "opencode-gemini-auth" ];
         model = "zai-coding-plan/glm-5.2";
         autoupdate = false;
       };
