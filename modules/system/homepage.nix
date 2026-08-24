@@ -17,33 +17,55 @@
           title = "mactoncino";
           theme = "dark";
           color = "slate";
-          headerStyle = "boxed";
+          headerStyle = "clean";
           iconStyle = "theme";
           hideVersion = true;
+          useEqualHeights = true;
+          cardBlur = "md";
+          background = {
+            image = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/aesthetic.jpg";
+            opacity = 70;
+          };
           layout = {
             Media = {
+              tab = "Dashboard";
+              header = false;
               style = "row";
-              columns = 4;
+              columns = 2;
             };
             Downloads = {
+              tab = "Dashboard";
+              header = false;
               style = "row";
-              columns = 4;
+              columns = 3;
             };
             Home = {
+              tab = "Dashboard";
+              header = false;
               style = "row";
-              columns = 4;
+              columns = 1;
             };
             Network = {
+              tab = "Dashboard";
+              header = false;
               style = "row";
-              columns = 4;
+              columns = 2;
             };
             Developer = {
-              style = "row";
-              columns = 4;
+              tab = "Dashboard";
+              header = false;
+              useEqualHeights = false;
             };
             Admin = {
+              tab = "Dashboard";
+              header = false;
+              useEqualHeights = false;
+            };
+            Monitoring = {
+              tab = "Monitoring";
+              header = false;
               style = "row";
-              columns = 4;
+              columns = 3;
             };
           };
         };
@@ -53,7 +75,7 @@
             search = {
               provider = "custom";
               url = "https://unduck.link?q=";
-              focus = true;
+              focus = false;
               target = "_blank";
             };
           }
@@ -74,15 +96,6 @@
               timezone = "Europe/Rome";
               units = "metric";
               cache = 5;
-            };
-          }
-          {
-            resources = {
-              label = "mactoncino";
-              cpu = true;
-              memory = true;
-              disk = "/";
-              uptime = true;
             };
           }
         ];
@@ -280,16 +293,135 @@
               }
             ];
           }
+          {
+            Monitoring = [
+              {
+                "System Info" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "info";
+                  };
+                };
+              }
+              {
+                "CPU Usage" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "cpu";
+                  };
+                };
+              }
+              {
+                "CPU Temperature" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "sensor:Tctl";
+                  };
+                };
+              }
+              {
+                "Memory Usage" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "memory";
+                  };
+                };
+              }
+              {
+                Processes = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "process";
+                  };
+                };
+              }
+              {
+                "Network Usage" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "network:wlp2s0";
+                  };
+                };
+              }
+              {
+                "System Disk I/O" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "disk:nvme0n1";
+                  };
+                };
+              }
+              {
+                "Media Disk I/O" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "disk:sda";
+                  };
+                };
+              }
+              {
+                Filesystem = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "fs:/";
+                  };
+                };
+              }
+              {
+                "Media Pool" = {
+                  widget = {
+                    type = "glances";
+                    url = "http://mactoncino:61208";
+                    version = 4;
+                    metric = "fs:/srv/media";
+                  };
+                };
+              }
+            ];
+          }
         ];
 
         customCSS = ''
-          .service-card {
-            border-radius: 0.65rem;
+          @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+          * {
+            font-family: "Poppins", ui-sans-serif, system-ui, sans-serif !important;
           }
-          .service-card:hover {
-            transform: translateY(-2px);
+
+          .service-card,
+          li.bookmark > a {
+            background-color: rgba(30, 41, 59, 0.35) !important;
           }
+
+          .service-card:hover,
+          li.bookmark > a:hover {
+            background-color: rgba(30, 41, 59, 0.5) !important;
+          }
+
         '';
+      };
+
+      services.glances = {
+        enable = true;
+        openFirewall = true;
       };
 
       sops.secrets = {
