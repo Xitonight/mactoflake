@@ -30,6 +30,7 @@
       self.nixosModules.glance
       self.nixosModules.homepage
       self.nixosModules.n8n
+      self.nixosModules.printing
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
@@ -38,6 +39,11 @@
         networking.hostName = "mactoncino";
 
         mactoflake = {
+          printing = {
+            enable = true;
+            openFirewall = true;
+          };
+
           boot = {
             loader = "systemd-boot";
             silent-boot = true;
