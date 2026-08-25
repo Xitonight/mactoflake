@@ -139,11 +139,6 @@
                         ];
                       }
                       {
-                        title = "DroppedNeedle";
-                        url = "http://mactoncino:8688";
-                        icon = "mdi:music-circle";
-                      }
-                      {
                         title = "Router";
                         url = "http://192.168.8.1";
                         icon = "mdi:router-wireless";

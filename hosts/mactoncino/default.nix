@@ -23,13 +23,14 @@
       self.nixosModules.media
       self.nixosModules.arr
       self.nixosModules.slskd
-      self.nixosModules.droppedneedle
       self.nixosModules.paperless
       self.nixosModules.pihole
       self.nixosModules.home-assistant
-      self.nixosModules.glance
+      # self.nixosModules.glance
       self.nixosModules.homepage
       self.nixosModules.n8n
+      self.nixosModules.printing
+      self.nixosModules.tguserbot
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
@@ -38,6 +39,11 @@
         networking.hostName = "mactoncino";
 
         mactoflake = {
+          printing = {
+            enable = true;
+            openFirewall = true;
+          };
+
           boot = {
             loader = "systemd-boot";
             silent-boot = true;

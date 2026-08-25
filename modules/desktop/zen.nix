@@ -133,16 +133,6 @@
               icon = "briefcase";
               id = 2;
             };
-            Demetra = {
-              color = "blue";
-              icon = "briefcase";
-              id = 3;
-            };
-            Sedapta = {
-              color = "yellow";
-              icon = "briefcase";
-              id = 4;
-            };
           };
 
           spacesForce = true;
@@ -186,53 +176,6 @@
               position = 4000;
               icon = "🌙";
               container = 1;
-            };
-            "Work" = {
-              id = "decf5613-69b4-4e57-927a-68ad8068808e";
-              position = 5000;
-              icon = "🗂";
-              pins = {
-                "Demetra" = {
-                  id = "2898cb7f-bee0-4185-99a9-f60a507fa7e6";
-                  isFolderCollapsed = false;
-                  editedTitle = true;
-                  position = 200;
-                  pins = {
-                    "Teams" = {
-                      id = "1a223ccc-25b0-43e1-a3a5-3bd5e3e8cf40";
-                      url = "https://teams.cloud.microsoft/";
-                      container = 3;
-                      position = 201;
-                    };
-                    "Outlook" = {
-                      id = "28c0d9e7-dfb2-42c1-aa91-65e5744277db";
-                      url = "https://outlook.office.com/mail/";
-                      container = 3;
-                      position = 202;
-                    };
-                  };
-                };
-                "Sedapta" = {
-                  id = "7b0650a5-0e2f-480f-966d-ffe397973037";
-                  isFolderCollapsed = false;
-                  editedTitle = true;
-                  position = 300;
-                  pins = {
-                    "Teams" = {
-                      id = "3f6eec3a-0862-42ed-8a70-41d0a3181f65";
-                      url = "https://teams.cloud.microsoft/";
-                      container = 4;
-                      position = 301;
-                    };
-                    "Outlook" = {
-                      id = "617552bd-f56c-4aa6-babf-6b919b756a07";
-                      url = "https://outlook.office.com/mail/";
-                      container = 4;
-                      position = 302;
-                    };
-                  };
-                };
-              };
             };
           };
 

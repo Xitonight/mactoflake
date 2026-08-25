@@ -972,6 +972,7 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_7",
         "sops-nix": "sops-nix",
+        "tguserbot": "tguserbot",
         "zen-browser": "zen-browser"
       }
     },
@@ -1058,6 +1059,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
+        "type": "github"
+      }
+    },
+    "tguserbot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787651473,
+        "narHash": "sha256-IDMBKr6rh0YYzr68hwTxyN07G0wBLVrR0gKscp0eUrg=",
+        "owner": "Xitonight",
+        "repo": "tguserbot",
+        "rev": "2ff6f39b991a18484405e503282d2d6c26d08c22",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Xitonight",
+        "repo": "tguserbot",
         "type": "github"
       }
     },
