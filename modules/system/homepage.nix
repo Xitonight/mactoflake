@@ -241,14 +241,6 @@
                   };
                 };
               }
-              {
-                DroppedNeedle = {
-                  icon = "mdi-music-circle";
-                  href = "http://mactoncino:8688";
-                  description = "Music requests";
-                  siteMonitor = "http://mactoncino:8688";
-                };
-              }
             ];
           }
           {

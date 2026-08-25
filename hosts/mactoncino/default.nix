@@ -23,7 +23,6 @@
       self.nixosModules.media
       self.nixosModules.arr
       self.nixosModules.slskd
-      self.nixosModules.droppedneedle
       self.nixosModules.paperless
       self.nixosModules.pihole
       self.nixosModules.home-assistant
