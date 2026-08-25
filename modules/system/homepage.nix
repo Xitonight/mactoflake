@@ -266,6 +266,13 @@
                 };
               }
               {
+                tguserbot = {
+                  icon = "mdi-robot-telegram";
+                  description = "Telegram userbot";
+                  siteMonitor = "http://127.0.0.1:3434/health/ready";
+                };
+              }
+              {
                 Paperless = {
                   icon = "paperless-ngx.png";
                   href = "http://mactoncino:28981/paperless";

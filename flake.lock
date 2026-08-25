@@ -1069,11 +1069,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787651473,
-        "narHash": "sha256-IDMBKr6rh0YYzr68hwTxyN07G0wBLVrR0gKscp0eUrg=",
+        "lastModified": 1787666862,
+        "narHash": "sha256-+x6ElW2V7vAAfoP431nHRacaDVO7pqNoy7Ys18Y5q1I=",
         "owner": "Xitonight",
         "repo": "tguserbot",
-        "rev": "2ff6f39b991a18484405e503282d2d6c26d08c22",
+        "rev": "332d909ef942ccabc4b7117acb473385ada09ff4",
         "type": "github"
       },
       "original": {
