@@ -438,13 +438,28 @@
           }
 
           .service-card,
-          li.bookmark > a {
+          li.bookmark > a,
+          .information-widget-search input,
+          .information-widget-search button,
+          #myTab {
             background-color: rgba(30, 41, 59, 0.5) !important;
           }
 
           .service-card:hover,
-          li.bookmark > a:hover {
+          li.bookmark > a:hover,
+          .information-widget-search input:focus,
+          .information-widget-search button:hover,
+          #myTab button[aria-selected="true"],
+          #myTab button:hover {
             background-color: rgba(30, 41, 59, 0.65) !important;
+          }
+
+          #myTab button {
+            background-color: transparent !important;
+          }
+
+          .information-widget-search input {
+            border-color: transparent !important;
           }
 
         '';
