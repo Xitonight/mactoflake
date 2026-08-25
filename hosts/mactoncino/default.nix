@@ -31,6 +31,7 @@
       self.nixosModules.homepage
       self.nixosModules.n8n
       self.nixosModules.printing
+      self.nixosModules.tguserbot
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
