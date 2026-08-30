@@ -39,6 +39,12 @@
               style = "row";
               columns = 3;
             };
+            DownloadsMedia = {
+              tab = "Dashboard";
+              header = false;
+              style = "row";
+              columns = 2;
+            };
             Home = {
               tab = "Dashboard";
               header = false;
@@ -179,7 +185,7 @@
             ];
           }
           {
-            Downloads = [
+            DownloadsMedia = [
               {
                 Sonarr = {
                   icon = "sonarr.png";
@@ -216,6 +222,8 @@
                   };
                 };
               }
+            ];
+            Downloads = [
               {
                 qBittorrent = {
                   icon = "qbittorrent.png";
