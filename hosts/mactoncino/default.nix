@@ -31,6 +31,7 @@
       self.nixosModules.homepage
       self.nixosModules.n8n
       self.nixosModules.printing
+      self.nixosModules.caddy
       self.nixosModules.tguserbot
       self.nixosModules.home-manager
       {
@@ -40,6 +41,21 @@
         networking.hostName = "mactoncino";
 
         mactoflake = {
+          proxy = {
+            enable = true;
+            domain = "mactonet.com";
+            vhosts = {
+              music = {
+                port = 4533;
+                prefix = "navidrome";
+              };
+              paperless = {
+                port = 28981;
+                prefix = "paperless";
+              };
+            };
+          };
+
           printing = {
             enable = true;
             openFirewall = true;

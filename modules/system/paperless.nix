@@ -2,6 +2,7 @@
   flake.nixosModules.paperless =
     {
       config,
+      lib,
       pkgs,
       ...
     }:
@@ -37,7 +38,12 @@
           PAPERLESS_OCR_LANGUAGE = "ita+eng";
           PAPERLESS_FORCE_SCRIPT_NAME = "/paperless";
           PAPERLESS_STATIC_URL = "/paperless/static/";
-          PAPERLESS_CSRF_TRUSTED_ORIGINS = [ "https://mactoncino.taila7373f.ts.net" ];
+          PAPERLESS_CSRF_TRUSTED_ORIGINS = [
+            "https://mactoncino.taila7373f.ts.net"
+          ]
+          ++ lib.optionals config.mactoflake.proxy.enable [
+            "https://paperless.${config.mactoflake.proxy.domain}"
+          ];
           PAPERLESS_CONSUMER_DELETE_DUPLICATES = true;
         };
       };
