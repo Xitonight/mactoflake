@@ -16,7 +16,6 @@
       services.slskd = {
         enable = true;
         group = "media";
-        openFirewall = true;
         environmentFile = config.sops.templates.slskd-env.path;
         settings = {
           directories = {
@@ -72,7 +71,5 @@
           SLSKD_API_KEY=${config.sops.placeholder.slskd-api-key}
         '';
       };
-
-      networking.firewall.allowedTCPPorts = [ 5030 ];
     };
 }

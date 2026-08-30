@@ -4,7 +4,6 @@
     {
       services.n8n = {
         enable = false;
-        openFirewall = true;
         environment = {
           WEBHOOK_URL = "http://mactoncino:5678/";
           N8N_SECURE_COOKIE = false;

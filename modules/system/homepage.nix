@@ -9,7 +9,6 @@
       services.homepage-dashboard = {
         enable = true;
         listenPort = 8082;
-        openFirewall = true;
         allowedHosts = "mactoncino:8082,mactoncino.taila7373f.ts.net,mactoncino.taila7373f.ts.net:8082";
         environmentFiles = [ config.sops.templates.homepage-env.path ];
 

@@ -2,8 +2,6 @@
   flake.nixosModules.pihole = {
     services.pihole-ftl = {
       enable = true;
-      openFirewallDNS = true;
-      openFirewallWebserver = true;
 
       lists = [
         {

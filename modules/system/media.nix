@@ -20,16 +20,12 @@
         "d /srv/media/music 0775 ${username} media -"
       ];
 
-      services.jellyfin = {
-        enable = true;
-        openFirewall = true;
-      };
+      services.jellyfin.enable = true;
 
       systemd.services.jellyfin.environment.DOTNET_SYSTEM_NET_DISABLEIPV6 = "1";
 
       services.navidrome = {
         enable = true;
-        openFirewall = true;
         settings = {
           Address = "0.0.0.0";
           Port = 4533;

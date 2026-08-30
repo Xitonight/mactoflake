@@ -54,7 +54,5 @@
       };
 
       sops.secrets.paperless-password.sopsFile = ../../secrets/paperless.yaml;
-
-      networking.firewall.allowedTCPPorts = [ 28981 ];
     };
 }

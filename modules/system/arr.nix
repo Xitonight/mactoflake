@@ -14,26 +14,20 @@
       services = {
         sonarr = {
           enable = true;
-          openFirewall = true;
           group = "media";
         };
 
         radarr = {
           enable = true;
-          openFirewall = true;
           group = "media";
         };
 
-        prowlarr = {
-          enable = true;
-          openFirewall = true;
-        };
+        prowlarr.enable = true;
 
         flaresolverr.enable = true;
 
         qbittorrent = {
           enable = true;
-          openFirewall = true;
           group = "media";
           webuiPort = 8081;
           torrentingPort = 6881;

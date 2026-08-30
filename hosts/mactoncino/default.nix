@@ -60,7 +60,7 @@
 
           printing = {
             enable = true;
-            openFirewall = true;
+            openFirewall = false;
           };
 
           boot = {
@@ -81,6 +81,39 @@
                 Mactofi-5G.ssid = "Mactofi 5G";
               };
             };
+          };
+        };
+
+        networking.firewall = {
+          interfaces.tailscale0 = {
+            allowedTCPPorts = [
+              22
+              53
+              631
+              3000
+              4533
+              5030
+              5678
+              7878
+              8080
+              8081
+              8082
+              8096
+              8123
+              8222
+              8989
+              9696
+              28981
+            ];
+            allowedUDPPorts = [ 53 ];
+          };
+          interfaces.eno1 = {
+            allowedTCPPorts = [
+              22
+              53
+              631
+            ];
+            allowedUDPPorts = [ 53 ];
           };
         };
 
