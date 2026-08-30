@@ -53,6 +53,7 @@
                 port = 28981;
                 prefix = "paperless";
               };
+              jelly.port = 8096;
               vault.port = 8222;
             };
           };
