@@ -285,6 +285,18 @@
                   };
                 };
               }
+              {
+                Vaultwarden = {
+                  icon = "vaultwarden.png";
+                  href = "http://mactoncino:8222";
+                  description = "Password manager";
+                  widget = {
+                    type = "vaultwarden";
+                    url = "http://mactoncino:8222";
+                    key = "{{HOMEPAGE_VAR_VAULTWARDEN_TOKEN}}";
+                  };
+                };
+              }
             ];
           }
           {
@@ -518,6 +530,10 @@
           sopsFile = ../../secrets/paperless.yaml;
           key = "paperless-password";
         };
+        homepage-vaultwarden-token = {
+          sopsFile = ../../secrets/vaultwarden.yaml;
+          key = "admin-token";
+        };
       };
 
       sops.templates.homepage-env = {
@@ -535,6 +551,7 @@
           HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
           HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
           HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
+          HOMEPAGE_VAR_VAULTWARDEN_TOKEN=${config.sops.placeholder.homepage-vaultwarden-token}
         '';
       };
     };

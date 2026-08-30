@@ -25,6 +25,7 @@
       self.nixosModules.slskd
       self.nixosModules.paperless
       self.nixosModules.pihole
+      self.nixosModules.vaultwarden
       self.nixosModules.home-assistant
       self.nixosModules.glance
       self.nixosModules.homepage
