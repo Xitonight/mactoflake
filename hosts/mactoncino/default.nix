@@ -53,6 +53,7 @@
                 port = 28981;
                 prefix = "paperless";
               };
+              vault.port = 8222;
             };
           };
 
