@@ -3,7 +3,7 @@
     { config, ... }:
     {
       services.n8n = {
-        enable = true;
+        enable = false;
         openFirewall = true;
         environment = {
           WEBHOOK_URL = "http://mactoncino:5678/";

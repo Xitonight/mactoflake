@@ -257,14 +257,14 @@
                   };
                 };
               }
-              {
-                n8n = {
-                  icon = "n8n.png";
-                  href = "http://mactoncino:5678";
-                  description = "Workflow automation";
-                  siteMonitor = "http://mactoncino:5678";
-                };
-              }
+              # {
+              #   n8n = {
+              #     icon = "n8n.png";
+              #     href = "http://mactoncino:5678";
+              #     description = "Workflow automation";
+              #     siteMonitor = "http://mactoncino:5678";
+              #   };
+              # }
               {
                 tguserbot = {
                   icon = "mdi-robot-telegram";
