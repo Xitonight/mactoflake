@@ -1,7 +1,7 @@
 {
   flake.nixosModules.glance = {
     services.glance = {
-      enable = true;
+      enable = false;
       openFirewall = true;
       settings = {
         server = {
