@@ -1,8 +1,8 @@
 # 🌾 mactoflake
 
-> My personal NixOS + Hyprland flake. Keyboard-driven, heavily themed, and built to be read.
+> My personal NixOS + Hyprland flake — desktop, laptop, VM, and a self-hosting server. Keyboard-driven, heavily themed, and built to be read.
 
-This is a **declarative NixOS configuration** managed as a flake, with [Home Manager](https://nix-community.github.io/home-manager/) wired in as a NixOS module. It runs [Hyprland](https://hyprland.org/) (configured in its native Lua API since v0.55) on top of three hosts: a desktop, a laptop, and a throwaway VM.
+This is a **declarative NixOS configuration** managed as a flake, with [Home Manager](https://nix-community.github.io/home-manager/) wired in as a NixOS module. It runs [Hyprland](https://hyprland.org/) (configured in its native Lua API since v0.55) on top of four NixOS hosts — a desktop, a laptop, a throwaway VM, and a headless self-hosting server — plus two standalone Home Manager configs for a work laptop (WSL) and a Kali Linux box.
 
 ---
 
@@ -32,6 +32,8 @@ This is a **declarative NixOS configuration** managed as a flake, with [Home Man
 - [Bootloader: Minecraft-flavoured 🧱](#bootloader-minecraft-flavoured-)
 - [Fonts](#fonts)
 - [Cachix](#cachix)
+- [Secrets: sops-nix 🔐](#secrets-sops-nix-)
+- [mactoncino: the self-hosted server](#mactoncino-the-self-hosted-server)
 - [Development: devenv](#development-devenv)
 - [Keyboard-first philosophy](#keyboard-first-philosophy)
 - [Credits](#credits)
@@ -110,7 +112,7 @@ When tailoring this flake, you should **create your own host** rather than reusi
   }
   ```
 
-`self.nixosModules.core` gives you the whole shared base in one line; add individual modules (like `nvidia`) to the `modules` list when you need host-specific ones. This is where you declare your per-machine `mactoflake.*` options (and any other host-specific config).
+`self.nixosModules.core` gives you the whole desktop experience in one line (`base` + audio, bluetooth, fonts, greetd, Hyprland, kanata, 1Password, Steam, Docker, ...); add individual modules (like `nvidia`) to the `modules` list when you need host-specific ones. Building a **headless server** instead? Swap `core` for `self.nixosModules.base` (user, sudo, SSH, boot, nix, sops, tailscale — no GUI) and opt into individual service modules; that's exactly how [`hosts/mactoncino`](hosts/mactoncino/default.nix) is built. This is where you declare your per-machine `mactoflake.*` options (and any other host-specific config).
 
 Finally, **register the host in [`flake.nix`](flake.nix)** by adding its path to the `imports` of the `mkFlake` call:
 
@@ -130,7 +132,7 @@ outputs = inputs:
 
 ## Custom options
 
-Almost all system modules in [`modules/system/`](modules/system/) are imported **by default** via [`modules/core.nix`](modules/core.nix) (`flake.nixosModules.core`). To opt *out* of one, remove its line from `core.nix`'s `imports`. The toggleable / configurable behaviour lives behind a set of custom `mactoflake.*` options — set them per-host in `hosts/<name>/default.nix`:
+Almost all system modules in [`modules/system/`](modules/system/) are imported **by default** — but in two tiers. [`modules/base.nix`](modules/base.nix) (`flake.nixosModules.base`) is the headless-safe foundation every NixOS host shares (user, sudo, SSH, boot, nix/nh/cachix, sops, tailscale, wifi), and [`modules/core.nix`](modules/core.nix) (`flake.nixosModules.core`) stacks the desktop layer on top of it (audio, bluetooth, fonts, greetd, Hyprland, kanata, 1Password, Steam, Docker, virtualization). Desktop hosts use `core`; headless hosts like `mactoncino` use `base` and opt into service modules individually. To opt *out* of one, remove its line from `core.nix`'s `imports`. The toggleable / configurable behaviour lives behind a set of custom `mactoflake.*` options — set them per-host in `hosts/<name>/default.nix`:
 
 | Option | Type | Default | Effect |
 |--------|------|---------|--------|
@@ -143,10 +145,20 @@ Almost all system modules in [`modules/system/`](modules/system/) are imported *
 | `mactoflake.hyprland.monitors` | list of monitor attrs | `[]` | Per-host monitor setup. Passed to Home Manager to generate `monitors.lua`. Empty list falls back to the repo's own `monitors.lua`. |
 | `mactoflake.network.tailscale.enable` | bool | `false` | Enables Tailscale. |
 | `mactoflake.network.tailscale.enableSSH` | bool | `false` | Enables Tailscale SSH (`--ssh`). |
+| `mactoflake.network.wifi.enable` | bool | `false` | Declarative NetworkManager Wi-Fi profiles (PSKs from sops). |
+| `mactoflake.network.wifi.networks` | attrs of `{ ssid, pskEnvVar }` | `{}` | Wi-Fi networks to join; each PSK is read from a `<NAME>_PSK` env var in the sops template (overridable per-network). |
+| `mactoflake.network.openvpn.enable` | bool | `false` | OpenVPN client/server instances. |
 | `mactoflake.power.enable` | bool | `false` | Enables TLP power/battery management. |
 | `mactoflake.power.chargeThresholds.{start,stop}` | int 0–100 (null) | `null` | Battery charge thresholds for long-term health (mainly ThinkPads). Ignored on unsupported hardware. |
 | `mactoflake.virtualization.enable` | bool | `false` | Enables the libvirt + QEMU/KVM stack with virt-manager. |
 | `mactoflake.virtualization.enableUSBRedirection` | bool | `true` | SPICE USB passthrough to VMs. |
+| `mactoflake.containers.enable` | bool | `false` | Docker (rootless by default) + compose + dive, with a weekly prune. |
+| `mactoflake.containers.rootless` | bool | `true` | Run Docker rootless instead of rooted. |
+| `mactoflake.printing.enable` | bool | `false` | CUPS printing server (driverless/IPP Everywhere) with Avahi/mDNS discovery. |
+| `mactoflake.printing.openFirewall` | bool | `false` | Exposes CUPS (`:631`) on the LAN instead of tailnet-only. |
+| `mactoflake.proxy.enable` | bool | `false` | Caddy reverse proxy with automatic Let's Encrypt HTTPS on `:80`/`:443`. |
+| `mactoflake.proxy.domain` | string | — | Base domain; each vhost is served at `<name>.<domain>`. |
+| `mactoflake.proxy.vhosts` | attrs of `{ port, prefix }` | `{}` | Subdomains proxied to `127.0.0.1:<port>`; `prefix` rewrites paths for subpath-serving backends (Navidrome, Paperless). |
 
 <details>
 <summary>Example: setting options per-host</summary>
@@ -352,6 +364,51 @@ To avoid building big things (notably Hyprland and nix-community packages) from 
 - `https://hyprland.cachix.org`
 
 These kick in automatically on any rebuild *after* the first install. Fair warning: I'm honestly not sure how to leverage them during the **very first** OS install (when the caches aren't in your config yet) — for that initial bootstrap you may end up compiling some packages. Once the system is up, subsequent builds pull binaries as expected.
+
+---
+
+## Secrets: sops-nix 🔐
+
+Every secret — the user password, service credentials (Vaultwarden admin token, Paperless, slskd, n8n...), Wi-Fi PSKs — lives in [sops](https://github.com/getsops/sops)-encrypted files under `secrets/` and is decrypted at activation by [sops-nix](https://github.com/Mic92/sops-nix) ([`modules/system/sops.nix`](modules/system/sops.nix)). The age key is expected at `~/.config/sops/age/keys.txt`, and the user password itself is a sops secret (`users.mutableUsers = false`) — so the whole system, lockout included, is declarative.
+
+Wi-Fi is declarative too ([`modules/system/wifi.nix`](modules/system/wifi.nix)): declare networks under `mactoflake.network.wifi.networks` and the PSKs get templated in from sops — no plaintext passwords anywhere in the repo.
+
+---
+
+## mactoncino: the self-hosted server
+
+The fourth NixOS host is a headless media/server box. It imports only `nixosModules.base` (no GUI) plus a stack of service modules, all under [`modules/system/`](modules/system/):
+
+- **Media:** [Jellyfin](https://jellyfin.org/) (`:8096`) + [Navidrome](https://www.navidrome.org/) (`:4533`), library under `/srv/media`.
+- ***arr stack:** Sonarr, Radarr, Prowlarr and qBittorrent — downloads land on the same filesystem as the library so imports are hardlinks, not copies.
+- **slskd:** Soulseek client (web UI `:5030`) that also shares the music library back, with upload speed limits to keep the connection usable.
+- **Paperless-ngx:** document manager with OCR (`ita+eng`).
+- **Pi-hole:** network-wide DNS ad blocking (`:53`, UI `:3000`).
+- **Home Assistant** (`:8123`).
+- **Vaultwarden:** self-hosted, Bitwarden-compatible password manager (`:8222`) with nightly sqlite backups.
+- **Homepage:** a dashboard tying it all together with live API-key widgets for every service.
+- **CUPS:** LAN-wide driverless printing, discoverable as `printer.local`.
+- **Caddy:** reverse proxy with automatic Let's Encrypt HTTPS — `music.`, `paperless.`, `jelly.` and `vault.mactonet.com` are public; **everything else is tailnet-only** (all admin/service ports are bound to `tailscale0` in the firewall).
+- **tguserbot:** a personal Telegram userbot, packaged from [its own flake](https://github.com/Xitonight/tguserbot).
+
+It even deploys differently — one command from anywhere on the tailnet, with automatic rollback on failure ([`modules/deploy.nix`](modules/deploy.nix)):
+
+```bash
+nix run nixpkgs#deploy-rs -- .#mactoncino
+```
+
+> [!NOTE]
+> Glance and n8n configs are still in the tree but disabled — the dashboard job went to Homepage, and n8n is for the weak.
+
+### Standalone Home Manager hosts
+
+`NTB0000001` (work laptop) and `kali` aren't NixOS at all — they build with standalone Home Manager against the same module set (the CLI subset that doesn't need a NixOS host):
+
+```bash
+home-manager switch --flake .#NTB0000001   # or .#kali
+```
+
+Windows Terminal can't redefine terminal colors 16+, so these hosts pass `limitedColors = true`, which swaps extended color indices for named ones in the prompt/tmux/syntax-highlighting configs.
 
 ---
 
