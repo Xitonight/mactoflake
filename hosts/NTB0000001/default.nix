@@ -23,6 +23,7 @@ in
     };
     modules = [
       self.homeModules.base
+      self.homeModules.azure-cli
       self.homeModules.bat
       self.homeModules.btop
       self.homeModules.devenv
