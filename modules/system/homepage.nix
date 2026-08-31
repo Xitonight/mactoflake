@@ -170,11 +170,11 @@
               {
                 Navidrome = {
                   icon = "navidrome.png";
-                  href = "http://mactoncino:4533/navidrome";
+                  href = "http://mactoncino:4533";
                   description = "Music";
                   widget = {
                     type = "navidrome";
-                    url = "http://mactoncino:4533/navidrome";
+                    url = "http://mactoncino:4533";
                     user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
                     token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
                     salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";

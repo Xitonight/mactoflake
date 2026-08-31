@@ -45,10 +45,7 @@
             enable = true;
             domain = "mactonet.com";
             vhosts = {
-              music = {
-                port = 4533;
-                prefix = "navidrome";
-              };
+              music.port = 4533;
               paperless = {
                 port = 28981;
                 prefix = "paperless";
