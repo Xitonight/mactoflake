@@ -18,6 +18,7 @@
         usbutils
         inetutils
         secretspec
+        bitwarden-cli
 
         # --- Editor ---
         neovim
@@ -51,6 +52,7 @@
         swaynotificationcenter
 
         # --- Desktop apps ---
+        bitwarden-desktop
         obsidian
         telegram-desktop
         cava

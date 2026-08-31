@@ -206,6 +206,7 @@
             ublock-origin
             vimium
             onepassword-password-manager
+            bitwarden
           ];
 
           keyboardShortcutsVersion = 20;
