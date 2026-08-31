@@ -92,6 +92,7 @@
           kittyconf = "nvim ${flakeDir}/modules/desktop/kitty.nix";
           nvconf = "nvim $HOME/.config/nvim";
           nos = "nh os switch";
+          nhs = "nh home switch . -c $(hostname)";
           ".." = "cd ..";
           "..." = "cd ../..";
           ".3" = "cd ../../..";
