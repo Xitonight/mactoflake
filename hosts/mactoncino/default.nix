@@ -20,6 +20,7 @@
       ./hardware-configuration.nix
       ./disks.nix
       self.nixosModules.base
+      self.nixosModules.containers
       self.nixosModules.media
       self.nixosModules.arr
       self.nixosModules.slskd
@@ -31,6 +32,7 @@
       self.nixosModules.homepage
       self.nixosModules.n8n
       self.nixosModules.printing
+      self.nixosModules.minecraft
       self.nixosModules.caddy
       self.nixosModules.tguserbot
       self.nixosModules.home-manager
@@ -60,6 +62,31 @@
             openFirewall = false;
           };
 
+          containers = {
+            enable = true;
+            rootless = false;
+          };
+
+          minecraft.servers = {
+            atm10 = {
+              enable = true;
+              slug = "all-the-mods-10";
+              memory = "12G";
+              whitelist = [
+                "Xitonight"
+                "Parcometro_"
+                "BredBuryno"
+                "KazimSen"
+              ];
+              allowFlight = true;
+            };
+            atm11 = {
+              enable = false;
+              slug = "all-the-mods-11";
+              port = 25566;
+            };
+          };
+
           boot = {
             loader = "systemd-boot";
             silent-boot = true;
@@ -82,6 +109,7 @@
         };
 
         networking.firewall = {
+          allowedTCPPorts = [ 25565 ];
           interfaces.tailscale0 = {
             allowedTCPPorts = [
               22
