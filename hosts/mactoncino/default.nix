@@ -72,6 +72,7 @@
               enable = true;
               slug = "all-the-mods-10";
               memory = "12G";
+              autoStart = false;
               whitelist = [
                 "Xitonight"
                 "Parcometro_"

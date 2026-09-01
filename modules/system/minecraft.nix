@@ -59,6 +59,12 @@
                 default = true;
                 description = "Use Aikar's G1GC JVM flags (recommended for modded servers).";
               };
+
+              autoStart = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Start this server on boot and on deploy. Disable to start it manually via systemctl.";
+              };
             };
           }
         );
@@ -94,7 +100,7 @@
 
           virtualisation.oci-containers.containers = lib.mapAttrs (name: server: {
             image = "itzg/minecraft-server:java21";
-            autoStart = true;
+            inherit (server) autoStart;
 
             environment = {
               EULA = "TRUE";
