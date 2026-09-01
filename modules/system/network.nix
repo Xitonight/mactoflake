@@ -8,6 +8,7 @@
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVODpv0S1p5R9fCHeEy8AZTHjnFuVdB3UN6CNlyGuOt mactone"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGOx7KW5d4Xtx3fvBDCSeBylB5hTPYIzMB/ss7qJwva/ mactopad"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA5VCATBzbOJajXJSgW8OvBiSn6MOB5vGttNBtKSXlKG mactoncino"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF7U/PzqarU2g9APjs1XoVELden4AGhm1sYI261so6jN mactoxy"
         ];
         extraGroups = [ "networkmanager" ];
       };
