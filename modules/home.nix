@@ -34,6 +34,7 @@
       self.homeModules.oh-my-posh
       self.homeModules.opencode
       self.homeModules.pay-respects
+      self.homeModules.prismlauncher
       self.homeModules.qt
       self.homeModules.rofi
       self.homeModules.scripts
