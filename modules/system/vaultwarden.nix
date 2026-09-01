@@ -13,6 +13,7 @@
           ROCKET_PORT = 8222;
           SIGNUPS_ALLOWED = false;
           SHOW_PASSWORD_HINT = false;
+          EXPERIMENTAL_CLIENT_FEATURE_FLAGS = "ssh-key-vault-item,ssh-agent,ssh-agent-v2";
           SMTP_HOST = "smtp.resend.com";
           SMTP_PORT = 587;
           SMTP_SECURITY = "starttls";
