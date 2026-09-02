@@ -24,6 +24,7 @@
         self.nixosModules.overlays
         self.nixosModules.shell
         self.nixosModules.sops
+        self.nixosModules.ssh
         self.nixosModules.sudo
         self.nixosModules.tailscale
         self.nixosModules.wifi

@@ -20,31 +20,32 @@
       email,
       ...
     }:
+    let
+      agent = if osConfig == null then "1password" else osConfig.mactoflake.ssh.agent;
+      signingKey = if osConfig == null then null else osConfig.mactoflake.git.signingKey;
+    in
     {
-      programs.git =
-        let
-          signingKey =
-            if osConfig == null then
-              null
-            else
-              osConfig.mactoflake.git.signingKey;
-        in
-        {
-          enable = true;
-          settings = {
-            user = {
-              name = "Xitonight";
-              inherit email;
-            };
-            safe.directory = "/etc/nixos";
+      programs.git = {
+        enable = true;
+        settings = {
+          user = {
+            name = "Xitonight";
+            inherit email;
           };
-          signing = {
-            signByDefault = signingKey != null;
-            format = "ssh";
-            signer = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-            key = signingKey;
+          safe.directory = "/etc/nixos";
+          diff.tool = "delta";
+          difftool = {
+            prompt = false;
+            delta.cmd = "${lib.getExe pkgs.delta} --side-by-side \"$LOCAL\" \"$REMOTE\"";
           };
         };
+        signing = {
+          signByDefault = signingKey != null;
+          format = "ssh";
+          signer = lib.mkIf (agent == "1password") (lib.getExe' pkgs._1password-gui "op-ssh-sign");
+          key = signingKey;
+        };
+      };
 
       programs.delta = {
         enable = true;

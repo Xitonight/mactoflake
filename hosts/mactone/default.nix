@@ -31,6 +31,7 @@
           virtualization.enable = true;
           git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHLE2wMLk6xKtPG8f5UYWWfUYqtx9j4naGQqvYdCA14o";
           input.kanata.enable = true;
+          ssh.agent = "rbw";
 
           boot = {
             loader = "grub";

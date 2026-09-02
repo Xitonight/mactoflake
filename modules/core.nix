@@ -10,6 +10,7 @@
       self.nixosModules.base
 
       self.nixosModules.audio
+      self.nixosModules.bitwarden
       self.nixosModules.bluetooth
       self.nixosModules.containers
       self.nixosModules.fonts
