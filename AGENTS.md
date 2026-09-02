@@ -72,7 +72,7 @@ These are the only files that know how the features fit together. Feature files 
 | File | Role |
 |------|------|
 | `parts.nix` | Imports `home-manager.flakeModules.home-manager` (declares the `flake.homeModules` option), sets `systems`, and `flake.const` (`username`, `flakeDir`, `papersDir`, `email`) |
-| `base.nix` | `flake.nixosModules.base` — headless-safe foundation every NixOS host shares: user + SSH keys, sudo, shell, sops, boot, locale, network, nix/nh/cachix, overlays, git, tailscale, stateVersion |
+| `base.nix` | `flake.nixosModules.base` — headless-safe foundation every NixOS host shares: user + SSH keys, sudo, shell, sops, boot, locale, network, nix/nh/cachix, overlays, git, ssh (agent option), tailscale, stateVersion |
 | `core.nix` | `flake.nixosModules.core` — `base` + all desktop/hardware features (audio, bluetooth, fonts, greetd, hyprland, kanata, 1password, openvpn, packages, polkit, power, quickshare, steam, udev, containers, virtualization, nix-index) |
 | `home-manager.nix` | `flake.nixosModules.home-manager` — HM NixOS module + `extraSpecialArgs` (incl. `monitorsConfig = config.mactoflake.hyprland.monitors`, `limitedColors = false`) |
 | `home.nix` | `flake.homeModules.base` (home username/dir/stateVersion) + `flake.homeImports` (full desktop home feature list) + `flake.homeImportsServer` (CLI-only subset used by `mactoncino`) |
@@ -83,7 +83,8 @@ Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. 
 
 | File | Purpose |
 |------|---------|
-| `1password.nix` | 1Password CLI + GUI integration |
+| `1password.nix` | 1Password CLI + GUI integration; always installed (password manager, secretspec provider, Zen integration) regardless of `mactoflake.ssh.agent` |
+| `bitwarden.nix` | Bitwarden desktop app; installed only when `mactoflake.ssh.agent = "bitwarden"` (its SSH agent works with Vaultwarden; desktop app must run, socket `~/.bitwarden-ssh-agent.sock`) |
 | `boot.nix` | `mactoflake.boot.loader` option (`grub` \| `systemd-boot`); minegrub theme |
 | `locale.nix` | TZ `Europe/Rome`, `en_US.UTF-8` + `it_IT.UTF-8` |
 | `network.nix` | NetworkManager + OpenSSH |
@@ -141,7 +142,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `rofi/` | rofi config | Application launcher |
 | `scripts/` | Custom scripts | Single `flake.homeModules.scripts` with `brightness`, `rofi-clipboard`, `rofi-wallpaper`, `tgtheme` inlined |
 | `secretspec/` | `xdg.configFile` | secretspec config (onepassword provider) |
-| `ssh.nix` | SSH config | SSH client configuration |
+| `ssh.nix` | **Merged** `mactoflake.ssh.agent` option (NixOS, imported by base) + SSH client config (home) | `mactoflake.ssh.agent` = `1password` \| `bitwarden` \| `rbw`: switches `SSH_AUTH_SOCK`/`IdentityAgent` (`~/.1password/agent.sock`, `~/.bitwarden-ssh-agent.sock`, `$XDG_RUNTIME_DIR/rbw/ssh-agent-socket`), git signing (op-ssh-sign vs stock ssh-keygen) and exports `MACTOFLAKE_SSH_AGENT` for the Hyprland autostart. rbw targets Vaultwarden with pinentry-qt prompts; keys are SSH-key vault items |
 | `starship.nix` | `programs.starship` | Alt prompt (currently `enable = false`; oh-my-posh is active) |
 | `swaync/` | swaync config | Notification daemon |
 | `tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` | Plugins via `pkgs.tmuxPlugins`; `limitedColors` swaps extended color indices for standard ones |
