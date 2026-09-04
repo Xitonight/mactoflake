@@ -135,6 +135,9 @@ hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("kitty --class kitty-wiremix wiremix"
 hl.bind("SUPER + ALT + W", hl.dsp.exec_cmd("kitty --class kitty-nmtui --override window_padding_width=0 nmtui"))
 hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd("hyprctl switchxkblayout current next"))
 
+-- Walker
+hl.bind("SUPER + D", hl.dsp.exec_cmd("walker"))
+
 -- Rofi
 hl.bind("SUPER + A", hl.dsp.exec_cmd("pkill rofi || rofi -show drun"))
 hl.bind("SUPER + R", hl.dsp.exec_cmd("pkill rofi || rofi -show run -config ~/.config/rofi/run.rasi"))

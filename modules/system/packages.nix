@@ -50,6 +50,7 @@
 
         # --- Notifications ---
         swaynotificationcenter
+        libnotify
 
         # --- Desktop apps ---
         bitwarden-desktop

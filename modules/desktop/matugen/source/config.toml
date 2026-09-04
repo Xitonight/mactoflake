@@ -73,6 +73,17 @@ input_path = "~/.config/matugen/templates/colors-swaync.css"
 output_path = "~/.config/swaync/styles/colors.css"
 post_hook = "swaync-client -rs >/dev/null 2>&1"
 
+[templates.walker]
+input_path = "~/.config/matugen/templates/colors-walker.css"
+output_path = "~/.config/walker/themes/matugen/style.css"
+pre_hook = "mkdir -p ~/.config/walker/themes/matugen"
+post_hook = "systemctl --user try-restart walker.service"
+
+[templates.walkerlayout]
+input_path = "~/.config/matugen/templates/walker-layout.xml"
+output_path = "~/.config/walker/themes/matugen/layout.xml"
+pre_hook = "mkdir -p ~/.config/walker/themes/matugen"
+
 [templates.telegram]
 input_path = "~/.config/matugen/templates/colors-telegram.tdesktop-theme"
 output_path = "~/.cache/telegram/colors.tdesktop-theme"
