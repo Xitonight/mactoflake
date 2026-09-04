@@ -93,6 +93,9 @@
           nvconf = "nvim $HOME/.config/nvim";
           nos = "nh os switch";
           nhs = "nh home switch . -c $(hostname)";
+          sstart = "sudo systemctl start";
+          sstop = "sudo systemctl stop";
+          sstatus = "sudo systemctl status";
           ".." = "cd ..";
           "..." = "cd ../..";
           ".3" = "cd ../../..";
@@ -170,6 +173,11 @@
                   cd "$HOME/Projects/$dir"
                 fi
               }
+
+              jc() {
+                journalctl "$@" | bat --language=syslog --style=plain
+              }
+              compdef journalctl jc
 
               cppath() {
                 if [[ $# -gt 1 ]]; then
