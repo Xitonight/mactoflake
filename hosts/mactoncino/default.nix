@@ -80,6 +80,15 @@
                 "KazimSen"
               ];
               allowFlight = true;
+              aikarFlags = false;
+              jvmXXOpts = [
+                "-XX:+UseZGC"
+                "-XX:+ZGenerational"
+                "-XX:+AlwaysPreTouch"
+              ];
+              viewDistance = 16;
+              simulationDistance = 16;
+              motd = "All the Diorite 10";
             };
             atm11 = {
               enable = false;

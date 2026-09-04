@@ -65,6 +65,43 @@
                 default = true;
                 description = "Start this server on boot and on deploy. Disable to start it manually via systemctl.";
               };
+
+              viewDistance = lib.mkOption {
+                type = lib.types.nullOr lib.types.ints.positive;
+                default = null;
+                description = "View distance in chunks. null leaves the pack's default.";
+              };
+
+              simulationDistance = lib.mkOption {
+                type = lib.types.nullOr lib.types.ints.positive;
+                default = null;
+                description = "Simulation distance in chunks. null leaves the pack's default.";
+              };
+
+              difficulty = lib.mkOption {
+                type = lib.types.nullOr (
+                  lib.types.enum [
+                    "peaceful"
+                    "easy"
+                    "normal"
+                    "hard"
+                  ]
+                );
+                default = null;
+                description = "Server difficulty. null leaves the pack's default.";
+              };
+
+              motd = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "Message of the day (supports § color codes and \\n).";
+              };
+
+              jvmXXOpts = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
+                description = "Extra -XX JVM options, appended after Aikar's flags (a repeated flag overrides just that Aikar entry).";
+              };
             };
           }
         );
@@ -72,6 +109,22 @@
 
       config = lib.mkMerge [
         {
+          warnings =
+            let
+              gcSelector =
+                server:
+                builtins.any (
+                  opt: builtins.match ".*Use(G1GC|ZGC|Shenandoah|Z|ParallelGC|SerialGC).*" opt != null
+                ) server.jvmXXOpts;
+              conflicting = lib.filterAttrs (
+                _: server: server.enable && server.aikarFlags && gcSelector server
+              ) cfg;
+            in
+            lib.mapAttrsToList (
+              name: _:
+              "mactoflake.minecraft.servers.${name}: jvmXXOpts selects a garbage collector while aikarFlags is enabled — the -XX flag wins and Aikar's G1 tuning becomes inert. Set aikarFlags = false or drop the GC flag."
+            ) conflicting;
+
           assertions = [
             {
               assertion = enabled == { } || config.virtualisation.docker.enable;
@@ -117,7 +170,16 @@
             // lib.optionalAttrs (server.whitelist != [ ]) {
               WHITELIST = lib.concatStringsSep "," server.whitelist;
             }
-            // lib.optionalAttrs server.allowFlight { ALLOW_FLIGHT = "true"; };
+            // lib.optionalAttrs server.allowFlight { ALLOW_FLIGHT = "true"; }
+            // lib.optionalAttrs (server.viewDistance != null) { VIEW_DISTANCE = toString server.viewDistance; }
+            // lib.optionalAttrs (server.simulationDistance != null) {
+              SIMULATION_DISTANCE = toString server.simulationDistance;
+            }
+            // lib.optionalAttrs (server.difficulty != null) { DIFFICULTY = server.difficulty; }
+            // lib.optionalAttrs (server.motd != null) { MOTD = server.motd; }
+            // lib.optionalAttrs (server.jvmXXOpts != [ ]) {
+              JVM_XX_OPTS = lib.concatStringsSep " " server.jvmXXOpts;
+            };
 
             volumes = [ "/srv/minecraft/${name}:/data" ];
 
