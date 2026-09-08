@@ -65,6 +65,16 @@
           }
         );
 
+        "elephant/websearch.toml".source = toml.generate "websearch.toml" {
+          entries = [
+            {
+              name = "Unduck";
+              default = true;
+              url = "https://unduck.link/?q=%TERM%";
+            }
+          ];
+        };
+
         "elephant/bitwarden.toml".source = lib.mkIf (agent == "rbw") (
           toml.generate "bitwarden.toml" {
             autotype_support = true;
