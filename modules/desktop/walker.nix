@@ -64,12 +64,11 @@
             ];
           }
         );
-
-        "elephant/bitwarden.toml".source = lib.mkIf (agent == "rbw") (
-          toml.generate "bitwarden.toml" {
-            autotype_support = true;
-          }
-        );
+      }
+      // lib.optionalAttrs (agent == "rbw") {
+        "elephant/bitwarden.toml".source = toml.generate "bitwarden.toml" {
+          autotype_support = true;
+        };
       };
     };
 }
