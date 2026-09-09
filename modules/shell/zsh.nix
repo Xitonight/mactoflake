@@ -78,6 +78,7 @@
           v = "nvim";
           vim = "nvim";
           j = "just";
+          ts = "tailscale";
           ff = "fastfetch";
           oc = "opencode --port";
           open = "xdg-open";

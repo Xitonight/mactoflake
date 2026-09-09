@@ -34,9 +34,10 @@
             "font.size.monospace.x-western" = 14;
             "font.size.variable.x-western" = 14;
 
-            # Remove popups for "ask to save password" and translations
+            # Remove popups for "ask to save password", translations and autofill on http
             "signon.rememberSignons" = false;
             "browser.translations.automaticallyPopup" = false;
+            "security.insecure_field_warning.contextual.enabled" = false;
 
             # UI
             "zen.workspaces.continue-where-left-off" = true;

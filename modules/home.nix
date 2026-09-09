@@ -22,6 +22,7 @@
       self.homeModules.eza
       self.homeModules.fzf
       self.homeModules.fsh
+      self.homeModules.gh
       self.homeModules.git
       self.homeModules.gtk
       self.homeModules.hyprland
@@ -60,6 +61,7 @@
       self.homeModules.eza
       self.homeModules.fzf
       self.homeModules.fsh
+      self.homeModules.gh
       self.homeModules.git
       self.homeModules.lazygit
       self.homeModules.nvim
