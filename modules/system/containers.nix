@@ -57,8 +57,18 @@
 
         users.users."${username}" = {
           extraGroups = lib.mkIf (!cfg.rootless) [ "docker" ];
-          subUidRanges = lib.mkIf cfg.rootless [{ startUid = 100000; count = 65536; }];
-          subGidRanges = lib.mkIf cfg.rootless [{ startGid = 100000; count = 65536; }];
+          subUidRanges = lib.mkIf cfg.rootless [
+            {
+              startUid = 100000;
+              count = 65536;
+            }
+          ];
+          subGidRanges = lib.mkIf cfg.rootless [
+            {
+              startGid = 100000;
+              count = 65536;
+            }
+          ];
         };
       };
     };

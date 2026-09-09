@@ -1,6 +1,9 @@
 {
   flake.homeModules.fsh =
-    { limitedColors ? false, ... }:
+    {
+      limitedColors ? false,
+      ...
+    }:
     let
       c16 = if limitedColors then "4" else "16";
       c17 = if limitedColors then "5" else "17";

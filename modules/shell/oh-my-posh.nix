@@ -1,6 +1,9 @@
 {
   flake.homeModules.oh-my-posh =
-    { limitedColors ? false, ... }:
+    {
+      limitedColors ? false,
+      ...
+    }:
     {
       programs.oh-my-posh = {
         enable = true;
