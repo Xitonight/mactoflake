@@ -2,8 +2,8 @@ result
 result-*
 .direnv
 
-modules/hyprland/source/colors.lua
-modules/home/rofi/source/shared/colors.rasi
+modules/desktop/hyprland/source/colors.lua
+modules/desktop/rofi/source/shared/colors.rasi
 
 # Devenv
 .devenv*
