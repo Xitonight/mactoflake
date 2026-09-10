@@ -97,6 +97,12 @@
                 description = "Message of the day (supports § color codes and \\n).";
               };
 
+              pauseWhenEmptySeconds = lib.mkOption {
+                type = lib.types.nullOr lib.types.int;
+                default = null;
+                description = "Seconds after the last player disconnects before the server process is paused (PAUSE_WHEN_EMPTY_SECONDS). -1 disables pausing. null uses the image default.";
+              };
+
               jvmXXOpts = lib.mkOption {
                 type = lib.types.listOf lib.types.str;
                 default = [ ];
@@ -177,6 +183,9 @@
             }
             // lib.optionalAttrs (server.difficulty != null) { DIFFICULTY = server.difficulty; }
             // lib.optionalAttrs (server.motd != null) { MOTD = server.motd; }
+            // lib.optionalAttrs (server.pauseWhenEmptySeconds != null) {
+              PAUSE_WHEN_EMPTY_SECONDS = toString server.pauseWhenEmptySeconds;
+            }
             // lib.optionalAttrs (server.jvmXXOpts != [ ]) {
               JVM_XX_OPTS = lib.concatStringsSep " " server.jvmXXOpts;
             };

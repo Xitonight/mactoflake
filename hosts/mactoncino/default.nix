@@ -78,6 +78,9 @@
                 "Parcometro_"
                 "BredBuryno"
                 "KazimSen"
+                "MineCherubLC"
+                "Yukiry_"
+                "Edonic005"
               ];
               allowFlight = true;
               aikarFlags = false;
@@ -88,7 +91,8 @@
               ];
               viewDistance = 16;
               simulationDistance = 16;
-              motd = "All the Diorite 10";
+              motd = "What is this?... diorite...";
+              pauseWhenEmptySeconds = -1;
             };
             atm11 = {
               enable = false;
