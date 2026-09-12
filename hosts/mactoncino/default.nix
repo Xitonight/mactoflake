@@ -71,7 +71,7 @@
             atm10 = {
               enable = true;
               slug = "all-the-mods-10";
-              memory = "12G";
+              memory = "10G";
               autoStart = false;
               whitelist = [
                 "Xitonight"
@@ -87,8 +87,11 @@
               jvmXXOpts = [
                 "-XX:+UseZGC"
                 "-XX:+ZGenerational"
-                "-XX:+AlwaysPreTouch"
+                "-XX:SoftMaxHeapSize=7G"
+                "-XX:MaxDirectMemorySize=1G"
               ];
+              extraEnv.MALLOC_ARENA_MAX = "2";
+              restartCalendar = "Sun *-*-* 05:00:00";
               viewDistance = 16;
               simulationDistance = 16;
               motd = "What is this?... diorite...";

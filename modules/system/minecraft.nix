@@ -9,6 +9,7 @@
       cfg = config.mactoflake.minecraft.servers;
       enabled = lib.filterAttrs (_: server: server.enable) cfg;
       enabledPorts = map (server: server.port) (lib.attrValues enabled);
+      restartable = lib.filterAttrs (_: server: server.restartCalendar != null) enabled;
     in
     {
       options.mactoflake.minecraft.servers = lib.mkOption {
@@ -108,6 +109,18 @@
                 default = [ ];
                 description = "Extra -XX JVM options, appended after Aikar's flags (a repeated flag overrides just that Aikar entry).";
               };
+
+              extraEnv = lib.mkOption {
+                type = lib.types.attrsOf lib.types.str;
+                default = { };
+                description = "Extra environment variables for the container (merged last, overrides generated ones).";
+              };
+
+              restartCalendar = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "systemd calendar expression for periodic restarts (e.g. \"Sun *-*-* 05:00:00\"). Restarts only if the server is currently running. null disables.";
+              };
             };
           }
         );
@@ -153,9 +166,31 @@
             uid = 996;
           };
 
-          systemd.tmpfiles.rules = map (name: "d /srv/minecraft/${name} 0755 minecraft minecraft -") (
-            lib.attrNames enabled
-          );
+          systemd = {
+            tmpfiles.rules = map (name: "d /srv/minecraft/${name} 0755 minecraft minecraft -") (
+              lib.attrNames enabled
+            );
+
+            services = lib.mapAttrs' (
+              name: _:
+              lib.nameValuePair "minecraft-restart-${name}" {
+                description = "Restart minecraft server ${name} (only if currently running)";
+                serviceConfig.Type = "oneshot";
+                script = "exec systemctl try-restart docker-${name}.service";
+              }
+            ) restartable;
+
+            timers = lib.mapAttrs' (
+              name: server:
+              lib.nameValuePair "minecraft-restart-${name}" {
+                wantedBy = [ "timers.target" ];
+                timerConfig = {
+                  OnCalendar = server.restartCalendar;
+                  Persistent = true;
+                };
+              }
+            ) restartable;
+          };
 
           virtualisation.oci-containers.containers = lib.mapAttrs (name: server: {
             image = "itzg/minecraft-server:java21";
@@ -188,7 +223,8 @@
             }
             // lib.optionalAttrs (server.jvmXXOpts != [ ]) {
               JVM_XX_OPTS = lib.concatStringsSep " " server.jvmXXOpts;
-            };
+            }
+            // server.extraEnv;
 
             volumes = [ "/srv/minecraft/${name}:/data" ];
 
