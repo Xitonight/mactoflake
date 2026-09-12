@@ -36,19 +36,19 @@
               tab = "Dashboard";
               header = false;
               style = "row";
-              columns = 3;
+              columns = 2;
             };
             DownloadsMedia = {
               tab = "Dashboard";
               header = false;
               style = "row";
-              columns = 2;
+              columns = 3;
             };
             Home = {
               tab = "Dashboard";
               header = false;
               style = "row";
-              columns = 1;
+              columns = 4;
             };
             Network = {
               tab = "Dashboard";
@@ -89,7 +89,7 @@
               tab = "Monitoring";
               header = false;
               style = "row";
-              columns = 2;
+              columns = 4;
             };
           };
         };
@@ -222,6 +222,8 @@
                 };
               }
             ];
+          }
+          {
             Downloads = [
               {
                 qBittorrent = {
@@ -297,11 +299,7 @@
                   icon = "vaultwarden.png";
                   href = "http://mactoncino:8222";
                   description = "Password manager";
-                  widget = {
-                    type = "vaultwarden";
-                    url = "http://mactoncino:8222";
-                    key = "{{HOMEPAGE_VAR_VAULTWARDEN_TOKEN}}";
-                  };
+                  siteMonitor = "http://mactoncino:8222";
                 };
               }
             ];
@@ -537,10 +535,6 @@
           sopsFile = ../../secrets/paperless.yaml;
           key = "paperless-password";
         };
-        homepage-vaultwarden-token = {
-          sopsFile = ../../secrets/vaultwarden.yaml;
-          key = "admin-token";
-        };
       };
 
       sops.templates.homepage-env = {
@@ -558,7 +552,6 @@
           HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
           HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
           HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
-          HOMEPAGE_VAR_VAULTWARDEN_TOKEN=${config.sops.placeholder.homepage-vaultwarden-token}
         '';
       };
     };

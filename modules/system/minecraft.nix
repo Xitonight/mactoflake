@@ -234,6 +234,38 @@
             ];
           }) enabled;
         })
+
+        (lib.mkIf (enabled != { } && config.services.homepage-dashboard.enable) {
+          services.homepage-dashboard = {
+            settings.layout.Gaming = {
+              tab = "Dashboard";
+              header = false;
+              style = "row";
+              columns = 1;
+            };
+
+            services = [
+              {
+                Gaming = lib.mapAttrsToList (name: server: {
+                  ${name} = {
+                    icon = "minecraft.png";
+                    description = "Modpack server (${server.slug})";
+                    widget = {
+                      type = "gamedig";
+                      serverType = "minecraft";
+                      url = "udp://127.0.0.1:${toString server.port}";
+                      fields = [
+                        "status"
+                        "currentPlayers"
+                        "ping"
+                      ];
+                    };
+                  };
+                }) enabled;
+              }
+            ];
+          };
+        })
       ];
     };
 }
