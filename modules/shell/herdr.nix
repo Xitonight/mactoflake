@@ -90,15 +90,6 @@
                 width = "80%";
                 height = "80%";
               }
-              {
-                key = "alt+f";
-                type = "popup";
-                # HERDR_ENV guard: popups are not panes, so zshrc would otherwise nest herdr inside the popup
-                command = ''HERDR_ENV=1 exec "''${SHELL:-sh}"'';
-                description = "scratch terminal";
-                width = "80%";
-                height = "80%";
-              }
             ];
           };
 
