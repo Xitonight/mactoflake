@@ -83,7 +83,7 @@ Each file sets `flake.nixosModules.<name>` and is auto-imported by import-tree. 
 
 | File | Purpose |
 |------|---------|
-| `1password.nix` | 1Password CLI + GUI integration; always installed (password manager, secretspec provider, Zen integration) regardless of `mactoflake.ssh.agent` |
+| `1password.nix` | 1Password CLI + GUI integration; installed only when `mactoflake.ssh.agent = "1password"` (secretspec provider, Zen integration) |
 | `bitwarden.nix` | Bitwarden desktop app; installed only when `mactoflake.ssh.agent = "bitwarden"` (its SSH agent works with Vaultwarden; desktop app must run, socket `~/.bitwarden-ssh-agent.sock`) |
 | `boot.nix` | `mactoflake.boot.loader` option (`grub` \| `systemd-boot`); minegrub theme |
 | `locale.nix` | TZ `Europe/Rome`, `en_US.UTF-8` + `it_IT.UTF-8` |
@@ -148,6 +148,8 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `swaync/` | swaync config | Notification daemon |
 | `tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` | Plugins via `pkgs.tmuxPlugins`; `limitedColors` swaps extended color indices for standard ones |
 | `vesktop.nix` | vesktop config | Discord client |
+|------|----------|-------|
+| `vicinae.nix` | `programs.vicinae` (upstream module via flake input) | Raycast-style launcher, replaces rofi/walker |
 | `xdg.nix` | `xdg.userDirs` | Custom dirs (dl/pics/docs/projects/videos) |
 | `yazi.nix` | `programs.yazi` | Terminal file manager |
 | `zathura.nix` | `programs.zathura` | PDF viewer |
