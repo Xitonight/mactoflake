@@ -45,6 +45,7 @@
       self.homeModules.swaync
       self.homeModules.tmux
       self.homeModules.vesktop
+      self.homeModules.vicinae
       self.homeModules.walker
       self.homeModules.xdg
       self.homeModules.yazi

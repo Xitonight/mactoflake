@@ -1,0 +1,23 @@
+[meta]
+version = 1
+name = "Matugen"
+description = "Material You colors generated from the current wallpaper"
+variant = "dark"
+inherits = "vicinae-dark"
+
+[colors.core]
+background = "{{colors.background.default.hex | lighten: -2.5}}"
+foreground = "{{colors.on_background.default.hex}}"
+secondary_background = "{{colors.surface_container.default.hex}}"
+border = "{{colors.outline_variant.default.hex}}"
+accent = "{{colors.primary.default.hex}}"
+
+[colors.accents]
+blue = "{{colors.blue.default.hex}}"
+green = "{{colors.green.default.hex}}"
+magenta = "{{colors.magenta.default.hex}}"
+orange = "{{colors.orange.default.hex}}"
+purple = "{{colors.purple.default.hex}}"
+red = "{{colors.red.default.hex}}"
+yellow = "{{colors.yellow.default.hex}}"
+cyan = "{{colors.cyan.default.hex}}"

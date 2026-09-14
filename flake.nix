@@ -45,6 +45,11 @@
     };
 
     deploy-rs.url = "github:serokell/deploy-rs";
+
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

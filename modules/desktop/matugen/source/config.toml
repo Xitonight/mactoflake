@@ -88,7 +88,13 @@ pre_hook = "mkdir -p ~/.config/walker/themes/matugen"
 input_path = "~/.config/matugen/templates/colors-telegram.tdesktop-theme"
 output_path = "~/.cache/telegram/colors.tdesktop-theme"
 pre_hook = "mkdir -p ~/.cache/telegram"
-post_hook = "tgtheme -i '{{image}}' -Bq; pkill Telegram; hyprctl eval 'hl.exec_cmd(\"[workspace special silent] Telegram\")'"
+
+[templates.vicinae]
+input_path = "~/.config/matugen/templates/colors-vicinae.toml"
+output_path = "~/.local/share/vicinae/themes/matugen.toml"
+pre_hook = "mkdir -p ~/.local/share/vicinae/themes"
+post_hook = "systemctl --user try-restart vicinae.service"
+
 
 [config.custom_colors.red]
 color = "#FF0000"

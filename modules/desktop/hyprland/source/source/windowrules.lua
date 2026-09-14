@@ -88,6 +88,12 @@ hl.layer_rule({
 	ignore_alpha = 0.5,
 })
 
+hl.layer_rule({
+	match = { namespace = "vicinae" },
+	blur = true,
+	ignore_alpha = 0.5,
+})
+
 -- Useful rules
 hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
 hl.window_rule({
