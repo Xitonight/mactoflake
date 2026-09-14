@@ -2,16 +2,20 @@
   flake.homeModules.tmux =
     {
       pkgs,
+      lib,
+      osConfig,
       limitedColors ? false,
       ...
     }:
     let
+      multiplexer = if osConfig == null then "tmux" else osConfig.mactoflake.shell.multiplexer;
+
       c16 = if limitedColors then "colour4" else "colour16";
       c18 = if limitedColors then "colour5" else "colour18";
       c19 = if limitedColors then "default" else "colour19";
     in
     {
-      programs = {
+      programs = lib.mkIf (multiplexer == "tmux") {
         sesh = {
           enable = true;
           icons = true;

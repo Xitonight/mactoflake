@@ -8,6 +8,9 @@
       osConfig,
       ...
     }:
+    let
+      multiplexer = if osConfig == null then "tmux" else osConfig.mactoflake.shell.multiplexer;
+    in
     {
       programs.zsh = {
         enable = true;
@@ -144,76 +147,89 @@
                 bindkey -M viins '^n' history-search-forward
                 bindkey -M viins ' ' magic-space
                 bindkey -M viins '^R' fzf-history-widget
-                zle -N sesh-sessions
-                bindkey -M vicmd '^s' sesh-sessions
-                bindkey -M viins '^s' sesh-sessions
+                ${lib.optionalString (multiplexer == "tmux") ''
+                  zle -N sesh-sessions
+                  bindkey -M vicmd '^s' sesh-sessions
+                  bindkey -M viins '^s' sesh-sessions
+                ''}
               }
             '';
 
-            shellIntegrations = ''
-              stty -ixon
+            shellIntegrations = lib.mkMerge [
+              ''
+                stty -ixon
+              ''
+              (lib.mkIf (multiplexer == "tmux") ''
+                if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
+                  if ! tmux has-session -t "main" 2>/dev/null; then
+                    # create session and windows
+                    tmux new-session -d -s "main" -n "main"
+                    tmux neww -d -t "main:2" -n "ssh" 2>/dev/null
 
-              if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
-                if ! tmux has-session -t "main" 2>/dev/null; then
-                  # create session and windows
-                  tmux new-session -d -s "main" -n "main"
-                  tmux neww -d -t "main:2" -n "ssh" 2>/dev/null
-
-                  # split ssh in two panes
-                  tmux split-window -h -t main:2
+                    # split ssh in two panes
+                    tmux split-window -h -t main:2
+                  fi
+                  if [ -z "$(tmux list-clients -t main 2>/dev/null)" ]; then
+                    tmux attach -t main 2>/dev/null
+                  fi
                 fi
-                if [ -z "$(tmux list-clients -t main 2>/dev/null)" ]; then
-                  tmux attach -t main 2>/dev/null
+              '')
+              (lib.mkIf (multiplexer == "herdr") ''
+                if [ -z "$SSH_CONNECTION" ] && [ -z "$HERDR_ENV" ] && command -v herdr >/dev/null 2>&1; then
+                  herdr
                 fi
-              fi
-            '';
+              '')
+            ];
 
-            functions = lib.mkOrder 1050 ''
-              p() {
-                local dir
-                dir=$(find ~/Projects -maxdepth 2 -type d | sed "s|^$HOME/Projects/||" | fzf --header="Select Project")
-                if [ -n "$dir" ]; then
-                  cd "$HOME/Projects/$dir"
-                fi
-              }
-
-              cppath() {
-                if [[ $# -gt 1 ]]; then
-                  echo "Please provide just one target."
-                  return
-                fi
-                local target
-                target="$1"
-                local fullpath
-                fullpath=$(realpath "$target")
-                wl-copy "$fullpath"
-                echo "Copied $fullpath to the clipboard."
-              }
-
-              mksesh() {
-                if [[ $# -gt 1 ]]; then
-                  echo "Please provide just one target."
-                  return
-                fi
-                local target
-                target="$1"
-                mkdir -p "$target"
-                zoxide add "$target"
-                sesh connect "$target"
-              }
-
-              sesh-sessions() {
-                {
-                  exec </dev/tty
-                  exec <&1
-                  local session
-                  session=$(sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
-                  zle reset-prompt >/dev/null 2>&1 || true
-                  [[ -z "$session" ]] && return
-                  sesh connect $session
+            functions = lib.mkOrder 1050 (
+              ''
+                p() {
+                  local dir
+                  dir=$(find ~/Projects -maxdepth 2 -type d | sed "s|^$HOME/Projects/||" | fzf --header="Select Project")
+                  if [ -n "$dir" ]; then
+                    cd "$HOME/Projects/$dir"
+                  fi
                 }
-              }
-            '';
+
+                cppath() {
+                  if [[ $# -gt 1 ]]; then
+                    echo "Please provide just one target."
+                    return
+                  fi
+                  local target
+                  target="$1"
+                  local fullpath
+                  fullpath=$(realpath "$target")
+                  wl-copy "$fullpath"
+                  echo "Copied $fullpath to the clipboard."
+                }
+              ''
+              + lib.optionalString (multiplexer == "tmux") ''
+                mksesh() {
+                  if [[ $# -gt 1 ]]; then
+                    echo "Please provide just one target."
+                    return
+                  fi
+                  local target
+                  target="$1"
+                  mkdir -p "$target"
+                  zoxide add "$target"
+                  sesh connect "$target"
+                }
+
+                sesh-sessions() {
+                  {
+                    exec </dev/tty
+                    exec <&1
+                    local session
+                    session=$(sesh list | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
+                    zle reset-prompt >/dev/null 2>&1 || true
+                    [[ -z "$session" ]] && return
+                    sesh connect $session
+                  }
+                }
+              ''
+            );
             transientPrompt = lib.mkIf config.programs.starship.enable (
               lib.mkOrder 1100 ''
                 TRANSIENT_PROMPT="''${PROMPT// prompt / prompt --profile transient }"

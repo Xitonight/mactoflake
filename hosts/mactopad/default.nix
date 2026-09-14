@@ -31,6 +31,7 @@
           virtualization.enable = true;
           git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2oLqyj5ZEhObKpgxHDy+5ME7KOf9EpF9wA/ZUNI+R";
           ssh.agent = "rbw";
+          shell.multiplexer = "herdr";
           input.kanata.enable = true;
           power.enable = true;
 

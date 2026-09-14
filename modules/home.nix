@@ -44,6 +44,7 @@
       self.homeModules.starship
       self.homeModules.swaync
       self.homeModules.tmux
+      self.homeModules.herdr
       self.homeModules.vesktop
       self.homeModules.vicinae
       self.homeModules.walker
@@ -72,6 +73,7 @@
       self.homeModules.secretspec
       self.homeModules.ssh
       self.homeModules.tmux
+      self.homeModules.herdr
       self.homeModules.yazi
       self.homeModules.zoxide
       self.homeModules.zsh
