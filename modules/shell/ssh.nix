@@ -20,9 +20,10 @@
           authorization prompts inside the desktop window) or rbw (CLI
           Bitwarden client against Vaultwarden, pinentry prompts, socket
           $XDG_RUNTIME_DIR/rbw/ssh-agent-socket, keys stored as SSH key
-          vault items). App installation is not affected: 1Password is
-          always installed; bitwarden-desktop is only added when this is
-          "bitwarden", rbw + pinentry-qt only when this is "rbw".
+          vault items). App installation follows this choice: 1Password is
+          only installed when this is "1password"; bitwarden-desktop is
+          only added when this is "bitwarden"; rbw + pinentry-qt only
+          when this is "rbw".
         '';
       };
 
