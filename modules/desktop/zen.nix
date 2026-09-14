@@ -3,10 +3,13 @@
     {
       pkgs,
       inputs,
+      lib,
+      osConfig,
       ...
     }:
     let
       inherit (pkgs) firefox-addons;
+      agent = if osConfig == null then "1password" else osConfig.mactoflake.ssh.agent;
       disabled = map (id: {
         inherit id;
         disabled = true;
@@ -203,12 +206,14 @@
             };
           };
 
-          extensions.packages = with firefox-addons; [
-            ublock-origin
-            vimium
-            onepassword-password-manager
-            bitwarden
-          ];
+          extensions.packages =
+            with firefox-addons;
+            [
+              ublock-origin
+              vimium
+              bitwarden
+            ]
+            ++ lib.optionals (agent == "1password") [ onepassword-password-manager ];
 
           keyboardShortcutsVersion = 20;
           keyboardShortcuts =
