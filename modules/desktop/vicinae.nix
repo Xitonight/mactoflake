@@ -25,6 +25,13 @@
             dark.name = "matugen";
           };
         };
+
+        extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
+          awww-switcher
+          bitwarden
+          nix
+        ];
+
       };
     };
 }
