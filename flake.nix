@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    opencode.url = "github:anomalyco/opencode";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
