@@ -5,6 +5,7 @@
       osConfig,
       pkgs,
       config,
+      inputs,
       ...
     }:
     let
@@ -29,10 +30,24 @@
         cp ${herdrNavigator}/bin/herdr-navigator $out/target/release/herdr-navigator
         cp ${navigatorSrc}/herdr-plugin.toml $out/herdr-plugin.toml
       '';
+
+      splitsSrc = pkgs.fetchFromGitHub {
+        owner = "lmilojevicc";
+        repo = "herdr-splits.nvim";
+        rev = "94f30cf4e9ac76ddf185a3acd0977be728fa4106";
+        hash = "sha256-7rHAPSjd2n16FGOcqI/1KNHl1yCmMOVVwiJl/eEU9n8=";
+      };
+
+      herdrSplitsPlugin = pkgs.runCommand "herdr-splits-plugin" { } ''
+        mkdir -p $out/scripts
+        cp ${splitsSrc}/herdr-plugin.toml $out/herdr-plugin.toml
+        cp ${splitsSrc}/scripts/*.sh $out/scripts/
+      '';
     in
     {
       programs.herdr = lib.mkIf (multiplexer == "herdr") {
         enable = true;
+        package = inputs.herdr.packages.${pkgs.system}.herdr;
         settings = {
           onboarding = false;
 
@@ -49,27 +64,61 @@
             ];
             previous_tab = "alt+shift+h";
             next_tab = "alt+shift+l";
-            focus_pane_left = [
-              "prefix+h"
-              "ctrl+h"
-            ];
-            focus_pane_down = [
-              "prefix+j"
-              "ctrl+j"
-            ];
-            focus_pane_up = [
-              "prefix+k"
-              "ctrl+k"
-            ];
-            focus_pane_right = [
-              "prefix+l"
-              "ctrl+l"
-            ];
-            resize_pane_left = "ctrl+shift+h";
-            resize_pane_down = "ctrl+shift+j";
-            resize_pane_up = "ctrl+shift+k";
-            resize_pane_right = "ctrl+shift+l";
+            focus_pane_left = "prefix+h";
+            focus_pane_down = "prefix+j";
+            focus_pane_up = "prefix+k";
+            focus_pane_right = "prefix+l";
+            split_vertical = "prefix+percent";
+            split_horizontal = "prefix+double_quote";
             command = [
+              {
+                key = "ctrl+h";
+                type = "plugin_action";
+                command = "herdr-splits.nav-left";
+                description = "focus pane or nvim split left";
+              }
+              {
+                key = "ctrl+j";
+                type = "plugin_action";
+                command = "herdr-splits.nav-down";
+                description = "focus pane or nvim split down";
+              }
+              {
+                key = "ctrl+k";
+                type = "plugin_action";
+                command = "herdr-splits.nav-up";
+                description = "focus pane or nvim split up";
+              }
+              {
+                key = "ctrl+l";
+                type = "plugin_action";
+                command = "herdr-splits.nav-right";
+                description = "focus pane or nvim split right";
+              }
+              {
+                key = "ctrl+shift+h";
+                type = "plugin_action";
+                command = "herdr-splits.resize-left";
+                description = "resize pane or nvim split left";
+              }
+              {
+                key = "ctrl+shift+j";
+                type = "plugin_action";
+                command = "herdr-splits.resize-down";
+                description = "resize pane or nvim split down";
+              }
+              {
+                key = "ctrl+shift+k";
+                type = "plugin_action";
+                command = "herdr-splits.resize-up";
+                description = "resize pane or nvim split up";
+              }
+              {
+                key = "ctrl+shift+l";
+                type = "plugin_action";
+                command = "herdr-splits.resize-right";
+                description = "resize pane or nvim split right";
+              }
               {
                 key = "alt+s";
                 type = "plugin_action";
@@ -111,12 +160,18 @@
         };
       };
 
-      home.activation.herdrNavigatorPlugin = lib.mkIf (multiplexer == "herdr") (
+      home.activation.herdrPlugins = lib.mkIf (multiplexer == "herdr") (
         lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          if ! grep -q '${herdrNavigatorPlugin}' "$HOME/.config/herdr/plugins.json" 2>/dev/null; then
-            $DRY_RUN_CMD ${config.programs.herdr.package}/bin/herdr plugin unlink herdr-navigator 2>/dev/null || true
-            $DRY_RUN_CMD ${config.programs.herdr.package}/bin/herdr plugin link ${herdrNavigatorPlugin}
-          fi
+          link_plugin() {
+            if ! grep -q "$2" "$HOME/.config/herdr/plugins.json" 2>/dev/null; then
+              $DRY_RUN_CMD ${config.programs.herdr.package}/bin/herdr plugin unlink "$1" 2>/dev/null || true
+              # never fail the switch: a stale running herdr server rejects plugin
+              # commands (protocol mismatch) until restarted; the grep retries on next switch
+              $DRY_RUN_CMD ${config.programs.herdr.package}/bin/herdr plugin link "$2" || true
+            fi
+          }
+          link_plugin herdr-navigator '${herdrNavigatorPlugin}'
+          link_plugin herdr-splits '${herdrSplitsPlugin}'
         ''
       );
     };
