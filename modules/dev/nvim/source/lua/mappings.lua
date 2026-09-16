@@ -36,19 +36,21 @@ map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result
 map("n", "<leader>cc", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>cc", "gc", { desc = "toggle comment", remap = true })
 
--- Window navigation (integration with tmux)
-map("n", "<C-h>", function()
-  vim.cmd "TmuxNavigateLeft"
-end, { desc = "window left" })
-map("n", "<C-l>", function()
-  vim.cmd "TmuxNavigateRight"
-end, { desc = "window right" })
-map("n", "<C-j>", function()
-  vim.cmd "TmuxNavigateDown"
-end, { desc = "window down" })
-map("n", "<C-k>", function()
-  vim.cmd "TmuxNavigateUp"
-end, { desc = "window up" })
+-- Window navigation (integration with tmux; inside Herdr, herdr-splits.nvim owns these keys)
+if vim.env.HERDR_ENV ~= "1" then
+  map("n", "<C-h>", function()
+    vim.cmd "TmuxNavigateLeft"
+  end, { desc = "window left" })
+  map("n", "<C-l>", function()
+    vim.cmd "TmuxNavigateRight"
+  end, { desc = "window right" })
+  map("n", "<C-j>", function()
+    vim.cmd "TmuxNavigateDown"
+  end, { desc = "window down" })
+  map("n", "<C-k>", function()
+    vim.cmd "TmuxNavigateUp"
+  end, { desc = "window up" })
+end
 
 -- Lazy
 map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })

@@ -20,6 +20,7 @@ return {
   {
     "christoomey/vim-tmux-navigator",
     lazy = false,
+    cond = vim.env.HERDR_ENV ~= "1",
   },
 
   {
