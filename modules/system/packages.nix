@@ -19,6 +19,7 @@
         inetutils
         secretspec
         bitwarden-cli
+        tldr
 
         # --- Editor ---
         neovim
