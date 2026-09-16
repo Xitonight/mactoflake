@@ -1,5 +1,9 @@
 {
   flake.homeModules.kitty = {
+    xdg.configFile."xdg-terminals.list".text = ''
+      kitty.desktop
+    '';
+
     programs.kitty = {
       enable = true;
       shellIntegration.enableZshIntegration = true;

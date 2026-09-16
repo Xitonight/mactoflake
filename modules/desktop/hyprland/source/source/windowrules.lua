@@ -33,6 +33,12 @@ hl.window_rule({
 	center = true,
 })
 hl.window_rule({
+	match = { class = "kitty-nvim" },
+	float = true,
+	size = { "monitor_w*0.7", "monitor_h*0.75" },
+	center = true,
+})
+hl.window_rule({
 	match = { class = "nwg-look" },
 	float = true,
 	size = { "monitor_w*0.5", "monitor_h*0.6" },
