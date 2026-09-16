@@ -160,7 +160,7 @@
                 stty -ixon
               ''
               (lib.mkIf (multiplexer == "tmux") ''
-                if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
+                if [ -z "$SSH_CONNECTION" ] && [ -z "$TMUX" ] && [ -z "$RAW_TERM" ]; then
                   if ! tmux has-session -t "main" 2>/dev/null; then
                     # create session and windows
                     tmux new-session -d -s "main" -n "main"
@@ -175,8 +175,9 @@
                 fi
               '')
               (lib.mkIf (multiplexer == "herdr") ''
-                if [ -z "$SSH_CONNECTION" ] && [ -z "$HERDR_ENV" ] && command -v herdr >/dev/null 2>&1; then
-                  herdr
+                if [ -z "$SSH_CONNECTION" ] && [ -z "$HERDR_ENV" ] && [ -z "$RAW_TERM" ]; then
+                  # attach only if no other client is attached (bare `herdr` process = attached client)
+                  pgrep -f '^herdr$' >/dev/null 2>&1 || herdr
                 fi
               '')
             ];
