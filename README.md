@@ -65,7 +65,7 @@ In [`modules/parts.nix`](modules/parts.nix) the shared constants live under `fla
 |----------|---------|--------------|
 | `username` | `"xitonight"` | Passed to **every** system and home module via `specialArgs`/`extraSpecialArgs`. The HM user, the `users.users.<name>` declaration, git identity, group memberships — basically everything follows this. **Change it once and the whole flake re-keys to your user.** |
 | `flakeDir` | `"/home/${username}/.mactoflake"` | Absolute path to the repo. Used to build out-of-store symlinks. |
-| `papersDir` | `"$XDG_PICTURES_DIR/papers"` | Where wallpapers are picked from by the rofi wallpaper script. Change freely. |
+| `papersDir` | `"$XDG_PICTURES_DIR/papers"` | Where wallpapers are picked from by the vicinae awww-switcher extension. Change freely. |
 | `email` | `"xitonight@gmail.com"` | Used for the git commit identity. |
 
 Changing `username` is the single most impactful edit you'll make when tailoring this to yourself.
@@ -320,7 +320,7 @@ Because it's behind a single toggle — `mactoflake.input.kanata.enable` — it'
 
 Both GTK and Qt are themed consistently. On top of that, [**matugen**](https://github.com/InioX/matugen) generates a full **Material You** colour palette from a wallpaper and feeds it into every program that supports custom themes (kitty reads a generated `colors.conf`, Hyprland imports a generated `colors.lua`, etc.).
 
-Wallpaper picking is one keystroke away via the **rofi wallpaper script** (inlined in [`modules/desktop/scripts/default.nix`](modules/desktop/scripts/default.nix)): pick an image and matugen runs automatically.
+Wallpaper picking is one keystroke away via the **awww-switcher vicinae extension** (configured in [`modules/desktop/vicinae.nix`](modules/desktop/vicinae.nix)): pick an image from a grid and matugen runs automatically.
 
 - **Wallpapers location:** `$XDG_PICTURES_DIR/papers` (i.e. `~/Pictures/papers`). Change the `papersDir` constant in [`modules/parts.nix`](modules/parts.nix) to point elsewhere.
 - **Want wallpapers?** I keep a public, contribution-friendly wallpapers repo: **[github.com/Xitonight/papers](https://github.com/Xitonight/papers)** — free to use and add to.

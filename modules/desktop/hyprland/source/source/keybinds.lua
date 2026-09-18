@@ -137,14 +137,11 @@ hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd("hyprctl switchxkblayout current next
 
 -- Vicinae
 hl.bind("SUPER + D", hl.dsp.exec_cmd("vicinae toggle"))
-
--- Rofi
-hl.bind("SUPER + A", hl.dsp.exec_cmd("pkill rofi || rofi -show drun"))
-hl.bind("SUPER + R", hl.dsp.exec_cmd("pkill rofi || rofi -show run -config ~/.config/rofi/run.rasi"))
-hl.bind("SUPER + TAB", hl.dsp.exec_cmd("pkill rofi || rofi -show window -config ~/.config/rofi/window.rasi"))
-hl.bind("SUPER + Period", hl.dsp.exec_cmd("pkill rofi || rofi -show emoji -config ~/.config/rofi/emoji.rasi"))
-hl.bind("SUPER + Comma", hl.dsp.exec_cmd("pkill rofi || rofi-wallpaper"))
-hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill rofi || rofi-clipboard"))
+hl.bind("SUPER + A", hl.dsp.exec_cmd("vicinae toggle"))
+hl.bind("SUPER + TAB", hl.dsp.exec_cmd('vicinae "vicinae://launch/wm/switch-windows?toggle=true"'))
+hl.bind("SUPER + Period", hl.dsp.exec_cmd('vicinae "vicinae://launch/core/search-emojis?toggle=true"'))
+hl.bind("SUPER + Comma", hl.dsp.exec_cmd('vicinae "vicinae://launch/@sovereign/awww-switcher/wpgrid?toggle=true"'))
+hl.bind("SUPER + V", hl.dsp.exec_cmd('vicinae "vicinae://launch/clipboard/history?toggle=true"'))
 
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))

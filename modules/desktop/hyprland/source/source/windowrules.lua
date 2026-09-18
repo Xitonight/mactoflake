@@ -79,11 +79,6 @@ hl.layer_rule({
 	no_anim = true,
 })
 hl.layer_rule({
-	match = { namespace = "rofi" },
-	blur = true,
-	ignore_alpha = 0.5,
-})
-hl.layer_rule({
 	match = { namespace = "swaync-control-center" },
 	blur = true,
 	ignore_alpha = 0.5,

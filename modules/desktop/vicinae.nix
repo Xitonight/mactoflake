@@ -4,7 +4,11 @@
 }:
 {
   flake.homeModules.vicinae =
-    { pkgs, ... }:
+    {
+      pkgs,
+      config,
+      ...
+    }:
     {
       imports = [ inputs.vicinae.homeManagerModules.default ];
 
@@ -24,10 +28,16 @@
             light.name = "matugen";
             dark.name = "matugen";
           };
+          providers."@sovereign/awww-switcher".preferences = {
+            wallpaperPath = "${config.xdg.userDirs.pictures}/papers";
+            colorGenTool = "matugen";
+          };
         };
 
         extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-          awww-switcher
+          # renamed so the installed folder (and thus the vicinae provider id /
+          # deeplink) is @sovereign/awww-switcher instead of @sovereign/vicinae-extension-awww-switcher-0
+          (awww-switcher.overrideAttrs { name = "awww-switcher"; })
           bitwarden
           nix
         ];

@@ -54,7 +54,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
   modules/system/    # OS-layer NixOS modules (1password, audio, bluetooth, boot, cachix, containers, fonts,
                     #   locale, network, nh, nix, nvidia, openvpn, overlays, packages, polkit, power, shell,
                     #   tailscale, udev, virtualization, kanata/)
-  modules/desktop/  # graphical session (hyprland/ merged, kitty, rofi/, swaync/, gtk, qt, matugen/, fsh/,
+  modules/desktop/  # graphical session (hyprland/ merged, kitty, vicinae.nix, swaync/, gtk, qt, matugen/, fsh/,
                     #   scripts/, vesktop, mpv, zathura, zen, xdg)
   modules/shell/    # terminal & CLI (zsh, oh-my-posh, starship, fzf, eza, zoxide, bat, pay-respects,
                     #   yazi, btop, tmux, ssh)
@@ -62,7 +62,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
   # Every file is a flake-parts module setting flake.nixosModules.<x> and/or flake.homeModules.<x>.
   # Grouping is by DOMAIN, not by nixos/home class — a cross-cutting feature (hyprland, git) lives in ONE
   # file under the relevant domain and exports both classes.
-  modules/<domain>/<name>/source/  # raw config trees for symlinked configs (nvim, rofi, matugen, hyprland)
+  modules/<domain>/<name>/source/  # raw config trees for symlinked configs (nvim, matugen, hyprland)
   ```
 
 ### Wiring modules (`modules/*.nix`)
@@ -140,8 +140,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `pay-respects.nix` | pay-respects | `cd` replacement with smart suggestions |
 | `prismlauncher.nix` | `programs.prismlauncher` | Minecraft launcher; jdks 17 + 21 bundled for instance selection (ATM10 needs 21) |
 | `qt.nix` | Qt theming | Qt theme configuration |
-| `rofi/` | rofi config | Application launcher |
-| `scripts/` | Custom scripts | Single `flake.homeModules.scripts` with `brightness`, `rofi-clipboard`, `rofi-wallpaper`, `tgtheme` inlined |
+| `scripts/` | Custom scripts | Single `flake.homeModules.scripts` with `brightness`, `tgtheme` inlined |
 | `secretspec/` | `xdg.configFile` | secretspec config (onepassword provider) |
 | `ssh.nix` | **Merged** `mactoflake.ssh.agent` option (NixOS, imported by base) + SSH client config (home) | `mactoflake.ssh.agent` = `1password` \| `bitwarden` \| `rbw`: switches `SSH_AUTH_SOCK`/`IdentityAgent` (`~/.1password/agent.sock`, `~/.bitwarden-ssh-agent.sock`, `$XDG_RUNTIME_DIR/rbw/ssh-agent-socket`), git signing (op-ssh-sign vs stock ssh-keygen) and exports `MACTOFLAKE_SSH_AGENT` for the Hyprland autostart. rbw targets Vaultwarden with pinentry-qt prompts; keys are SSH-key vault items |
 | `starship.nix` | `programs.starship` | Alt prompt (currently `enable = false`; oh-my-posh is active) |
@@ -149,7 +148,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `tmux.nix` | `programs.tmux` + `programs.sesh` + `programs.fzf.tmux` | Plugins via `pkgs.tmuxPlugins`; `limitedColors` swaps extended color indices for standard ones |
 | `vesktop.nix` | vesktop config | Discord client |
 |------|----------|-------|
-| `vicinae.nix` | `programs.vicinae` (upstream module via flake input) | Raycast-style launcher, replaces rofi/walker |
+| `vicinae.nix` | `programs.vicinae` (upstream module via flake input) | Sole launcher (replaced rofi/walker); matugen theme + awww-switcher extension (wallpaper grid → matugen) configured declaratively via `settings.providers."@sovereign/awww-switcher".preferences`; keybinds open views via `vicinae://launch/...` deeplinks (emoji `core/search-emojis`, windows `wm/switch-windows`, clipboard `clipboard/history`) |
 | `xdg.nix` | `xdg.userDirs` | Custom dirs (dl/pics/docs/projects/videos) |
 | `yazi.nix` | `programs.yazi` | Terminal file manager |
 | `zathura.nix` | `programs.zathura` | PDF viewer |

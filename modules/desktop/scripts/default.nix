@@ -2,7 +2,6 @@
   flake.homeModules.scripts =
     {
       pkgs,
-      papersDir,
       ...
     }:
     {
@@ -198,21 +197,6 @@
                   exit 1
                   ;;
           esac
-        '')
-        (pkgs.writeShellScriptBin "rofi-clipboard" ''
-          ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu -p "󰅏 Clipboard" -config ~/.config/rofi/clipboard.rasi | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
-        '')
-        (pkgs.writeShellScriptBin "rofi-wallpaper" ''
-          [ -f "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ] && . "''${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
-          WALLPAPER_DIR="${papersDir}"
-
-          selection=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) -exec basename {} \; | sort | while read -r name; do
-            printf '%s\x00icon\x1f%s\n' "$name" "$WALLPAPER_DIR/$name"
-          done | ${pkgs.rofi}/bin/rofi -dmenu -p "  Wallpapers" -config ~/.config/rofi/wallpaper.rasi)
-
-          [ -z "$selection" ] && exit
-
-          ${pkgs.matugen}/bin/matugen image "$WALLPAPER_DIR/$selection" --source-color-index 0
         '')
         (pkgs.writeShellScriptBin "tgtheme" ''
           # tgtheme - package a telegram-desktop theme from a colors file and a background

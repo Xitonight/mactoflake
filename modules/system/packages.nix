@@ -30,7 +30,6 @@
 
         # --- Desktop / Hyprland ---
         hyprpolkitagent
-        cliphist
         udiskie
         hyprshot
         hyprpicker
@@ -45,9 +44,6 @@
         matugen
         awww
         pywal
-
-        # --- Rofi ---
-        (pkgs.rofi.override { plugins = [ pkgs.rofi-emoji ]; })
 
         # --- Notifications ---
         swaynotificationcenter
