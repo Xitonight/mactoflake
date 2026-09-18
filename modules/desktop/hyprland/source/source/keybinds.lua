@@ -143,6 +143,9 @@ hl.bind("SUPER + Period", hl.dsp.exec_cmd('vicinae "vicinae://launch/core/search
 hl.bind("SUPER + Comma", hl.dsp.exec_cmd('vicinae "vicinae://launch/@sovereign/awww-switcher/wpgrid?toggle=true"'))
 hl.bind("SUPER + V", hl.dsp.exec_cmd('vicinae "vicinae://launch/clipboard/history?toggle=true"'))
 
+-- wlr-which-key
+hl.bind("SUPER + M", hl.dsp.exec_cmd("wlr-which-key"))
+
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind("SUPER + SHIFT + CTRL + ALT + Escape", hl.dsp.exit())

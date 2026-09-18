@@ -47,6 +47,7 @@
       self.homeModules.vesktop
       self.homeModules.vicinae
       self.homeModules.walker
+      self.homeModules.wlr-which-key
       self.homeModules.xdg
       self.homeModules.yazi
       self.homeModules.zathura
