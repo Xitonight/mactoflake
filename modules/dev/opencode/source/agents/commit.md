@@ -11,6 +11,15 @@ permission:
     "git status*": allow
     "git diff*": allow
     "git log*": allow
+    "git show*": allow
+    "git add*": allow
+    "git restore --staged*": allow
+    "git rm --cached*": allow
+    "git commit*": allow
+    "git commit --amend*": ask
+    "echo*.gitmessage": allow
+    "rm .gitmessage*": allow
+    "git push*": deny
 ---
 
 You are an expert Git and Version Control specialist. Your objective is to inspect workspace changes, group related modifications into atomic units, and construct clean, expressive Conventional Commits.
