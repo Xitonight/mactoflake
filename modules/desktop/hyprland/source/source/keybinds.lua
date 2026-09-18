@@ -7,8 +7,8 @@ local function focus_workspace(n)
 end
 
 -- Logging
-hl.bind("SUPER + ALT + C", hl.dsp.exec_cmd("hyprctl clients > ~/.cache/clients.txt"))
-hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd("hyprctl layers > ~/.cache/layers.txt"))
+hl.bind("SUPER + ALT + C", hl.dsp.exec_cmd([[hyprctl clients > ~/.cache/clients.txt && notify-send -t 1500 "Clients dumped"]]))
+hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd([[hyprctl layers > ~/.cache/layers.txt && notify-send -t 1500 "Layers dumped"]]))
 
 -- Window management
 hl.bind("SUPER + Q", hl.dsp.window.close())
@@ -133,7 +133,7 @@ hl.bind("SUPER + ALT + Return", hl.dsp.exec_cmd("RAW_TERM=1 kitty --class kitty-
 hl.bind("SUPER + ALT + Escape", hl.dsp.exec_cmd("kitty --class kitty-btop btop"))
 hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("kitty --class kitty-wiremix wiremix"))
 hl.bind("SUPER + ALT + W", hl.dsp.exec_cmd("kitty --class kitty-nmtui --override window_padding_width=0 nmtui"))
-hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd("hyprctl switchxkblayout current next"))
+hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd([[hyprctl switchxkblayout current next && notify-send -t 1500 "Layout: $(hyprctl devices | awk '/Main: yes/{f=1} f && /Active keymap:/{sub(/.*Active keymap: /, ""); print; exit}')"]]))
 
 -- Vicinae
 hl.bind("SUPER + D", hl.dsp.exec_cmd("vicinae toggle"))
@@ -166,9 +166,13 @@ hl.bind("XF86AudioMedia", hl.dsp.exec_cmd("playerctl play-pause"))
 hl.bind("XF86AudioStop", hl.dsp.exec_cmd("playerctl stop"))
 
 -- Volume
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-"), { repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+local function volume_notify()
+	return [[v="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"; p="$(echo "$v" | awk '{print int($2*100)}')"; echo "$v" | grep -q MUTED && notify-send -t 900 -h string:x-canonical-private-synchronous:volume "Muted" || notify-send -t 900 -h string:x-canonical-private-synchronous:volume -h int:value:"$p" "Volume ${p}%"]]
+end
+
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+; " .. volume_notify()), { repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%-; " .. volume_notify()), { repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; " .. volume_notify()))
 
 -- Screenshots
 hl.bind("SUPER + P", hl.dsp.exec_cmd("hyprshot -m output -m active --clipboard-only"))
@@ -176,5 +180,5 @@ hl.bind("SUPER + ALT + P", hl.dsp.exec_cmd("hyprshot -m window -m active --clipb
 hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
 
 -- Brightness
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightness up"), { repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness down"), { repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd([[out="$(brightness up)"; [ -n "$out" ] && notify-send -t 900 -h string:x-canonical-private-synchronous:brightness "Brightness" "$out"]]), { repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd([[out="$(brightness down)"; [ -n "$out" ] && notify-send -t 900 -h string:x-canonical-private-synchronous:brightness "Brightness" "$out"]]), { repeating = true })
