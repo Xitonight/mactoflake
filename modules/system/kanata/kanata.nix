@@ -34,6 +34,16 @@
             Nice = -20;
           };
         };
+
+        security.polkit.extraConfig = ''
+          polkit.addRule(function(action, subject) {
+            if (action.id == "org.freedesktop.systemd1.manage-units" &&
+                action.lookup("unit") == "kanata.service" &&
+                subject.isInGroup("wheel")) {
+              return polkit.Result.YES;
+            }
+          });
+        '';
       };
     };
 }

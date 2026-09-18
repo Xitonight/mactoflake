@@ -149,6 +149,12 @@ hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill rofi || rofi-clipboard"))
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
 hl.bind("SUPER + SHIFT + CTRL + ALT + Escape", hl.dsp.exit())
+hl.bind(
+	"SUPER + ALT + SHIFT + K",
+	hl.dsp.exec_cmd(
+		"if systemctl is-active --quiet kanata; then systemctl stop kanata && notify-send -t 2000 kanata disabled; else systemctl start kanata && notify-send -t 2000 kanata enabled; fi"
+	)
+)
 
 -- Lid switch
 hl.bind("switch:Lid Switch", hl.dsp.exec_cmd("loginctl lock-session"))
