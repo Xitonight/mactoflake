@@ -140,7 +140,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 | `pay-respects.nix` | pay-respects | `cd` replacement with smart suggestions |
 | `prismlauncher.nix` | `programs.prismlauncher` | Minecraft launcher; jdks 17 + 21 bundled for instance selection (ATM10 needs 21) |
 | `qt.nix` | Qt theming | Qt theme configuration |
-| `scripts/` | Custom scripts | Single `flake.homeModules.scripts` with `brightness`, `tgtheme` inlined |
+| `scripts/` | Custom scripts | Single `flake.homeModules.scripts` with `tgtheme` inlined |
 | `secretspec/` | `xdg.configFile` | secretspec config (onepassword provider) |
 | `ssh.nix` | **Merged** `mactoflake.ssh.agent` option (NixOS, imported by base) + SSH client config (home) | `mactoflake.ssh.agent` = `1password` \| `bitwarden` \| `rbw`: switches `SSH_AUTH_SOCK`/`IdentityAgent` (`~/.1password/agent.sock`, `~/.bitwarden-ssh-agent.sock`, `$XDG_RUNTIME_DIR/rbw/ssh-agent-socket`), git signing (op-ssh-sign vs stock ssh-keygen) and exports `MACTOFLAKE_SSH_AGENT` for the Hyprland autostart. rbw targets Vaultwarden with pinentry-qt prompts; keys are SSH-key vault items |
 | `starship.nix` | `programs.starship` | Alt prompt (currently `enable = false`; oh-my-posh is active) |

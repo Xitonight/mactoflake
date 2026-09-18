@@ -180,5 +180,9 @@ hl.bind("SUPER + ALT + P", hl.dsp.exec_cmd("hyprshot -m window -m active --clipb
 hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
 
 -- Brightness
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd([[out="$(brightness up)"; [ -n "$out" ] && notify-send -t 900 -h string:x-canonical-private-synchronous:brightness "Brightness" "$out"]]), { repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd([[out="$(brightness down)"; [ -n "$out" ] && notify-send -t 900 -h string:x-canonical-private-synchronous:brightness "Brightness" "$out"]]), { repeating = true })
+local function brightness_notify()
+	return [[p="$(brightnessctl info | awk -F'[(%]' '/Current brightness/ {print $2}')"; [ -n "$p" ] && notify-send -t 900 -h string:x-canonical-private-synchronous:brightness -h int:value:"$p" "Brightness ${p}%"]]
+end
+
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set 5%+; " .. brightness_notify()), { repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-; " .. brightness_notify()), { repeating = true })

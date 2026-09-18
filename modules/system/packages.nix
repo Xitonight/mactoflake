@@ -37,7 +37,6 @@
         slurp
         playerctl
         brightnessctl
-        ddcutil
         wiremix
 
         # --- Theming ---
