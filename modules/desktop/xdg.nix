@@ -20,6 +20,26 @@
           music = "${hd}";
           desktop = "${hd}";
         };
+
+        desktopEntries.yazi = {
+          name = "Yazi";
+          genericName = "File Manager";
+          comment = "Browse a directory in a floating kitty window";
+          exec = "kitty --class kitty-yazi yazi %f";
+          terminal = false;
+          categories = [
+            "System"
+            "FileTools"
+            "FileManager"
+          ];
+          mimeType = [ "inode/directory" ];
+          startupNotify = false;
+        };
+
+        mimeApps = {
+          enable = true;
+          defaultApplications."inode/directory" = [ "yazi.desktop" ];
+        };
       };
     };
 }
