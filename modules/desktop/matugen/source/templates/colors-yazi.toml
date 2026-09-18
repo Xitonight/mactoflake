@@ -41,6 +41,6 @@ rules = [
   { mime = "application/x-rar", fg = "{{colors.error.default.hex}}" },
 
   # Fallback
-  { name = "*", fg = "{{colors.primary.default.hex}}", bold = true },
-  { name = "*/", fg = "{{colors.secondary.default.hex}}", bold = true },
+  { url = "*", fg = "{{colors.primary.default.hex}}", bold = true },
+  { url = "*/", fg = "{{colors.secondary.default.hex}}", bold = true },
 ]
