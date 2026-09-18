@@ -28,18 +28,26 @@
             light.name = "matugen";
             dark.name = "matugen";
           };
-          providers."@sovereign/awww-switcher".preferences = {
-            wallpaperPath = "${config.xdg.userDirs.pictures}/papers";
-            colorGenTool = "matugen";
+          providers = {
+            "@sovereign/awww-switcher".preferences = {
+              wallpaperPath = "${config.xdg.userDirs.pictures}/papers";
+              colorGenTool = "matugen";
+            };
+            "@bl4zee1g/bitwarden".entrypoints."browse-vault".alias = "bw";
+            "@knoopx/nix".entrypoints = {
+              options.alias = "nx";
+              home-manager-options.alias = "nxh";
+            };
+            files.entrypoints.search.alias = "ff";
+            system.entrypoints.run.alias = "!";
+            wm.entrypoints.switch-workspaces.alias = "ws";
           };
         };
 
         extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-          # renamed so the installed folder (and thus the vicinae provider id /
-          # deeplink) is @sovereign/awww-switcher instead of @sovereign/vicinae-extension-awww-switcher-0
           (awww-switcher.overrideAttrs { name = "awww-switcher"; })
-          bitwarden
-          nix
+          (bitwarden.overrideAttrs { name = "bitwarden"; })
+          (nix.overrideAttrs { name = "nix"; })
         ];
 
       };
