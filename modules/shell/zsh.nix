@@ -95,7 +95,6 @@
           zconf = "nvim ${flakeDir}/modules/shell/zsh.nix";
           kittyconf = "nvim ${flakeDir}/modules/desktop/kitty.nix";
           nvconf = "nvim $HOME/.config/nvim";
-          nos = "nh os switch";
           nhs = "nh home switch . -c $(hostname)";
           sstart = "sudo systemctl start";
           sstop = "sudo systemctl stop";

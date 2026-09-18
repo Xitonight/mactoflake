@@ -148,6 +148,8 @@ hl.bind("SUPER + M", hl.dsp.exec_cmd("wlr-which-key"))
 
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
+hl.bind("SUPER + SHIFT + R", hl.dsp.exec_cmd("nos start"))
+hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd("kitty --class kitty-floating nos watch"))
 hl.bind("SUPER + SHIFT + CTRL + ALT + Escape", hl.dsp.exit())
 hl.bind(
 	"SUPER + ALT + SHIFT + K",

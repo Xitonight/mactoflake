@@ -22,6 +22,7 @@
         self.nixosModules.nh
         self.nixosModules.nix
         self.nixosModules.overlays
+        self.nixosModules.rebuild
         self.nixosModules.shell
         self.nixosModules.sops
         self.nixosModules.ssh
