@@ -37,6 +37,7 @@
       self.homeModules.pay-respects
       self.homeModules.prismlauncher
       self.homeModules.qt
+      self.homeModules.rebuild
       self.homeModules.scripts
       self.homeModules.secretspec
       self.homeModules.ssh

@@ -154,4 +154,54 @@
 
       environment.systemPackages = [ nos ];
     };
+
+  flake.homeModules.rebuild =
+    {
+      pkgs,
+      ...
+    }:
+    {
+      xdg.dataFile = {
+        "vicinae/scripts/rebuild.sh" = {
+          executable = true;
+          text = ''
+            #!/bin/sh
+            # @vicinae.schemaVersion 1
+            # @vicinae.title Rebuild NixOS
+            # @vicinae.mode compact
+            # @vicinae.icon 🔄
+            # @vicinae.description Start a background NixOS rebuild (nh os) as a systemd user unit; notifies on completion
+            # @vicinae.keywords ["nixos","nh","switch","deploy","rebuild"]
+            # @vicinae.argument1 { "type": "text", "placeholder": "action: switch, boot, test, dry or build", "optional": true }
+            exec nos start "''${1:-switch}"
+          '';
+        };
+        "vicinae/scripts/rebuild-watch.sh" = {
+          executable = true;
+          text = ''
+            #!/bin/sh
+            # @vicinae.schemaVersion 1
+            # @vicinae.title Rebuild Watch
+            # @vicinae.mode fullOutput
+            # @vicinae.icon 👀
+            # @vicinae.description Follow the running or last rebuild output (Ctrl-C detached rebuilds keep running)
+            # @vicinae.keywords ["nixos","nh","rebuild","log","follow","tail"]
+            exec nos watch
+          '';
+        };
+        "vicinae/scripts/rebuild-status.sh" = {
+          executable = true;
+          text = ''
+            #!/bin/sh
+            # @vicinae.schemaVersion 1
+            # @vicinae.title Rebuild Status
+            # @vicinae.mode fullOutput
+            # @vicinae.icon 🩺
+            # @vicinae.description systemctl status of the mactoflake rebuild units
+            # @vicinae.keywords ["nixos","nh","rebuild","systemctl","status"]
+            exec nos status
+          '';
+        };
+      };
+    };
 }

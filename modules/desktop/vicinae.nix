@@ -41,6 +41,11 @@
             files.entrypoints.search.alias = "ff";
             system.entrypoints.run.alias = "!";
             wm.entrypoints.switch-workspaces.alias = "ws";
+            scripts.entrypoints = {
+              "rebuild.sh".alias = "nos";
+              "rebuild-watch.sh".alias = "nos";
+              "rebuild-status.sh".alias = "nos";
+            };
           };
         };
 
