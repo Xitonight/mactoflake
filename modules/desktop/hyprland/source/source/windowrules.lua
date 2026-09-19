@@ -84,6 +84,11 @@ hl.layer_rule({
 	match = { namespace = "selection" },
 	no_anim = true,
 })
+
+hl.layer_rule({
+	match = { namespace = "wlr_which_key" },
+	no_anim = true,
+})
 hl.layer_rule({
 	match = { namespace = "swaync-control-center" },
 	blur = true,

@@ -143,23 +143,60 @@
           ];
         }
       ];
+      renderConfig =
+        {
+          background,
+          color,
+          border,
+        }:
+        lib.generators.toYAML { } (
+          {
+            font = "Poppins 14";
+            separator = " ➜ ";
+            border_width = 3;
+            corner_r = 16;
+            padding = 24;
+            anchor = "bottom-right";
+            margin_right = 30;
+            margin_bottom = 30;
+            inhibit_compositor_keyboard_shortcuts = true;
+            auto_kbd_layout = true;
+            inherit menu;
+          }
+          // {
+            inherit background color border;
+          }
+        );
     in
     {
-      home.packages = [ pkgs.wlr-which-key ];
+      home.packages = [
+        pkgs.wlr-which-key
+        (pkgs.writeShellScriptBin "wlr-which-key-menu" ''
+          cache="''${XDG_CACHE_HOME:-$HOME/.cache}/wlr-which-key"
+          template="''${XDG_CONFIG_HOME:-$HOME/.config}/wlr-which-key/config.template.yaml"
+          colors="$cache/colors.env"
+          if [ ! -f "$colors" ] || [ ! -f "$template" ]; then
+            exec ${lib.getExe pkgs.wlr-which-key}
+          fi
+          . "$colors"
+          mkdir -p "$cache"
+          sed -e "s|@BACKGROUND@|$BACKGROUND|" -e "s|@COLOR@|$COLOR|" -e "s|@BORDER@|$BORDER|" "$template" > "$cache/config.yaml"
+          exec ${lib.getExe pkgs.wlr-which-key} "$cache/config.yaml"
+        '')
+      ];
 
-      xdg.configFile."wlr-which-key/config.yaml".text = lib.generators.toYAML { } {
-        font = "CaskaydiaCove Nerd Font 12";
-        background = "#11111bd0";
-        color = "#cdd6f4";
-        border = "#89b4fa";
-        separator = " ➜ ";
-        border_width = 2;
-        corner_r = 10;
-        padding = 15;
-        anchor = "center";
-        inhibit_compositor_keyboard_shortcuts = true;
-        auto_kbd_layout = true;
-        inherit menu;
+      xdg.configFile = {
+        "wlr-which-key/config.yaml".text = renderConfig {
+          background = "#11111bf2";
+          color = "#cdd6f4";
+          border = "#89b4fa";
+        };
+
+        "wlr-which-key/config.template.yaml".text = renderConfig {
+          background = "@BACKGROUND@";
+          color = "@COLOR@";
+          border = "@BORDER@";
+        };
       };
     };
 }
