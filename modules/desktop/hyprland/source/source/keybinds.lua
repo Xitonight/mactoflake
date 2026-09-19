@@ -144,7 +144,7 @@ hl.bind("SUPER + Comma", hl.dsp.exec_cmd('vicinae "vicinae://launch/@sovereign/a
 hl.bind("SUPER + V", hl.dsp.exec_cmd('vicinae "vicinae://launch/clipboard/history?toggle=true"'))
 
 -- wlr-which-key
-hl.bind("SUPER + M", hl.dsp.exec_cmd("wlr-which-key"))
+hl.bind("SUPER + M", hl.dsp.exec_cmd("wlr-which-key-menu"))
 
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))

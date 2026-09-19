@@ -91,6 +91,11 @@ output_path = "~/.local/share/vicinae/themes/matugen.toml"
 pre_hook = "mkdir -p ~/.local/share/vicinae/themes"
 post_hook = "systemctl --user try-restart vicinae.service"
 
+[templates.wlr-which-key]
+input_path = "~/.config/matugen/templates/colors-wlr-which-key"
+output_path = "~/.cache/wlr-which-key/colors.env"
+pre_hook = "mkdir -p ~/.cache/wlr-which-key"
+
 
 [config.custom_colors.red]
 color = "#FF0000"
