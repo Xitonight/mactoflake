@@ -11,7 +11,7 @@ hl.window_rule({ match = { xwayland = false, float = true }, center = true })
 hl.window_rule({
 	match = { class = "kitty-floating" },
 	float = true,
-	size = { "monitor_w*0.4", "monitor_h*0.6" },
+	size = { "monitor_w*0.6", "monitor_h*0.7" },
 	center = true,
 })
 hl.window_rule({
@@ -72,11 +72,7 @@ hl.workspace_rule({ workspace = "special:obsidian", persistent = true })
 if hostname == "mactopad" then
 	hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-1", default = true })
 	hl.workspace_rule({ workspace = "2", monitor = "DP-1", default = true })
-end
-
-if hostname == "mactopad" then
-	hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-2", default = true })
-	hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-1", default = true })
+	hl.workspace_rule({ workspace = "3", monitor = "eDP-1", default = true })
 end
 
 -- Layer rules
