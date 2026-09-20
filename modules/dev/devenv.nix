@@ -13,9 +13,6 @@
           package = inputs.devenv.packages.${pkgs.stdenv.hostPlatform.system}.devenv;
         in
         {
-          zsh.initContent = ''
-            eval "$(${getExe package} hook zsh -- --no-reload)"
-          '';
           devenv = {
             enable = true;
             enableZshIntegration = false;
