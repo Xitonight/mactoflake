@@ -34,6 +34,7 @@ This is a **declarative NixOS configuration** managed as a flake, with [Home Man
 - [Cachix](#cachix)
 - [Secrets: sops-nix 🔐](#secrets-sops-nix-)
 - [mactoncino: the self-hosted server](#mactoncino-the-self-hosted-server)
+- [Development: pre-commit hooks](#development-pre-commit-hooks)
 - [Development: devenv](#development-devenv)
 - [Keyboard-first philosophy](#keyboard-first-philosophy)
 - [Credits](#credits)
@@ -412,9 +413,23 @@ Windows Terminal can't redefine terminal colors 16+, so these hosts pass `limite
 
 ---
 
+## Development: pre-commit hooks
+
+Linting and formatting run as git hooks via [**pre-commit-hooks.nix**](https://github.com/cachix/pre-commit-hooks.nix) ([`modules/dev/pre-commit.nix`](modules/dev/pre-commit.nix)): `statix` (linter) and `nixfmt` (formatter), both taken from the flake's nixpkgs.
+
+After a fresh clone, install the hook once:
+
+```bash
+nix run .#pre-commit-install
+```
+
+From then on every `git commit` runs the hooks; `nix run .#pre-commit -- run --all-files` runs them manually.
+
+---
+
 ## Development: devenv
 
-[**devenv**](https://devenv.sh/) is already wired up ([`modules/dev/devenv.nix`](modules/dev/devenv.nix)) and is the recommended way to handle per-project development environments on NixOS.
+[**devenv**](https://devenv.sh/) is wired up ([`modules/dev/devenv.nix`](modules/dev/devenv.nix)) and is the recommended way to handle per-project development environments in *other* Nix projects. This flake doesn't use devenv itself — it manages its own git hooks via [pre-commit-hooks.nix](#development-pre-commit-hooks) instead.
 
 📖 I won't write a guide here — head to the official wiki: **[devenv.sh](https://devenv.sh/)**.
 

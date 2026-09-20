@@ -5,13 +5,5 @@ result-*
 modules/desktop/hyprland/source/colors.lua
 modules/desktop/rofi/source/shared/colors.rasi
 
-# Devenv
-.devenv*
-devenv.local.nix
-devenv.local.yaml
-
-# direnv
-.direnv
-
 # pre-commit
 .pre-commit-config.yaml

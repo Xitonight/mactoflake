@@ -117,11 +117,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1789480904,
-        "narHash": "sha256-anHWHTkxI7423/eUroN9Rc4+H8VIGyIUWq/hV1egBDQ=",
+        "lastModified": 1789838634,
+        "narHash": "sha256-y2ksQa9nNo2lFEJ99uzwdLS+6xtkh8kxPu46gwOQJ6c=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "0fd5e6d3a9b2ae6f10205a3e95e0ca58d526c5a6",
+        "rev": "87edd1692507101de0c72f602bed65ec044d92c9",
         "type": "github"
       },
       "original": {
@@ -201,6 +201,22 @@
       }
     },
     "flake-compat_4": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+        "owner": "NixOS",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_5": {
       "flake": false,
       "locked": {
         "lastModified": 1767039857,
@@ -1070,6 +1086,27 @@
         "type": "github"
       }
     },
+    "pre-commit-hooks-nix": {
+      "inputs": {
+        "flake-compat": "flake-compat_4",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789514889,
+        "narHash": "sha256-PFD1nxptCXJyJoiYO1gf/5Vv43yqGpHtMC6LUhl9/pQ=",
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "rev": "59f4ca0d063a1a3ec722c88b51a33004862e5379",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
@@ -1085,6 +1122,7 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_6",
         "opencode": "opencode",
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix",
         "sops-nix": "sops-nix",
         "tguserbot": "tguserbot",
         "vicinae": "vicinae",
@@ -1334,7 +1372,7 @@
     },
     "vicinae-extensions": {
       "inputs": {
-        "flake-compat": "flake-compat_4",
+        "flake-compat": "flake-compat_5",
         "nixpkgs": [
           "nixpkgs"
         ],

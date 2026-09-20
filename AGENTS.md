@@ -33,6 +33,7 @@ NixOS flake configuration, originally ported from the Arch Linux dotfiles repo a
   ```
   `nixpkgs` and `home-manager` must stay on the same nixpkgs revision (HM follows nixpkgs).
 - **Linting:** `nix run nixpkgs#statix -- check .`
+- **Pre-commit hooks** (statix + nixfmt, via `pre-commit-hooks-nix` flakeModule in `modules/dev/pre-commit.nix`): run `nix run .#pre-commit-install` once per clone to install; hooks then run on every `git commit`. Manual run: `nix run .#pre-commit -- run --all-files`.
 - **Testing:** No automated tests. Verify by deploying and checking the host boots / SSH responds.
 - **Flakes only see git-tracked files** — always `git add` new files before building.
 
@@ -42,7 +43,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
 
 ## 3. Architecture
 
-- **Inputs:** `nixpkgs` (unstable), `flake-parts`, `import-tree`, `home-manager` (follows nixpkgs), `minegrub-theme`, `minecraft-plymouth-theme`, `hyprland`, `firefox-addons`, `zen-browser`, `devenv`, `nix-index-database`. All pinned in `flake.lock`.
+- **Inputs:** `nixpkgs` (unstable), `flake-parts`, `import-tree`, `home-manager` (follows nixpkgs), `minegrub-theme`, `minecraft-plymouth-theme`, `hyprland`, `firefox-addons`, `zen-browser`, `devenv`, `pre-commit-hooks-nix`, `nix-index-database`. All pinned in `flake.lock`.
 - **Structure follows the [Dendritic Pattern](https://github.com/mightyiam/dendritic): every Nix file is a `flake-parts` module.** `flake.nix` is a thin entry point; `import-tree` auto-imports every `.nix` file under `modules/`, so there are no manual `imports = [...]` lists to maintain. Each file sets one or more `flake.<class>s.<name>` outputs (`flake.nixosModules.*`, `flake.homeModules.*`, `flake.nixosConfigurations.*`).
 - **Home Manager runs as a NixOS module** (`useGlobalPkgs = true`, `useUserPackages = true`) for all hosts except `NTB0000001`, which uses standalone Home Manager (WSL, no NixOS). System + home build atomically in one `nh os switch`.
 - **Layout:**
@@ -59,7 +60,7 @@ Use [searchix.ovh](https://searchix.ovh/?query={searchParams}) to look up availa
                     #   scripts/, vesktop, mpv, zathura, zen, xdg)
   modules/shell/    # terminal & CLI (zsh, oh-my-posh, starship, fzf, eza, zoxide, bat, pay-respects,
                     #   yazi, btop, tmux, ssh)
-  modules/dev/      # development (git.nix merged, devenv, lazygit, opencode, secretspec, nvim/)
+  modules/dev/      # development (git.nix merged, devenv, pre-commit.nix, lazygit, opencode, secretspec, nvim/)
   # Every file is a flake-parts module setting flake.nixosModules.<x> and/or flake.homeModules.<x>.
   # Grouping is by DOMAIN, not by nixos/home class — a cross-cutting feature (hyprland, git) lives in ONE
   # file under the relevant domain and exports both classes.
@@ -127,7 +128,7 @@ Each file sets `flake.homeModules.<name>` and is auto-imported by import-tree. T
 |------|----------|-------|
 | `bat.nix` | `programs.bat` | Cat replacement with syntax highlighting |
 | `btop.nix` | `programs.btop.settings` | Full 80+ setting attrset |
-| `devenv.nix` | devenv integration | Dev environment manager |
+| `devenv.nix` | devenv integration | Dev environment manager for OTHER projects (this repo manages its own hooks via pre-commit-hooks.nix) |
 | `eza.nix` | `programs.eza` | Modern ls replacement |
 | `fzf.nix` | `programs.fzf` | Fuzzy finder |
 | `git.nix` → `modules/dev/git.nix` | **Merged** `programs.git.settings` | Name + email; signs via `osConfig.mactoflake.git.signingKey` |

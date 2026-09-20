@@ -30,6 +30,11 @@
       url = "github:cachix/devenv";
     };
 
+    pre-commit-hooks-nix = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
