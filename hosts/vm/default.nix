@@ -19,13 +19,12 @@
       ./hardware-configuration.nix
       self.nixosModules.core
       self.nixosModules.home-manager
-      { networking.hostName = "vm"; }
       {
         home-manager.users.${self.const.username} = {
           imports = self.homeImports;
         };
-      }
-      {
+        networking.hostName = "vm";
+
         mactoflake = {
           boot.loader = "grub";
           input.kanata.enable = false;

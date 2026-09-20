@@ -19,13 +19,12 @@
       ./hardware-configuration.nix
       self.nixosModules.core
       self.nixosModules.home-manager
-      { networking.hostName = "mactopad"; }
       {
         home-manager.users.${self.const.username} = {
           imports = self.homeImports;
         };
-      }
-      {
+        networking.hostName = "mactopad";
+
         mactoflake = {
           containers.enable = true;
           virtualization.enable = true;
@@ -39,6 +38,10 @@
             loader = "grub";
             silent-boot = true;
             plymouth = true;
+            grub = {
+              efiInstallAsRemovable = false;
+              useOSProber = true;
+            };
           };
 
           network = {
