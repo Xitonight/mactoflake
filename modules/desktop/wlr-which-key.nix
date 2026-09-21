@@ -6,6 +6,10 @@
 
       kbdLayoutNext = ''hyprctl switchxkblayout current next && notify-send -t 1500 "Layout: $(hyprctl devices | awk '/Main: yes/{f=1} f && /Active keymap:/{sub(/.*Active keymap: /, ""); print; exit}')"'';
 
+      shot =
+        mode:
+        ''mkdir -p ~/.cache/hyprshot && hyprshot ${mode} --clipboard-only -s && wl-paste --type image/png > ~/.cache/hyprshot/last.png && notify-send -t 5000 -a Hyprshot -i ~/.cache/hyprshot/last.png "Screenshot" "Copied to clipboard"'';
+
       menu = [
         {
           key = "p";
@@ -45,17 +49,17 @@
             {
               key = "o";
               desc = "Output";
-              cmd = "hyprshot -m output -m active --clipboard-only";
+              cmd = shot "-m output -m active";
             }
             {
               key = "w";
               desc = "Window";
-              cmd = "hyprshot -m window -m active --clipboard-only";
+              cmd = shot "-m window -m active";
             }
             {
               key = "r";
               desc = "Region";
-              cmd = "hyprshot -m region --clipboard-only";
+              cmd = shot "-m region";
             }
           ];
         }

@@ -180,9 +180,13 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; " .. volume_notify()))
 
 -- Screenshots
-hl.bind("SUPER + P", hl.dsp.exec_cmd("hyprshot -m output -m active --clipboard-only"))
-hl.bind("SUPER + ALT + P", hl.dsp.exec_cmd("hyprshot -m window -m active --clipboard-only"))
-hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
+local function shot(args)
+	return [[mkdir -p ~/.cache/hyprshot && hyprshot ]] .. args .. [[ --clipboard-only -s && wl-paste --type image/png > ~/.cache/hyprshot/last.png && notify-send -t 5000 -a Hyprshot -i ~/.cache/hyprshot/last.png "Screenshot" "Copied to clipboard"]]
+end
+
+hl.bind("SUPER + P", hl.dsp.exec_cmd(shot("-m output -m active")))
+hl.bind("SUPER + ALT + P", hl.dsp.exec_cmd(shot("-m window -m active")))
+hl.bind("SUPER + SHIFT + P", hl.dsp.exec_cmd(shot("-m region")))
 
 -- Brightness
 local function brightness_notify()
