@@ -133,7 +133,7 @@ hl.bind("SUPER + ALT + Return", hl.dsp.exec_cmd("RAW_TERM=1 kitty --class kitty-
 hl.bind("SUPER + ALT + Escape", hl.dsp.exec_cmd("kitty --class kitty-btop btop"))
 hl.bind("SUPER + ALT + V", hl.dsp.exec_cmd("kitty --class kitty-wiremix wiremix"))
 hl.bind("SUPER + ALT + W", hl.dsp.exec_cmd("kitty --class kitty-nmtui --override window_padding_width=0 nmtui"))
-hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd([[hyprctl switchxkblayout current next && notify-send -t 1500 "Layout: $(hyprctl devices | awk '/Main: yes/{f=1} f && /Active keymap:/{sub(/.*Active keymap: /, ""); print; exit}')"]]))
+hl.bind("SUPER + ALT + K", hl.dsp.exec_cmd([[hyprctl switchxkblayout current next && sleep 0.1 && notify-send -t 1500 -h string:x-canonical-private-synchronous:layout "Layout: $(hyprctl -j devices | jq -r '.keyboards[] | select(.main) | .active_keymap')"]]))
 
 -- Vicinae
 hl.bind("SUPER + D", hl.dsp.exec_cmd("vicinae toggle"))

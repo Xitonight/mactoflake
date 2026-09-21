@@ -20,6 +20,7 @@
         secretspec
         bitwarden-cli
         tldr
+        jq
 
         # --- Editor ---
         neovim
