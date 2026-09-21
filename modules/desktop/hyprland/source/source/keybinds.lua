@@ -12,7 +12,7 @@ hl.bind("SUPER + ALT + L", hl.dsp.exec_cmd([[hyprctl layers > ~/.cache/layers.tx
 
 -- Window management
 hl.bind("SUPER + Q", hl.dsp.window.close())
-hl.bind("SUPER + Space", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + M", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + Y", hl.dsp.window.pin({ action = "toggle" }))
 hl.bind("SUPER + C", hl.dsp.window.center())
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -144,7 +144,7 @@ hl.bind("SUPER + Comma", hl.dsp.exec_cmd('vicinae "vicinae://launch/@sovereign/a
 hl.bind("SUPER + V", hl.dsp.exec_cmd('vicinae "vicinae://launch/clipboard/history?toggle=true"'))
 
 -- wlr-which-key
-hl.bind("SUPER + M", hl.dsp.exec_cmd("wlr-which-key-menu"))
+hl.bind("SUPER + Space", hl.dsp.exec_cmd("wlr-which-key-menu"))
 
 -- System
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client -t -sw"))
