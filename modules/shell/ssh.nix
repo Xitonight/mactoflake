@@ -56,33 +56,40 @@
     in
     {
       home.sessionVariables = {
-        SSH_AUTH_SOCK = "\${SSH_AUTH_SOCK:-${agentSock}}";
         MACTOFLAKE_SSH_AGENT = agentApp;
       };
 
       home.packages = lib.mkIf (agent == "rbw") [ pkgs.pinentry-qt ];
 
-      programs.rbw = lib.mkIf (agent == "rbw") {
-        enable = true;
-        settings = {
-          inherit email;
-          base_url = "https://vault.mactonet.com";
-          pinentry = pkgs.pinentry-qt;
-        };
-      };
+      programs = {
+        zsh.envExtra = ''
+          if [[ "$SSH_AUTH_SOCK" != /tmp/auth-agent*/listener.sock ]]; then
+            export SSH_AUTH_SOCK="${agentSock}"
+          fi
+        '';
 
-      programs.ssh = {
-        enable = true;
-        enableDefaultConfig = false;
-        matchBlocks = {
-          mactone.forwardAgent = true;
-          mactopad.forwardAgent = true;
-          mactoncino.forwardAgent = true;
-          vm.forwardAgent = true;
+        rbw = lib.mkIf (agent == "rbw") {
+          enable = true;
+          settings = {
+            inherit email;
+            base_url = "https://vault.mactonet.com";
+            pinentry = pkgs.pinentry-qt;
+          };
         };
-        settings = lib.optionalAttrs (agent != "rbw") {
-          "Match host * exec \"test -z \$SSH_TTY\"" = {
-            IdentityAgent = agentSock;
+
+        ssh = {
+          enable = true;
+          enableDefaultConfig = false;
+          matchBlocks = {
+            mactone.forwardAgent = true;
+            mactopad.forwardAgent = true;
+            mactoncino.forwardAgent = true;
+            vm.forwardAgent = true;
+          };
+          settings = lib.optionalAttrs (agent != "rbw") {
+            "Match host * exec \"test -z \$SSH_TTY\"" = {
+              IdentityAgent = agentSock;
+            };
           };
         };
       };
