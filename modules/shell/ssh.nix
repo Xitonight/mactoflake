@@ -56,7 +56,7 @@
     in
     {
       home.sessionVariables = {
-        SSH_AUTH_SOCK = if agent == "rbw" then agentSock else "\${SSH_AUTH_SOCK:-${agentSock}}";
+        SSH_AUTH_SOCK = "\${SSH_AUTH_SOCK:-${agentSock}}";
         MACTOFLAKE_SSH_AGENT = agentApp;
       };
 
@@ -74,6 +74,12 @@
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
+        matchBlocks = {
+          mactone.forwardAgent = true;
+          mactopad.forwardAgent = true;
+          mactoncino.forwardAgent = true;
+          vm.forwardAgent = true;
+        };
         settings = lib.optionalAttrs (agent != "rbw") {
           "Match host * exec \"test -z \$SSH_TTY\"" = {
             IdentityAgent = agentSock;
