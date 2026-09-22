@@ -22,6 +22,7 @@
       self.homeModules.eza
       self.homeModules.fzf
       self.homeModules.fsh
+      self.homeModules.gazelle
       self.homeModules.gh
       self.homeModules.git
       self.homeModules.gtk
