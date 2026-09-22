@@ -53,6 +53,7 @@
           (awww-switcher.overrideAttrs { name = "awww-switcher"; })
           (bitwarden.overrideAttrs { name = "bitwarden"; })
           (nix.overrideAttrs { name = "nix"; })
+          (kde-connect.overrideAttrs { name = "kde-connect"; })
         ];
 
       };
