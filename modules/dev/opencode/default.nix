@@ -29,6 +29,8 @@
         };
 
         agents = ./source/agents;
+
+        skills.herdr = "${inputs.herdr}/skills/herdr";
       };
     };
 }
