@@ -18,6 +18,7 @@
     modules = [
       ./hardware-configuration.nix
       self.nixosModules.core
+      self.nixosModules.printing
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
@@ -33,6 +34,10 @@
           shell.multiplexer = "herdr";
           input.kanata.enable = true;
           power.enable = true;
+          printing = {
+            enable = true;
+            openFirewall = false;
+          };
 
           boot = {
             loader = "grub";
