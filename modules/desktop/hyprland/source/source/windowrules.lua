@@ -75,6 +75,12 @@ if hostname == "mactopad" then
 	hl.workspace_rule({ workspace = "3", monitor = "eDP-1", default = true })
 end
 
+if hostname == "mactone" then
+	hl.workspace_rule({ workspace = "1", monitor = "HDMI-A-2", default = true })
+	hl.workspace_rule({ workspace = "2", monitor = "HDMI-A-2", default = true })
+	hl.workspace_rule({ workspace = "3", monitor = "HDMI-A-1", default = true })
+end
+
 -- Layer rules
 hl.layer_rule({
 	match = { namespace = "selection" },
