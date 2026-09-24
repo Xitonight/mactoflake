@@ -11,6 +11,8 @@
     let
       multiplexer = if osConfig == null then "tmux" else osConfig.mactoflake.shell.multiplexer;
 
+      tomlFormat = pkgs.formats.toml { };
+
       navigatorSrc = pkgs.fetchFromGitHub {
         owner = "thanhdat77";
         repo = "herdr-navigator";
@@ -159,6 +161,14 @@
           };
         };
       };
+
+      xdg.configFile."herdr/plugins/config/herdr-navigator/config.toml" =
+        lib.mkIf (multiplexer == "herdr")
+          {
+            source = tomlFormat.generate "herdr-navigator-config.toml" {
+              picker.vim_mode = true;
+            };
+          };
 
       home.activation.herdrPlugins = lib.mkIf (multiplexer == "herdr") (
         lib.hm.dag.entryAfter [ "writeBoundary" ] ''
