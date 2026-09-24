@@ -53,9 +53,11 @@
           status              systemctl status of the rebuild units
           boot|test|dry|build run 'nh os <action>' and follow
 
-        The rebuild runs as the mactoflake-rebuild@<action>.service user unit and
-        notifies on success/failure. Full log: $log or
-        journalctl --user -u 'mactoflake-rebuild@*'
+        The rebuild runs as a transient mactoflake-rebuild-<action>.service user
+        unit (systemd-run) and notifies on success/failure. Transient on purpose:
+        switch-to-configuration starts/restarts user units it finds in the
+        configuration, which deadlocks or kills an activation hosted in one.
+        Full log: $log or journalctl --user -u 'mactoflake-rebuild-*'
         EOF
         }
 
@@ -76,24 +78,37 @@
             if [ -n "$pid" ] && [ "$pid" != "0" ]; then
               exec tail -f -n +1 --pid="$pid" "$log"
             fi
-            exec tail -f -n +1 "$log"
+            echo "--- rebuild not running, last output: ---" >&2
+            tail -n 30 "$log"
+          else
+            echo "rebuild produced no output, showing journal:" >&2
+            journalctl --user -u "$unit" -n 30 --no-pager || true
           fi
-          echo "rebuild produced no output, showing journal:" >&2
-          journalctl --user -u "$unit" -n 30 --no-pager || true
+        }
+
+        start_rebuild() {
+          local action="$1" unit state
+          unit="mactoflake-rebuild-$action"
+          state=$(systemctl --user is-active "$unit.service" 2>/dev/null || true)
+          if [ "$state" = "activating" ] || [ "$state" = "active" ]; then
+            return 1
+          fi
+          systemctl --user reset-failed "$unit.service" 2>/dev/null || true
+          : > "$log"
+          systemd-run --user --collect --quiet --service-type=oneshot \
+            --unit="$unit" \
+            --setenv=NH_OS_FLAKE="${flakeDir}" \
+            --setenv=NH_HOME_FLAKE="${flakeDir}" \
+            --setenv=NH_FLAKE="${flakeDir}" \
+            "${rebuild}" "$action"
         }
 
         launch() {
           local action="$1"
-          local unit="mactoflake-rebuild@''${action}.service"
-          local state
-          state=$(systemctl --user is-active "$unit" 2>/dev/null || true)
-          if [ "$state" = "activating" ] || [ "$state" = "active" ]; then
+          if ! start_rebuild "$action"; then
             echo "rebuild ($action) already running, attaching..." >&2
-          else
-            : > "$log"
-            systemctl --user start --no-block "$unit"
           fi
-          follow "$unit"
+          follow "mactoflake-rebuild-$action.service"
         }
 
         action="''${1:-switch}"
@@ -103,22 +118,18 @@
             ;;
           start)
             action="''${2:-switch}"
-            unit="mactoflake-rebuild@''${action}.service"
-            state=$(systemctl --user is-active "$unit" 2>/dev/null || true)
-            if [ "$state" = "activating" ] || [ "$state" = "active" ]; then
+            if ! start_rebuild "$action"; then
               echo "rebuild ($action) already running"
               notify-send "Rebuild already running" "watch with: nos watch $action" || true
               exit 0
             fi
-            : > "$log"
-            systemctl --user start --no-block "$unit"
             echo "rebuild ($action) started - follow with 'nos watch $action', notification when done"
             ;;
           watch)
-            follow "mactoflake-rebuild@''${2:-switch}.service"
+            follow "mactoflake-rebuild-''${2:-switch}.service"
             ;;
           status)
-            systemctl --user status "mactoflake-rebuild@*" --no-pager || true
+            systemctl --user status "mactoflake-rebuild-*" --no-pager || true
             ;;
           help | -h | --help)
             usage
@@ -132,25 +143,6 @@
       '';
     in
     {
-      systemd.user.services."mactoflake-rebuild@" = {
-        description = "Rebuild NixOS via nh (%i)";
-        environment = {
-          NH_HOME_FLAKE = "${flakeDir}";
-          NH_OS_FLAKE = "${flakeDir}";
-          NH_FLAKE = "${flakeDir}";
-        };
-        path = [
-          pkgs.git
-          pkgs.nh
-          pkgs.nix
-          pkgs.nixos-rebuild
-        ];
-        serviceConfig = {
-          Type = "oneshot";
-          TimeoutStartSec = "infinity";
-          ExecStart = "${rebuild} %i";
-        };
-      };
 
       environment.systemPackages = [ nos ];
     };
