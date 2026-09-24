@@ -19,6 +19,7 @@
 
         tui = {
           leader_timeout = 2000;
+          plugin = [ "./herdr-tui-session.js" ];
           keybinds = {
             leader = "ctrl+o";
             app_exit = "ctrl+c,<leader>q";
@@ -31,6 +32,13 @@
         agents = ./source/agents;
 
         skills.herdr = "${inputs.herdr}/skills/herdr";
+      };
+
+      xdg.configFile = {
+        "opencode/plugins/herdr-agent-state.js".source =
+          "${inputs.herdr}/src/integration/assets/opencode/herdr-agent-state.js";
+        "opencode/herdr-tui-session.js".source =
+          "${inputs.herdr}/src/integration/assets/opencode/herdr-tui-session.js";
       };
     };
 }
