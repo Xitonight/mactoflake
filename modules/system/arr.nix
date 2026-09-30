@@ -34,7 +34,7 @@
           extraArgs = [ "--confirm-legal-notice" ];
           serverConfig = {
             BitTorrent.Session = {
-              DefaultSavePath = "/srv/media/downloads";
+              DefaultSavePath = "/srv/media/downloads/qbittorrent";
               GlobalUPSpeedLimit = 2500;
             };
             Preferences.WebUI = {
