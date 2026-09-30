@@ -24,6 +24,7 @@
       self.nixosModules.media
       self.nixosModules.arr
       self.nixosModules.slskd
+      self.nixosModules.droppedneedle
       self.nixosModules.paperless
       self.nixosModules.pihole
       self.nixosModules.vaultwarden
@@ -47,13 +48,14 @@
             enable = true;
             domain = "mactonet.com";
             vhosts = {
-              music.port = 4533;
+              drome.port = 4533;
               paperless = {
                 port = 28981;
                 prefix = "paperless";
               };
               jelly.port = 8096;
               vault.port = 8222;
+              needle.port = 8688;
             };
           };
 
@@ -144,6 +146,7 @@
               8096
               8123
               8222
+              8688
               8989
               9696
               28981
