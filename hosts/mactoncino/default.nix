@@ -73,7 +73,7 @@
             atm10 = {
               enable = true;
               slug = "all-the-mods-10";
-              memory = "10G";
+              memory = "12G";
               autoStart = false;
               whitelist = [
                 "Xitonight"
