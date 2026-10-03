@@ -4,6 +4,7 @@
     fsType = "ext4";
     options = [
       "noatime"
+      "nofail"
       "x-systemd.device-timeout=5s"
     ];
   };
@@ -14,8 +15,6 @@
     options = [
       "noatime"
       "nofail"
-      "noauto"
-      "x-systemd.automount"
       "x-systemd.device-timeout=5s"
     ];
   };

@@ -5,7 +5,7 @@
       services.n8n = {
         enable = false;
         environment = {
-          WEBHOOK_URL = "http://mactoncino:5678/";
+          WEBHOOK_URL = "http://${config.networking.hostName}:5678/";
           N8N_SECURE_COOKIE = false;
           N8N_ENCRYPTION_KEY_FILE = config.sops.secrets."n8n-encryption-key".path;
           N8N_RUNNERS_AUTH_TOKEN_FILE = config.sops.secrets."n8n-runners-auth-token".path;

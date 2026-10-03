@@ -7,6 +7,9 @@
       ...
     }:
     {
+      users.users.paperless.uid = 315;
+      users.groups.paperless.gid = 315;
+
       services.paperless = {
         enable = true;
         configureTika = true;
@@ -17,7 +20,7 @@
           PAPERLESS_FORCE_SCRIPT_NAME = "/paperless";
           PAPERLESS_STATIC_URL = "/paperless/static/";
           PAPERLESS_CSRF_TRUSTED_ORIGINS = lib.concatStringsSep "," (
-            [ "https://mactoncino.taila7373f.ts.net" ]
+            [ "https://${config.networking.hostName}.taila7373f.ts.net" ]
             ++ lib.optionals config.mactoflake.proxy.enable [
               "https://paperless.${config.mactoflake.proxy.domain}"
             ]

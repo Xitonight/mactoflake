@@ -7,6 +7,12 @@
     {
       users.groups.media = { };
 
+      users.users = {
+        sonarr.uid = 274;
+        radarr.uid = 275;
+        qbittorrent.uid = 989;
+      };
+
       systemd.tmpfiles.rules = [
         "d /srv/media/downloads 0775 ${username} media -"
         "d /srv/media/downloads/qbittorrent 0775 qbittorrent media -"

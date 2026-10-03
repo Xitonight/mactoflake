@@ -8,6 +8,8 @@
     {
       users.groups.media = { };
 
+      users.users.slskd.uid = 988;
+
       systemd.tmpfiles.rules = [
         "d /srv/media/downloads/soulseek 0775 ${username} media -"
         "d /srv/media/downloads/soulseek-incomplete 0775 ${username} media -"

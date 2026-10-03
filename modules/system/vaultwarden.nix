@@ -2,6 +2,9 @@
   flake.nixosModules.vaultwarden =
     { config, ... }:
     {
+      users.users.vaultwarden.uid = 986;
+      users.groups.vaultwarden.gid = 984;
+
       services.vaultwarden = {
         enable = true;
         dbBackend = "sqlite";

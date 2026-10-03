@@ -9,11 +9,11 @@
       services.homepage-dashboard = {
         enable = true;
         listenPort = 8082;
-        allowedHosts = "mactoncino:8082,mactoncino.taila7373f.ts.net,mactoncino.taila7373f.ts.net:8082";
+        allowedHosts = "${config.networking.hostName}:8082,${config.networking.hostName}.taila7373f.ts.net,${config.networking.hostName}.taila7373f.ts.net:8082";
         environmentFiles = [ config.sops.templates.homepage-env.path ];
 
         settings = {
-          title = "mactoncino";
+          title = config.networking.hostName;
           theme = "dark";
           color = "slate";
           headerStyle = "clean";
@@ -157,11 +157,11 @@
               {
                 Jellyfin = {
                   icon = "jellyfin.png";
-                  href = "http://mactoncino:8096";
+                  href = "http://${config.networking.hostName}:8096";
                   description = "Movies & TV";
                   widget = {
                     type = "jellyfin";
-                    url = "http://mactoncino:8096";
+                    url = "http://${config.networking.hostName}:8096";
                     key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
                     enableBlocks = true;
                   };
@@ -170,11 +170,11 @@
               {
                 Navidrome = {
                   icon = "navidrome.png";
-                  href = "http://mactoncino:4533";
+                  href = "http://${config.networking.hostName}:4533";
                   description = "Music";
                   widget = {
                     type = "navidrome";
-                    url = "http://mactoncino:4533";
+                    url = "http://${config.networking.hostName}:4533";
                     user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
                     token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
                     salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
@@ -188,11 +188,11 @@
               {
                 Sonarr = {
                   icon = "sonarr.png";
-                  href = "http://mactoncino:8989";
+                  href = "http://${config.networking.hostName}:8989";
                   description = "Series management";
                   widget = {
                     type = "sonarr";
-                    url = "http://mactoncino:8989";
+                    url = "http://${config.networking.hostName}:8989";
                     key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
                   };
                 };
@@ -200,11 +200,11 @@
               {
                 Radarr = {
                   icon = "radarr.png";
-                  href = "http://mactoncino:7878";
+                  href = "http://${config.networking.hostName}:7878";
                   description = "Movie management";
                   widget = {
                     type = "radarr";
-                    url = "http://mactoncino:7878";
+                    url = "http://${config.networking.hostName}:7878";
                     key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
                   };
                 };
@@ -212,11 +212,11 @@
               {
                 Prowlarr = {
                   icon = "prowlarr.png";
-                  href = "http://mactoncino:9696";
+                  href = "http://${config.networking.hostName}:9696";
                   description = "Indexer management";
                   widget = {
                     type = "prowlarr";
-                    url = "http://mactoncino:9696";
+                    url = "http://${config.networking.hostName}:9696";
                     key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
                   };
                 };
@@ -228,11 +228,11 @@
               {
                 qBittorrent = {
                   icon = "qbittorrent.png";
-                  href = "http://mactoncino:8081";
+                  href = "http://${config.networking.hostName}:8081";
                   description = "Torrent client";
                   widget = {
                     type = "qbittorrent";
-                    url = "http://mactoncino:8081";
+                    url = "http://${config.networking.hostName}:8081";
                     inherit username;
                     password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
                   };
@@ -241,11 +241,11 @@
               {
                 slskd = {
                   icon = "slskd.png";
-                  href = "http://mactoncino:5030";
+                  href = "http://${config.networking.hostName}:5030";
                   description = "Soulseek";
                   widget = {
                     type = "slskd";
-                    url = "http://mactoncino:5030";
+                    url = "http://${config.networking.hostName}:5030";
                     key = "{{HOMEPAGE_VAR_SLSKD_API_KEY}}";
                   };
                 };
@@ -257,11 +257,11 @@
               {
                 "Home Assistant" = {
                   icon = "home-assistant.png";
-                  href = "http://mactoncino:8123";
+                  href = "http://${config.networking.hostName}:8123";
                   description = "Home automation";
                   widget = {
                     type = "homeassistant";
-                    url = "http://mactoncino:8123";
+                    url = "http://${config.networking.hostName}:8123";
                     key = "{{HOMEPAGE_VAR_HASS_TOKEN}}";
                   };
                 };
@@ -269,9 +269,9 @@
               # {
               #   n8n = {
               #     icon = "n8n.png";
-              #     href = "http://mactoncino:5678";
+              #     href = "http://${config.networking.hostName}:5678";
               #     description = "Workflow automation";
-              #     siteMonitor = "http://mactoncino:5678";
+              #     siteMonitor = "http://${config.networking.hostName}:5678";
               #   };
               # }
               {
@@ -284,11 +284,11 @@
               {
                 Paperless = {
                   icon = "paperless-ngx.png";
-                  href = "http://mactoncino:28981/paperless";
+                  href = "http://${config.networking.hostName}:28981/paperless";
                   description = "Document management";
                   widget = {
                     type = "paperlessngx";
-                    url = "http://mactoncino:28981/paperless";
+                    url = "http://${config.networking.hostName}:28981/paperless";
                     username = "admin";
                     password = "{{HOMEPAGE_VAR_PAPERLESS_PASSWORD}}";
                   };
@@ -297,9 +297,9 @@
               {
                 Vaultwarden = {
                   icon = "vaultwarden.png";
-                  href = "http://mactoncino:8222";
+                  href = "http://${config.networking.hostName}:8222";
                   description = "Password manager";
-                  siteMonitor = "http://mactoncino:8222";
+                  siteMonitor = "http://${config.networking.hostName}:8222";
                 };
               }
             ];
@@ -309,11 +309,11 @@
               {
                 "Pi-hole" = {
                   icon = "pi-hole.png";
-                  href = "http://mactoncino:3000";
+                  href = "http://${config.networking.hostName}:3000";
                   description = "DNS ad blocking";
                   widget = {
                     type = "pihole";
-                    url = "http://mactoncino:3000";
+                    url = "http://${config.networking.hostName}:3000";
                     version = 6;
                   };
                 };
@@ -334,7 +334,7 @@
                 "System Info" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "info";
                   };
@@ -348,7 +348,7 @@
                 "CPU Usage" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "cpu";
                   };
@@ -358,7 +358,7 @@
                 "CPU Temperature" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "sensor:Tctl";
                   };
@@ -368,7 +368,7 @@
                 "Memory Usage" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "memory";
                   };
@@ -382,7 +382,7 @@
                 Processes = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "process";
                   };
@@ -392,7 +392,7 @@
                 "Network Usage" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "network:wlp2s0";
                   };
@@ -406,7 +406,7 @@
                 "System Disk I/O" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "disk:nvme0n1";
                   };
@@ -416,7 +416,7 @@
                 "Media Disk I/O" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "disk:sda";
                   };
@@ -426,7 +426,7 @@
                 Filesystem = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "fs:/";
                   };
@@ -436,7 +436,7 @@
                 "Media Pool" = {
                   widget = {
                     type = "glances";
-                    url = "http://mactoncino:61208";
+                    url = "http://${config.networking.hostName}:61208";
                     version = 4;
                     metric = "fs:/srv/media";
                   };

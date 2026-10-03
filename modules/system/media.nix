@@ -5,11 +5,21 @@
       ...
     }:
     {
-      users.groups.media.gid = 997;
+      users.groups = {
+        media.gid = 997;
+        jellyfin.gid = 999;
+        navidrome.gid = 996;
+      };
 
       users.users = {
-        jellyfin.extraGroups = [ "media" ];
-        navidrome.extraGroups = [ "media" ];
+        jellyfin = {
+          uid = 999;
+          extraGroups = [ "media" ];
+        };
+        navidrome = {
+          uid = 997;
+          extraGroups = [ "media" ];
+        };
         "${username}".extraGroups = [ "media" ];
       };
 

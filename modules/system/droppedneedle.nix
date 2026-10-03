@@ -82,9 +82,9 @@
               {
                 DroppedNeedle = {
                   icon = "mdi-music-note-plus";
-                  href = "http://mactoncino:8688";
+                  href = "http://${config.networking.hostName}:8688";
                   description = "Music requests";
-                  siteMonitor = "http://mactoncino:8688/health";
+                  siteMonitor = "http://${config.networking.hostName}:8688/health";
                 };
               }
             ];

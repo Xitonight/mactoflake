@@ -79,6 +79,7 @@
         ./hosts/mactopad
         ./hosts/vm
         ./hosts/mactoncino
+        ./hosts/mactarello
         ./hosts/NTB0000001
         ./hosts/kali
       ];
