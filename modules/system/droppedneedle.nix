@@ -40,7 +40,17 @@
 
       virtualisation.oci-containers.backend = "docker";
 
-      systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = [ "/srv/media/music-requests" ];
+      systemd.services = {
+        navidrome = {
+          unitConfig.RequiresMountsFor = [
+            "/srv/media/music"
+            "/srv/media/music-requests"
+          ];
+          serviceConfig.BindReadOnlyPaths = [ "/srv/media/music-requests" ];
+        };
+
+        docker.unitConfig.RequiresMountsFor = [ "/srv/media" ];
+      };
 
       virtualisation.oci-containers.containers.droppedneedle = {
         image = "droppedneedle/droppedneedle:latest";

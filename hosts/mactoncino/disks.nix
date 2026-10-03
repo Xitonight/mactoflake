@@ -4,7 +4,6 @@
     fsType = "ext4";
     options = [
       "noatime"
-      "nofail"
       "x-systemd.device-timeout=5s"
     ];
   };
