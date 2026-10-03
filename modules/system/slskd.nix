@@ -22,10 +22,13 @@
             downloads = "/srv/media/downloads/soulseek";
             incomplete = "/srv/media/downloads/soulseek-incomplete";
           };
-          shares.directories = [ "/srv/media/music" ];
+          shares.directories = [
+            "/srv/media/music"
+            "/srv/media/music-requests"
+          ];
           transfers.upload = {
             slots = 10;
-            speed_limit = 500;
+            speed_limit = 8000;
           };
         };
       };
