@@ -9,6 +9,7 @@
 
       systemd.tmpfiles.rules = [
         "d /srv/media/downloads 0775 ${username} media -"
+        "d /srv/media/downloads/qbittorrent 0775 qbittorrent media -"
       ];
 
       services = {
