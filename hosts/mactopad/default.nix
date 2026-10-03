@@ -31,7 +31,7 @@
           virtualization.enable = true;
           git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILI2oLqyj5ZEhObKpgxHDy+5ME7KOf9EpF9wA/ZUNI+R";
           ssh.agent = "rbw";
-          shell.multiplexer = "herdr";
+          shell.multiplexer = "tmux";
           input.kanata.enable = true;
           power.enable = true;
           printing = {
@@ -73,13 +73,13 @@
               output = "eDP-1";
               mode = "1920x1080@60";
               scale = 1;
-              position = "-1920x0";
+              position = "1920x0";
             }
             {
               output = "DP-1";
               mode = "1920x1080@75";
               scale = 1;
-              position = "1920x0";
+              position = "-1920x0";
             }
             {
               output = "HDMI-A-1";
