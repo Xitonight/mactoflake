@@ -8,6 +8,7 @@
         "mactone"
         "mactoncino"
         "mactopad"
+        "mactarello"
       ];
       hasAuthKey = builtins.elem hostName authKeyHosts;
     in
