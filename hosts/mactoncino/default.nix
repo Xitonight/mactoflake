@@ -59,6 +59,9 @@
                 "-XX:MaxDirectMemorySize=1G"
               ];
               extraEnv.MALLOC_ARENA_MAX = "2";
+              extraMods = [
+                "https://cdn.modrinth.com/data/QI59B2cO/versions/2KVucv5X/tgbridge-0.9.14-neoforge-1.21.jar"
+              ];
               restartCalendar = "Sun *-*-* 05:00:00";
               viewDistance = 16;
               simulationDistance = 16;

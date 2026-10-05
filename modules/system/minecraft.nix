@@ -116,6 +116,12 @@
                 description = "Extra environment variables for the container (merged last, overrides generated ones).";
               };
 
+              extraMods = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
+                description = "Extra mod jars (URLs) applied on top of the modpack via the image's MODS variable. Re-applied on every start; removed automatically when dropped from the list.";
+              };
+
               restartCalendar = lib.mkOption {
                 type = lib.types.nullOr lib.types.str;
                 default = null;
@@ -223,6 +229,9 @@
             }
             // lib.optionalAttrs (server.jvmXXOpts != [ ]) {
               JVM_XX_OPTS = lib.concatStringsSep " " server.jvmXXOpts;
+            }
+            // lib.optionalAttrs (server.extraMods != [ ]) {
+              MODS = lib.concatStringsSep "," server.extraMods;
             }
             // server.extraEnv;
 
