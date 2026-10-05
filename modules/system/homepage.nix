@@ -1,558 +1,579 @@
 {
   flake.nixosModules.homepage =
     {
+      lib,
       config,
       username,
       ...
     }:
+    let
+      cfg = config.mactoflake.homepage;
+    in
     {
-      services.homepage-dashboard = {
-        enable = true;
-        listenPort = 8082;
-        allowedHosts = "${config.networking.hostName}:8082,${config.networking.hostName}.taila7373f.ts.net,${config.networking.hostName}.taila7373f.ts.net:8082";
-        environmentFiles = [ config.sops.templates.homepage-env.path ];
+      options.mactoflake.homepage = {
+        homeAssistant = lib.mkEnableOption "the Home Assistant service card (widget on port 8123, requires secrets/homepage.yaml `hass-token`)";
+      };
 
-        settings = {
-          title = config.networking.hostName;
-          theme = "dark";
-          color = "slate";
-          headerStyle = "clean";
-          iconStyle = "theme";
-          hideVersion = true;
-          useEqualHeights = true;
-          cardBlur = "md";
-          background = {
-            image = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/aesthetic.jpg";
-            opacity = 70;
-          };
-          layout = {
-            Media = {
-              tab = "Dashboard";
-              header = false;
-              style = "row";
-              columns = 2;
-            };
-            Downloads = {
-              tab = "Dashboard";
-              header = false;
-              style = "row";
-              columns = 2;
-            };
-            DownloadsMedia = {
-              tab = "Dashboard";
-              header = false;
-              style = "row";
-              columns = 3;
-            };
-            Home = {
-              tab = "Dashboard";
-              header = false;
-              style = "row";
-              columns = 4;
-            };
-            Network = {
-              tab = "Dashboard";
-              header = false;
-              style = "row";
-              columns = 2;
-            };
-            Developer = {
-              tab = "Dashboard";
-              header = false;
-              useEqualHeights = false;
-            };
-            Admin = {
-              tab = "Dashboard";
-              header = false;
-              useEqualHeights = false;
-            };
-            Overview = {
-              tab = "Monitoring";
-              header = false;
-              style = "row";
-              columns = 1;
-            };
-            Compute = {
-              tab = "Monitoring";
-              header = false;
-              style = "row";
-              columns = 3;
-            };
-            Activity = {
-              tab = "Monitoring";
-              header = false;
-              style = "row";
-              columns = 2;
-              useEqualHeights = false;
-            };
-            Storage = {
-              tab = "Monitoring";
-              header = false;
-              style = "row";
-              columns = 4;
-            };
-          };
-        };
+      config = {
+        services.homepage-dashboard = {
+          enable = true;
+          listenPort = 8082;
+          allowedHosts = "${config.networking.hostName}:8082,${config.networking.hostName}.taila7373f.ts.net,${config.networking.hostName}.taila7373f.ts.net:8082";
+          environmentFiles = [ config.sops.templates.homepage-env.path ];
 
-        widgets = [
-          {
-            search = {
-              provider = "custom";
-              url = "https://unduck.link?q=";
-              focus = false;
-              target = "_blank";
+          settings = {
+            title = config.networking.hostName;
+            theme = "dark";
+            color = "slate";
+            headerStyle = "clean";
+            iconStyle = "theme";
+            hideVersion = true;
+            useEqualHeights = true;
+            cardBlur = "md";
+            background = {
+              image = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/aesthetic.jpg";
+              opacity = 70;
             };
-          }
-          {
-            datetime = {
-              text_size = "xl";
-              format = {
-                timeStyle = "short";
-                hourCycle = "h23";
+            layout = {
+              Media = {
+                tab = "Dashboard";
+                header = false;
+                style = "row";
+                columns = 2;
+              };
+              Downloads = {
+                tab = "Dashboard";
+                header = false;
+                style = "row";
+                columns = 2;
+              };
+              DownloadsMedia = {
+                tab = "Dashboard";
+                header = false;
+                style = "row";
+                columns = 3;
+              };
+              Home = {
+                tab = "Dashboard";
+                header = false;
+                style = "row";
+                columns = 4;
+              };
+              Network = {
+                tab = "Dashboard";
+                header = false;
+                style = "row";
+                columns = 2;
+              };
+              Developer = {
+                tab = "Dashboard";
+                header = false;
+                useEqualHeights = false;
+              };
+              Admin = {
+                tab = "Dashboard";
+                header = false;
+                useEqualHeights = false;
+              };
+              Overview = {
+                tab = "Monitoring";
+                header = false;
+                style = "row";
+                columns = 1;
+              };
+              Compute = {
+                tab = "Monitoring";
+                header = false;
+                style = "row";
+                columns = 3;
+              };
+              Activity = {
+                tab = "Monitoring";
+                header = false;
+                style = "row";
+                columns = 2;
+                useEqualHeights = false;
+              };
+              Storage = {
+                tab = "Monitoring";
+                header = false;
+                style = "row";
+                columns = 4;
               };
             };
-          }
-          {
-            openmeteo = {
-              label = "Diano Borello";
-              latitude = 43.9462811;
-              longitude = 8.0490312;
-              timezone = "Europe/Rome";
-              units = "metric";
-              cache = 5;
-            };
-          }
-        ];
+          };
 
-        bookmarks = [
-          {
-            Developer = [
-              {
-                mactoflake = [
+          widgets = [
+            {
+              search = {
+                provider = "custom";
+                url = "https://unduck.link?q=";
+                focus = false;
+                target = "_blank";
+              };
+            }
+            {
+              datetime = {
+                text_size = "xl";
+                format = {
+                  timeStyle = "short";
+                  hourCycle = "h23";
+                };
+              };
+            }
+            {
+              openmeteo = {
+                label = "Diano Borello";
+                latitude = 43.9462811;
+                longitude = 8.0490312;
+                timezone = "Europe/Rome";
+                units = "metric";
+                cache = 5;
+              };
+            }
+          ];
+
+          bookmarks = [
+            {
+              Developer = [
+                {
+                  mactoflake = [
+                    {
+                      icon = "si-github";
+                      href = "https://github.com/Xitonight/mactoflake";
+                    }
+                  ];
+                }
+              ];
+            }
+            {
+              Admin = [
+                {
+                  Tailscale = [
+                    {
+                      icon = "tailscale.png";
+                      href = "https://console.tailscale.com/admin/machines";
+                    }
+                  ];
+                }
+              ];
+            }
+          ];
+
+          services = [
+            {
+              Media = [
+                {
+                  Jellyfin = {
+                    icon = "jellyfin.png";
+                    href = "http://${config.networking.hostName}:8096";
+                    description = "Movies & TV";
+                    widget = {
+                      type = "jellyfin";
+                      url = "http://${config.networking.hostName}:8096";
+                      key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
+                      enableBlocks = true;
+                    };
+                  };
+                }
+                {
+                  Navidrome = {
+                    icon = "navidrome.png";
+                    href = "http://${config.networking.hostName}:4533";
+                    description = "Music";
+                    widget = {
+                      type = "navidrome";
+                      url = "http://${config.networking.hostName}:4533";
+                      user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
+                      token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
+                      salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
+                    };
+                  };
+                }
+                {
+                  DroppedNeedle = {
+                    icon = "mdi-music-note-plus";
+                    href = "http://${config.networking.hostName}:8688";
+                    description = "Music requests";
+                    siteMonitor = "http://${config.networking.hostName}:8688/health";
+                  };
+                }
+              ];
+            }
+            {
+              DownloadsMedia = [
+                {
+                  Sonarr = {
+                    icon = "sonarr.png";
+                    href = "http://${config.networking.hostName}:8989";
+                    description = "Series management";
+                    widget = {
+                      type = "sonarr";
+                      url = "http://${config.networking.hostName}:8989";
+                      key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
+                    };
+                  };
+                }
+                {
+                  Radarr = {
+                    icon = "radarr.png";
+                    href = "http://${config.networking.hostName}:7878";
+                    description = "Movie management";
+                    widget = {
+                      type = "radarr";
+                      url = "http://${config.networking.hostName}:7878";
+                      key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
+                    };
+                  };
+                }
+                {
+                  Prowlarr = {
+                    icon = "prowlarr.png";
+                    href = "http://${config.networking.hostName}:9696";
+                    description = "Indexer management";
+                    widget = {
+                      type = "prowlarr";
+                      url = "http://${config.networking.hostName}:9696";
+                      key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Downloads = [
+                {
+                  qBittorrent = {
+                    icon = "qbittorrent.png";
+                    href = "http://${config.networking.hostName}:8081";
+                    description = "Torrent client";
+                    widget = {
+                      type = "qbittorrent";
+                      url = "http://${config.networking.hostName}:8081";
+                      inherit username;
+                      password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
+                    };
+                  };
+                }
+                {
+                  slskd = {
+                    icon = "slskd.png";
+                    href = "http://${config.networking.hostName}:5030";
+                    description = "Soulseek";
+                    widget = {
+                      type = "slskd";
+                      url = "http://${config.networking.hostName}:5030";
+                      key = "{{HOMEPAGE_VAR_SLSKD_API_KEY}}";
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Home =
+                lib.optionals cfg.homeAssistant [
                   {
-                    icon = "si-github";
-                    href = "https://github.com/Xitonight/mactoflake";
+                    "Home Assistant" = {
+                      icon = "home-assistant.png";
+                      href = "http://${config.networking.hostName}:8123";
+                      description = "Home automation";
+                      widget = {
+                        type = "homeassistant";
+                        url = "http://${config.networking.hostName}:8123";
+                        key = "{{HOMEPAGE_VAR_HASS_TOKEN}}";
+                      };
+                    };
+                  }
+                ]
+                ++ [
+                  # {
+                  #   n8n = {
+                  #     icon = "n8n.png";
+                  #     href = "http://${config.networking.hostName}:5678";
+                  #     description = "Workflow automation";
+                  #     siteMonitor = "http://${config.networking.hostName}:5678";
+                  #   };
+                  # }
+                  {
+                    tguserbot = {
+                      icon = "mdi-robot-telegram";
+                      description = "Telegram userbot";
+                      siteMonitor = "http://127.0.0.1:3434/health/ready";
+                    };
+                  }
+                  {
+                    Paperless = {
+                      icon = "paperless-ngx.png";
+                      href = "http://${config.networking.hostName}:28981/paperless";
+                      description = "Document management";
+                      widget = {
+                        type = "paperlessngx";
+                        url = "http://${config.networking.hostName}:28981/paperless";
+                        username = "admin";
+                        password = "{{HOMEPAGE_VAR_PAPERLESS_PASSWORD}}";
+                      };
+                    };
+                  }
+                  {
+                    Vaultwarden = {
+                      icon = "vaultwarden.png";
+                      href = "http://${config.networking.hostName}:8222";
+                      description = "Password manager";
+                      siteMonitor = "http://${config.networking.hostName}:8222";
+                    };
                   }
                 ];
-              }
-            ];
-          }
-          {
-            Admin = [
-              {
-                Tailscale = [
-                  {
-                    icon = "tailscale.png";
-                    href = "https://console.tailscale.com/admin/machines";
-                  }
-                ];
-              }
-            ];
-          }
-        ];
+            }
+            {
+              Network = [
+                {
+                  "Pi-hole" = {
+                    icon = "pi-hole.png";
+                    href = "http://${config.networking.hostName}:3000";
+                    description = "DNS ad blocking";
+                    widget = {
+                      type = "pihole";
+                      url = "http://${config.networking.hostName}:3000";
+                      version = 6;
+                    };
+                  };
+                }
+                {
+                  Router = {
+                    icon = "mdi-router-wireless";
+                    href = "http://192.168.8.1";
+                    description = "Mactofi gateway";
+                    siteMonitor = "http://192.168.8.1";
+                  };
+                }
+              ];
+            }
+            {
+              Overview = [
+                {
+                  "System Info" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "info";
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Compute = [
+                {
+                  "CPU Usage" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "cpu";
+                    };
+                  };
+                }
+                {
+                  "CPU Temperature" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "sensor:Tctl";
+                    };
+                  };
+                }
+                {
+                  "Memory Usage" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "memory";
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Activity = [
+                {
+                  Processes = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "process";
+                    };
+                  };
+                }
+                {
+                  "Network Usage" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "network:wlp2s0";
+                    };
+                  };
+                }
+              ];
+            }
+            {
+              Storage = [
+                {
+                  "System Disk I/O" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "disk:nvme0n1";
+                    };
+                  };
+                }
+                {
+                  "Media Disk I/O" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "disk:sda";
+                    };
+                  };
+                }
+                {
+                  Filesystem = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "fs:/";
+                    };
+                  };
+                }
+                {
+                  "Media Pool" = {
+                    widget = {
+                      type = "glances";
+                      url = "http://${config.networking.hostName}:61208";
+                      version = 4;
+                      metric = "fs:/srv/media";
+                    };
+                  };
+                }
+              ];
+            }
+          ];
 
-        services = [
-          {
-            Media = [
-              {
-                Jellyfin = {
-                  icon = "jellyfin.png";
-                  href = "http://${config.networking.hostName}:8096";
-                  description = "Movies & TV";
-                  widget = {
-                    type = "jellyfin";
-                    url = "http://${config.networking.hostName}:8096";
-                    key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
-                    enableBlocks = true;
-                  };
-                };
-              }
-              {
-                Navidrome = {
-                  icon = "navidrome.png";
-                  href = "http://${config.networking.hostName}:4533";
-                  description = "Music";
-                  widget = {
-                    type = "navidrome";
-                    url = "http://${config.networking.hostName}:4533";
-                    user = "{{HOMEPAGE_VAR_NAVIDROME_USER}}";
-                    token = "{{HOMEPAGE_VAR_NAVIDROME_TOKEN}}";
-                    salt = "{{HOMEPAGE_VAR_NAVIDROME_SALT}}";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            DownloadsMedia = [
-              {
-                Sonarr = {
-                  icon = "sonarr.png";
-                  href = "http://${config.networking.hostName}:8989";
-                  description = "Series management";
-                  widget = {
-                    type = "sonarr";
-                    url = "http://${config.networking.hostName}:8989";
-                    key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
-                  };
-                };
-              }
-              {
-                Radarr = {
-                  icon = "radarr.png";
-                  href = "http://${config.networking.hostName}:7878";
-                  description = "Movie management";
-                  widget = {
-                    type = "radarr";
-                    url = "http://${config.networking.hostName}:7878";
-                    key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
-                  };
-                };
-              }
-              {
-                Prowlarr = {
-                  icon = "prowlarr.png";
-                  href = "http://${config.networking.hostName}:9696";
-                  description = "Indexer management";
-                  widget = {
-                    type = "prowlarr";
-                    url = "http://${config.networking.hostName}:9696";
-                    key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            Downloads = [
-              {
-                qBittorrent = {
-                  icon = "qbittorrent.png";
-                  href = "http://${config.networking.hostName}:8081";
-                  description = "Torrent client";
-                  widget = {
-                    type = "qbittorrent";
-                    url = "http://${config.networking.hostName}:8081";
-                    inherit username;
-                    password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
-                  };
-                };
-              }
-              {
-                slskd = {
-                  icon = "slskd.png";
-                  href = "http://${config.networking.hostName}:5030";
-                  description = "Soulseek";
-                  widget = {
-                    type = "slskd";
-                    url = "http://${config.networking.hostName}:5030";
-                    key = "{{HOMEPAGE_VAR_SLSKD_API_KEY}}";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            Home = [
-              {
-                "Home Assistant" = {
-                  icon = "home-assistant.png";
-                  href = "http://${config.networking.hostName}:8123";
-                  description = "Home automation";
-                  widget = {
-                    type = "homeassistant";
-                    url = "http://${config.networking.hostName}:8123";
-                    key = "{{HOMEPAGE_VAR_HASS_TOKEN}}";
-                  };
-                };
-              }
-              # {
-              #   n8n = {
-              #     icon = "n8n.png";
-              #     href = "http://${config.networking.hostName}:5678";
-              #     description = "Workflow automation";
-              #     siteMonitor = "http://${config.networking.hostName}:5678";
-              #   };
-              # }
-              {
-                tguserbot = {
-                  icon = "mdi-robot-telegram";
-                  description = "Telegram userbot";
-                  siteMonitor = "http://127.0.0.1:3434/health/ready";
-                };
-              }
-              {
-                Paperless = {
-                  icon = "paperless-ngx.png";
-                  href = "http://${config.networking.hostName}:28981/paperless";
-                  description = "Document management";
-                  widget = {
-                    type = "paperlessngx";
-                    url = "http://${config.networking.hostName}:28981/paperless";
-                    username = "admin";
-                    password = "{{HOMEPAGE_VAR_PAPERLESS_PASSWORD}}";
-                  };
-                };
-              }
-              {
-                Vaultwarden = {
-                  icon = "vaultwarden.png";
-                  href = "http://${config.networking.hostName}:8222";
-                  description = "Password manager";
-                  siteMonitor = "http://${config.networking.hostName}:8222";
-                };
-              }
-            ];
-          }
-          {
-            Network = [
-              {
-                "Pi-hole" = {
-                  icon = "pi-hole.png";
-                  href = "http://${config.networking.hostName}:3000";
-                  description = "DNS ad blocking";
-                  widget = {
-                    type = "pihole";
-                    url = "http://${config.networking.hostName}:3000";
-                    version = 6;
-                  };
-                };
-              }
-              {
-                Router = {
-                  icon = "mdi-router-wireless";
-                  href = "http://192.168.8.1";
-                  description = "Mactofi gateway";
-                  siteMonitor = "http://192.168.8.1";
-                };
-              }
-            ];
-          }
-          {
-            Overview = [
-              {
-                "System Info" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "info";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            Compute = [
-              {
-                "CPU Usage" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "cpu";
-                  };
-                };
-              }
-              {
-                "CPU Temperature" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "sensor:Tctl";
-                  };
-                };
-              }
-              {
-                "Memory Usage" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "memory";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            Activity = [
-              {
-                Processes = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "process";
-                  };
-                };
-              }
-              {
-                "Network Usage" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "network:wlp2s0";
-                  };
-                };
-              }
-            ];
-          }
-          {
-            Storage = [
-              {
-                "System Disk I/O" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "disk:nvme0n1";
-                  };
-                };
-              }
-              {
-                "Media Disk I/O" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "disk:sda";
-                  };
-                };
-              }
-              {
-                Filesystem = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "fs:/";
-                  };
-                };
-              }
-              {
-                "Media Pool" = {
-                  widget = {
-                    type = "glances";
-                    url = "http://${config.networking.hostName}:61208";
-                    version = 4;
-                    metric = "fs:/srv/media";
-                  };
-                };
-              }
-            ];
-          }
-        ];
+          customCSS = ''
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-        customCSS = ''
-          @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+            * {
+              font-family: "Poppins", ui-sans-serif, system-ui, sans-serif !important;
+            }
 
-          * {
-            font-family: "Poppins", ui-sans-serif, system-ui, sans-serif !important;
-          }
+            .service-card,
+            li.bookmark > a,
+            .information-widget-search input,
+            .information-widget-search button,
+            #myTab {
+              background-color: rgba(30, 41, 59, 0.5) !important;
+            }
 
-          .service-card,
-          li.bookmark > a,
-          .information-widget-search input,
-          .information-widget-search button,
-          #myTab {
-            background-color: rgba(30, 41, 59, 0.5) !important;
-          }
+            .service-card:hover,
+            li.bookmark > a:hover,
+            .information-widget-search input:focus,
+            .information-widget-search button:hover,
+            #myTab button[aria-selected="true"],
+            #myTab button:hover {
+              background-color: rgba(30, 41, 59, 0.65) !important;
+            }
 
-          .service-card:hover,
-          li.bookmark > a:hover,
-          .information-widget-search input:focus,
-          .information-widget-search button:hover,
-          #myTab button[aria-selected="true"],
-          #myTab button:hover {
-            background-color: rgba(30, 41, 59, 0.65) !important;
-          }
+            #myTab button {
+              background-color: transparent !important;
+            }
 
-          #myTab button {
-            background-color: transparent !important;
-          }
+            .information-widget-search input {
+              border-color: transparent !important;
+            }
 
-          .information-widget-search input {
-            border-color: transparent !important;
-          }
+          '';
+        };
 
-        '';
-      };
+        services.glances = {
+          enable = true;
+          openFirewall = true;
+        };
 
-      services.glances = {
-        enable = true;
-        openFirewall = true;
-      };
+        sops.secrets = {
+          homepage-jellyfin-api-key = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "jellyfin-api-key";
+          };
+          homepage-hass-token = lib.mkIf cfg.homeAssistant {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "hass-token";
+          };
+          homepage-pihole-password = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "pihole-password";
+          };
+          homepage-navidrome-user = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "navidrome-user";
+          };
+          homepage-navidrome-token = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "navidrome-token";
+          };
+          homepage-navidrome-salt = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "navidrome-salt";
+          };
+          homepage-sonarr-api-key = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "sonarr-api-key";
+          };
+          homepage-radarr-api-key = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "radarr-api-key";
+          };
+          homepage-prowlarr-api-key = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "prowlarr-api-key";
+          };
+          homepage-qbittorrent-password = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "qbittorrent-password";
+          };
+          homepage-slskd-api-key = {
+            sopsFile = ../../secrets/slskd.yaml;
+            key = "slskd-api-key";
+          };
+          homepage-paperless-password = {
+            sopsFile = ../../secrets/paperless.yaml;
+            key = "paperless-password";
+          };
+        };
 
-      sops.secrets = {
-        homepage-jellyfin-api-key = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "jellyfin-api-key";
+        sops.templates.homepage-env = {
+          restartUnits = [ "homepage-dashboard.service" ];
+          content = ''
+            HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder.homepage-jellyfin-api-key}
+            ${lib.optionalString cfg.homeAssistant "HOMEPAGE_VAR_HASS_TOKEN=${config.sops.placeholder.homepage-hass-token}"}
+            HOMEPAGE_VAR_PIHOLE_PASSWORD=${config.sops.placeholder.homepage-pihole-password}
+            HOMEPAGE_VAR_NAVIDROME_USER=${config.sops.placeholder.homepage-navidrome-user}
+            HOMEPAGE_VAR_NAVIDROME_TOKEN=${config.sops.placeholder.homepage-navidrome-token}
+            HOMEPAGE_VAR_NAVIDROME_SALT=${config.sops.placeholder.homepage-navidrome-salt}
+            HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder.homepage-sonarr-api-key}
+            HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder.homepage-radarr-api-key}
+            HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder.homepage-prowlarr-api-key}
+            HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
+            HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
+            HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
+          '';
         };
-        homepage-hass-token = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "hass-token";
-        };
-        homepage-pihole-password = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "pihole-password";
-        };
-        homepage-navidrome-user = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "navidrome-user";
-        };
-        homepage-navidrome-token = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "navidrome-token";
-        };
-        homepage-navidrome-salt = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "navidrome-salt";
-        };
-        homepage-sonarr-api-key = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "sonarr-api-key";
-        };
-        homepage-radarr-api-key = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "radarr-api-key";
-        };
-        homepage-prowlarr-api-key = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "prowlarr-api-key";
-        };
-        homepage-qbittorrent-password = {
-          sopsFile = ../../secrets/homepage.yaml;
-          key = "qbittorrent-password";
-        };
-        homepage-slskd-api-key = {
-          sopsFile = ../../secrets/slskd.yaml;
-          key = "slskd-api-key";
-        };
-        homepage-paperless-password = {
-          sopsFile = ../../secrets/paperless.yaml;
-          key = "paperless-password";
-        };
-      };
-
-      sops.templates.homepage-env = {
-        restartUnits = [ "homepage-dashboard.service" ];
-        content = ''
-          HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder.homepage-jellyfin-api-key}
-          HOMEPAGE_VAR_HASS_TOKEN=${config.sops.placeholder.homepage-hass-token}
-          HOMEPAGE_VAR_PIHOLE_PASSWORD=${config.sops.placeholder.homepage-pihole-password}
-          HOMEPAGE_VAR_NAVIDROME_USER=${config.sops.placeholder.homepage-navidrome-user}
-          HOMEPAGE_VAR_NAVIDROME_TOKEN=${config.sops.placeholder.homepage-navidrome-token}
-          HOMEPAGE_VAR_NAVIDROME_SALT=${config.sops.placeholder.homepage-navidrome-salt}
-          HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder.homepage-sonarr-api-key}
-          HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder.homepage-radarr-api-key}
-          HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder.homepage-prowlarr-api-key}
-          HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
-          HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
-          HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
-        '';
       };
     };
 }

@@ -1,9 +1,7 @@
 {
   flake.nixosModules.droppedneedle =
     {
-      lib,
       config,
-      username,
       ...
     }:
     {
@@ -12,11 +10,10 @@
       users.users.droppedneedle = {
         isSystemUser = true;
         group = "media";
-        uid = 995;
+        uid = 984;
       };
 
       systemd.tmpfiles.rules = [
-        "d /srv/media/music-requests 0775 ${username} media -"
         "d /srv/droppedneedle 0750 droppedneedle media -"
         "d /srv/droppedneedle/config 0750 droppedneedle media -"
         "d /srv/droppedneedle/cache 0750 droppedneedle media -"
@@ -42,11 +39,7 @@
 
       systemd.services = {
         navidrome = {
-          unitConfig.RequiresMountsFor = [
-            "/srv/media/music"
-            "/srv/media/music-requests"
-          ];
-          serviceConfig.BindReadOnlyPaths = [ "/srv/media/music-requests" ];
+          unitConfig.RequiresMountsFor = [ "/srv/media/music" ];
         };
 
         docker.unitConfig.RequiresMountsFor = [ "/srv/media" ];
@@ -73,23 +66,6 @@
         ];
 
         extraOptions = [ "--network=host" ];
-      };
-
-      services.homepage-dashboard = lib.mkIf config.services.homepage-dashboard.enable {
-        services = [
-          {
-            Media = [
-              {
-                DroppedNeedle = {
-                  icon = "mdi-music-note-plus";
-                  href = "http://${config.networking.hostName}:8688";
-                  description = "Music requests";
-                  siteMonitor = "http://${config.networking.hostName}:8688/health";
-                };
-              }
-            ];
-          }
-        ];
       };
     };
 }
