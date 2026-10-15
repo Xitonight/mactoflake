@@ -212,6 +212,7 @@
               ublock-origin
               vimium
               bitwarden
+              keepa
             ]
             ++ lib.optionals (agent == "1password") [ onepassword-password-manager ];
 
