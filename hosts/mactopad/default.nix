@@ -73,10 +73,11 @@
               output = "eDP-1";
               mode = "1920x1080@60";
               scale = 1;
-              position = "1920x0";
+              position = "-1920x0";
             }
             {
               output = "DP-1";
+              disabled = true;
               mode = "1920x1080@75";
               scale = 1;
               position = "-1920x0";
