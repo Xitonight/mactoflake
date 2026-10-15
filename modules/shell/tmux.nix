@@ -9,12 +9,42 @@
     }:
     let
       multiplexer = if osConfig == null then "tmux" else osConfig.mactoflake.shell.multiplexer;
+      fzf-zoxide-add = pkgs.writeShellApplication {
+        name = "fzf-zoxide-add";
+        runtimeInputs = with pkgs; [
+          coreutils
+          fd
+          fzf
+          tree
+          tmux
+          zoxide
+        ];
+        text = ''
+          find_dirs() {
+            fd --type d --hidden --exclude .git --exclude node_modules --exclude .cache . "$HOME"
+          }
+
+          selected_dir=$(find_dirs | fzf \
+            --prompt="Add to Zoxide > " \
+            --header="Select a directory to register" \
+            --preview="ls -la --color=always {} 2>/dev/null || tree -C -L 1 {}" \
+            --preview-window="right:50%:wrap" \
+            --reverse \
+            --exit-0)
+
+          if [[ -n "$selected_dir" ]]; then
+            zoxide add "$selected_dir"
+            tmux display-message "Added to zoxide: $selected_dir"
+          fi
+        '';
+      };
 
       c16 = if limitedColors then "colour4" else "colour16";
       c18 = if limitedColors then "colour5" else "colour18";
       c19 = if limitedColors then "default" else "colour19";
     in
     {
+      home.packages = [ fzf-zoxide-add ];
       programs = lib.mkIf (multiplexer == "tmux") {
         sesh = {
           enable = true;
