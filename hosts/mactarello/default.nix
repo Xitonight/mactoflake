@@ -23,6 +23,7 @@
       self.nixosModules.containers
       self.nixosModules.media
       self.nixosModules.arr
+      self.nixosModules.seerr
       self.nixosModules.slskd
       self.nixosModules.droppedneedle
       self.nixosModules.paperless
@@ -51,6 +52,7 @@
                 prefix = "paperless";
               };
               jelly.port = 8096;
+              seerr.port = 5055;
               vault.port = 8222;
               needle.port = 8688;
             };
@@ -128,6 +130,7 @@
               3000
               4533
               5030
+              5055
               7878
               8080
               8081

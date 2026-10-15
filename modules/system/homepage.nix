@@ -198,6 +198,18 @@
                     siteMonitor = "http://${config.networking.hostName}:8688/health";
                   };
                 }
+                {
+                  Seerr = {
+                    icon = "seerr.png";
+                    href = "http://${config.networking.hostName}:5055";
+                    description = "Movie & TV requests";
+                    widget = {
+                      type = "overseerr";
+                      url = "http://${config.networking.hostName}:5055";
+                      key = "{{HOMEPAGE_VAR_SEERR_API_KEY}}";
+                    };
+                  };
+                }
               ];
             }
             {
@@ -543,6 +555,10 @@
             sopsFile = ../../secrets/homepage.yaml;
             key = "prowlarr-api-key";
           };
+          homepage-seerr-api-key = {
+            sopsFile = ../../secrets/homepage.yaml;
+            key = "seerr-api-key";
+          };
           homepage-qbittorrent-password = {
             sopsFile = ../../secrets/homepage.yaml;
             key = "qbittorrent-password";
@@ -569,6 +585,7 @@
             HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder.homepage-sonarr-api-key}
             HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder.homepage-radarr-api-key}
             HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder.homepage-prowlarr-api-key}
+            HOMEPAGE_VAR_SEERR_API_KEY=${config.sops.placeholder.homepage-seerr-api-key}
             HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder.homepage-qbittorrent-password}
             HOMEPAGE_VAR_SLSKD_API_KEY=${config.sops.placeholder.homepage-slskd-api-key}
             HOMEPAGE_VAR_PAPERLESS_PASSWORD=${config.sops.placeholder.homepage-paperless-password}
