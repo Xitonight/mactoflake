@@ -19,6 +19,7 @@
       ./hardware-configuration.nix
       self.nixosModules.core
       self.nixosModules.printing
+      self.nixosModules.sdhci
       self.nixosModules.home-manager
       {
         home-manager.users.${self.const.username} = {
@@ -34,6 +35,7 @@
           shell.multiplexer = "tmux";
           input.kanata.enable = true;
           power.enable = true;
+          sdhci.enable = true;
           printing = {
             enable = true;
             openFirewall = false;
