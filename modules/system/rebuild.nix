@@ -63,8 +63,10 @@
 
         follow() {
           local unit="$1" i state pid
-          for ((i = 0; i < 100; i++)); do
-            if [ -s "$log" ]; then
+          pid=0
+          for ((i = 0; i < 300; i++)); do
+            pid=$(systemctl --user show -p MainPID --value "$unit" 2>/dev/null || echo 0)
+            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
               break
             fi
             state=$(systemctl --user is-active "$unit" 2>/dev/null || true)
@@ -73,12 +75,11 @@
             fi
             sleep 0.1
           done
+          if [ -n "$pid" ] && [ "$pid" != "0" ]; then
+            exec tail -f -n +1 --pid="$pid" "$log"
+          fi
+          echo "--- rebuild not running, last output: ---" >&2
           if [ -s "$log" ]; then
-            pid=$(systemctl --user show -p MainPID --value "$unit" 2>/dev/null || echo 0)
-            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
-              exec tail -f -n +1 --pid="$pid" "$log"
-            fi
-            echo "--- rebuild not running, last output: ---" >&2
             tail -n 30 "$log"
           else
             echo "rebuild produced no output, showing journal:" >&2
