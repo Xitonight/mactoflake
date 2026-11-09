@@ -1100,6 +1100,7 @@
       "original": {
         "owner": "anomalyco",
         "repo": "opencode",
+        "rev": "18ef3cc7c5a25b82114c953a80ccc09f4988f74e",
         "type": "github"
       }
     },

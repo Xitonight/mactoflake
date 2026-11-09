@@ -3,7 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    opencode.url = "github:anomalyco/opencode";
+    # TODO: unpin once upstream fixes nix packaging (stale nix/hashes.json + broken
+    # ws shim in the compiled binary); then `nix flake lock --update-input opencode`
+    opencode.url = "github:anomalyco/opencode/18ef3cc7c5a25b82114c953a80ccc09f4988f74e";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
