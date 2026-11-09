@@ -3,9 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # TODO: unpin once upstream fixes nix packaging (stale nix/hashes.json + broken
-    # ws shim in the compiled binary); then `nix flake lock --update-input opencode`
-    opencode.url = "github:anomalyco/opencode/18ef3cc7c5a25b82114c953a80ccc09f4988f74e";
+    # TODO: unpin once upstream fixes nix packaging (chronically stale
+    # nix/hashes.json + bun 1.4.2 in their nixpkgs pin breaks the compiled
+    # binary); the node_modules hash override in modules/dev/opencode/default.nix
+    # is rev-specific and must be recomputed if this pin moves
+    opencode.url = "github:anomalyco/opencode/12a661ea40cd5863b271a89bb06b8a3ddb7ab5a0";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:denful/import-tree";
     minegrub-theme.url = "github:Lxtharia/minegrub-theme";
