@@ -13,6 +13,7 @@
         extraGroups = [
           "input"
           "plugdev"
+          "dialout"
         ];
       };
     };
