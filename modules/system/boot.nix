@@ -24,8 +24,8 @@
           default = true;
           description = ''
             Silence kernel/initrd/console logging during boot.
-            Adds kernelParams (quiet, splash, udev log suppression),
-            sets consoleLogLevel to 0, and disables initrd verbosity.
+            Adds kernelParams (quiet, splash, udev log suppression)
+            and sets consoleLogLevel to 0.
           '';
         };
 
@@ -114,7 +114,6 @@
         {
           boot = {
             loader.efi.canTouchEfiVariables = !(cfg.grub.efiInstallAsRemovable && cfg.loader == "grub");
-            initrd.systemd.enable = true;
             consoleLogLevel = lib.mkIf cfg.silent-boot 0;
             kernelParams = lib.mkIf cfg.silent-boot [
               "quiet"
@@ -125,7 +124,6 @@
               "rd.udev.log_level=3"
               "udev.log_priority=3"
             ];
-            initrd.verbose = lib.mkIf cfg.silent-boot false;
           };
         }
 
