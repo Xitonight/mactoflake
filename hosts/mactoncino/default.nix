@@ -38,8 +38,8 @@
             atm10 = {
               enable = true;
               slug = "all-the-mods-10";
-              memory = "12G";
-              autoStart = false;
+              memory = "10G";
+              autoStart = true;
               whitelist = [
                 "Xitonight"
                 "Parcometro_"
@@ -115,6 +115,12 @@
         };
 
         systemd.services.NetworkManager-wait-online.enable = false;
+        systemd.services.tailscaled.serviceConfig.OOMScoreAdjust = -500;
+
+        zramSwap = {
+          enable = true;
+          memoryPercent = 50;
+        };
 
         home-manager.extraSpecialArgs.monitorsConfig = lib.mkForce [ ];
       }
