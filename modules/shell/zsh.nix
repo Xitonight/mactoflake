@@ -83,7 +83,7 @@
           j = "just";
           ts = "tailscale";
           ff = "fastfetch";
-          oc = "opencode --port";
+          oc = "opencode";
           open = "xdg-open";
           rsy = "rsync -ahP";
           nvims = "sudoedit";
